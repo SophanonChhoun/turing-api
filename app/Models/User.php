@@ -39,6 +39,11 @@ class User extends Authenticatable
         }
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, RoleHasUser::class, 'userId', 'roleId');
+    }
+
     public function media()
     {
         return $this->hasOne(MediaFile::class,"media_id","media_id");

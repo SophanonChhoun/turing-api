@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\RoleHasUser;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,11 @@ class UserSeeder extends Seeder
             "firstName" => "Sophanon",
             "lastName" => "Chhoun",
             "phoneNumber" => "061794013",
+        ]);
+
+        RoleHasUser::firstOrCreate([
+            "roleId" => 1,
+            "userId" => 1,
         ]);
     }
 }
