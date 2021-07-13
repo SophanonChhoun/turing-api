@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +24,19 @@ Route::post("register", [CustomerController::class, 'signUp']);
 
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::get('/admin/me', [UserController::class, 'test']);
+    Route::group(['prefix' => 'admin'], function(){
+        Route::group(['prefix' => 'role'], function (){
+            Route::post('', [RoleController::class, 'store']);
+            Route::get('', [RoleController::class, 'index']);
+            Route::get('/{id}', [RoleController::class, 'show']);
+            Route::put('/{id}', [RoleController::class, 'update']);
+            Route::delete('/{id}', [RoleController::class, 'destroy']);
+            Route::patch("/{id}", [RoleController::class, "updateStatus"]);
+        });
+
+        Route::get("permission", [PermissionController::class, 'index']);
+    });
+
 });
 
 Route::middleware(['auth:sanctum', 'customer'])->group(function () {
