@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::post('',[ProductAttributesController::class,'store']);
             Route::get('',[ProductAttributesController::class,'index']);
             Route::put('/{id}',[ProductAttributesController::class,'update']);
+            Route::patch('/{id}', [ProductAttributesController::class, 'updateStatus']);
             Route::delete('/{id}',[ProductAttributesController::class,'destroy']);
             });
     });
