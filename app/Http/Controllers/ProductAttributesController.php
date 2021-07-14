@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductAttributeRequest;
+use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ProductAttributeResource;
 use App\Models\ProductAttributes;
 use Illuminate\Support\Facades\DB;
@@ -32,8 +33,14 @@ class ProductAttributesController extends Controller
     }
 
     public function index(){
-        $data = ProductAttributes::all();
-        return $this->success(ProductAttributeResource::collection($data));
+        try{
+            $data = ProductAttributes::all();
+            return $this->success(ProductAttributeResource::collection($data));
+        }
+        catch (Exception $exception){
+            DB::rollback();
+            return $this->fail($exception->getMessage());
+        }
 
     }
 
@@ -63,6 +70,29 @@ class ProductAttributesController extends Controller
         }
     }
 
+    public function updateStatus($id, StatusRequest $request)
+    {
+        try {
+            $ProductAttributes = ProductAttributes::find($id);
+            if(!$ProductAttributes)
+            {
+                return $this->fail("ProductAttributes not exist.");
+            }
+            $ProductAttributes = $ProductAttributes->update([
+                "status" => $request->status
+            ]);
+            if(!$ProductAttributes)
+            {
+                return $this->fail("Something went wrong");
+            }
+            return $this->success([
+                "message" => "ProductAttributes status updated."
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function destroy($id)
     {
 
@@ -84,8 +114,6 @@ class ProductAttributesController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
-
-
 
 
 }
