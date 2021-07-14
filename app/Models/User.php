@@ -17,9 +17,11 @@ class User extends Authenticatable
         'email',
         'name',
         'password',
-        'is_enable',
+        'status',
         'media_id',
-        'cinema_id',
+        'firstName',
+        'lastName',
+        'phoneNumber'
     ];
 
     protected $hidden = [
@@ -47,6 +49,21 @@ class User extends Authenticatable
     public function media()
     {
         return $this->hasOne(MediaFile::class,"media_id","media_id");
+    }
+
+    public function cinemas()
+    {
+        return $this->hasMany(CinemaHasUser::class, 'userId');
+    }
+
+    public function hasRoles()
+    {
+        return $this->hasMany(RoleHasUser::class, "userId");
+    }
+
+    public function hasCinemas()
+    {
+        return $this->hasMany(CinemaHasUser::class, 'userId');
     }
 
     public static function getUserById($id)

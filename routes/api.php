@@ -51,7 +51,15 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::put('/{id}',[ProductAttributesController::class,'update']);
             Route::patch('/{id}', [ProductAttributesController::class, 'updateStatus']);
             Route::delete('/{id}',[ProductAttributesController::class,'destroy']);
-            });
+        });
+        Route::group(['prefix' => 'users'], function(){
+            Route::post('', [UserController::class, 'store']);
+            Route::get('', [UserController::class, 'index']);
+            Route::get('/{id}', [UserController::class, 'show']);
+            Route::put('/{id}', [UserController::class, 'update']);
+            Route::patch('/{id}', [UserController::class, 'updateStatus']);
+            Route::delete('/{id}', [UserController::class, 'destroy']);
+        });
     });
 
 });
