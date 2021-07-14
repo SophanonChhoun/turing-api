@@ -9,8 +9,8 @@ use App\Http\Resources\CinemaListResource;
 use App\Models\Cinema;
 use App\Models\Theater;
 use Illuminate\Http\Request;
-use DB;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class CinemaController extends Controller
 {
