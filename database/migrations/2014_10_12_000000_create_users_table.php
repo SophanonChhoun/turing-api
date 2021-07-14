@@ -18,7 +18,6 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->bigInteger("media_id")->nullable();
-            $table->bigInteger("cinemaId")->nullable();
             $table->tinyInteger("status");
             $table->string('password');
             $table->string("firstName");

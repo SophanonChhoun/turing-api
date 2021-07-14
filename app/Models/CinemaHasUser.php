@@ -12,4 +12,22 @@ class CinemaHasUser extends Model
       'userId',
       'cinemaId',
     ];
+
+    public static function store($id, $cinemas)
+    {
+        self::where("userId", $id)->delete();
+        foreach ($cinemas as $key => $cinema)
+        {
+            $data = self::create([
+                "userId" => $id,
+                "cinemaId" => $cinema
+            ]);
+            if(!$data)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
