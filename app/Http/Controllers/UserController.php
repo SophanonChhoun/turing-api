@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Resources\RolePermissionResource;
 use App\Http\Resources\RoleResource;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Exception;
 
 class UserController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         try {
             $user = User::with("roles.rolePermission", "media")->where('email', $request->email)->first();
@@ -33,10 +34,5 @@ class UserController extends Controller
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
-    }
-
-    public function test()
-    {
-        return $this->success('Hehe');
     }
 }

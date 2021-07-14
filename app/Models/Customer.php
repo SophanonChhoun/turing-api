@@ -13,7 +13,8 @@ class Customer extends Model
     protected $fillable = [
       'name',
       'email',
-      'password'
+      'password',
+      'media_id',
     ];
     protected $hidden = [
         'password',
