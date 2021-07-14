@@ -7,6 +7,8 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CinemaController;
+use App\Http\Controllers\ProductAttributesController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +45,12 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [CinemaController::class, 'updateStatus']);
             Route::delete('/{id}', [CinemaController::class, 'destroy']);
         });
+        Route::group(['prefix'=> 'product-attribute'],function (){
+            Route::post('',[ProductAttributesController::class,'store']);
+            Route::get('',[ProductAttributesController::class,'index']);
+            Route::put('/{id}',[ProductAttributesController::class,'update']);
+            Route::delete('/{id}',[ProductAttributesController::class,'destroy']);
+            });
     });
 
 });
