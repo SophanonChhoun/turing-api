@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\CinemaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,8 +34,15 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [RoleController::class, 'destroy']);
             Route::patch("/{id}", [RoleController::class, "updateStatus"]);
         });
-
         Route::get("permission", [PermissionController::class, 'index']);
+        Route::group(['prefix' => 'cinemas'], function (){
+            Route::post('', [CinemaController::class, 'store']);
+            Route::get('', [CinemaController::class, 'index']);
+            Route::get('/{id}', [CinemaController::class, 'show']);
+            Route::put('/{id}', [CinemaController::class, 'update']);
+            Route::patch('/{id}', [CinemaController::class, 'updateStatus']);
+            Route::delete('/{id}', [CinemaController::class, 'destroy']);
+        });
     });
 
 });

@@ -17,6 +17,6 @@ class Cinema extends Model
 
     public function media()
     {
-        return $this->hasOne(MediaFile::class,"mediaId","media_id");
+        return $this->hasOne(MediaFile::class,"media_id","mediaId");
     }
 }
