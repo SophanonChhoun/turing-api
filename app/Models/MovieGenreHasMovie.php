@@ -13,4 +13,21 @@ class MovieGenreHasMovie extends Model
       'movieId',
       'movieGenreId'
     ];
+
+    public static function store($id, $genres)
+    {
+        self::where("movieId", $id)->delete();
+        foreach ($genres as $key => $genre)
+        {
+            $data = self::create([
+                "movieId" => $id,
+                "movieGenreId" => $genre
+            ]);
+            if(!$data)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

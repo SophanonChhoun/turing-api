@@ -8,8 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class MovieDirector extends Model
 {
     use HasFactory;
+    protected $table = "movie_directors";
     protected $fillable = [
         "movieId",
         "directorId"
     ];
+
+    public static function store($id, $directors)
+    {
+        self::where("movieId", $id)->delete();
+        foreach ($directors as $key => $director)
+        {
+            $data = self::create([
+                "movieId" => $id,
+                "directorId" => $director
+            ]);
+            if(!$data)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
