@@ -8,7 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CinemaController;
 use App\Http\Controllers\ProductAttributesController;
-
+use App\Http\Controllers\ProductAttributeValueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +72,15 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/avatar', [UserController::class, 'getAvatar']);
             Route::patch('/avatar', [UserController::class, 'updateAvatar']);
             Route::patch('', [UserController::class, 'updatePassword']);
+        });
+
+        Route::group(['prefix' => 'productAttributeValue'], function(){
+           Route::get('', [ProductAttributeValueController::class, 'index']);
+           Route::post('', [ProductAttributeValueController::class, 'store']);
+           Route::get('/{id}', [ProductAttributeValueController::class, 'show']);
+           Route::put('/{id}', [ProductAttributeValueController::class, 'update']);
+           Route::patch('/{id}', [ProductAttributeValueController::class, 'updateStatus']);
+           Route::delete('/{id}', [ProductAttributeValueController::class, 'destroy']);
         });
     });
 
