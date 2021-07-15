@@ -60,10 +60,27 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [UserController::class, 'updateStatus']);
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });
+        Route::group(['prefix' => 'customers'], function(){
+            Route::get('', [CustomerController::class, 'index']);
+            Route::get('/{id}', [CustomerController::class, 'show']);
+            Route::patch('/{id}', [CustomerController::class, 'updateStatus']);
+        });
+
+        Route::group(['prefix' => 'profile'], function (){
+            Route::get('', [UserController::class, 'showProfile']);
+            Route::put('', [UserController::class, 'updateProfile']);
+            Route::get('/avatar', [UserController::class, 'getAvatar']);
+            Route::patch('/avatar', [UserController::class, 'updateAvatar']);
+            Route::patch('', [UserController::class, 'updatePassword']);
+        });
     });
 
 });
 
 Route::middleware(['auth:sanctum', 'customer'])->group(function () {
-    Route::get('/me', [CustomerController::class, 'test']);
+    Route::group(['prefix' => 'profile'], function (){
+       Route::get('', [CustomerController::class, 'showProfile']);
+       Route::put('', [CustomerController::class, 'updateProfile']);
+       Route::patch('', [CustomerController::class, 'updatePassword']);
+    });
 });

@@ -18,11 +18,11 @@ class Seat extends Model
 
     public function seatType()
     {
-        return $this->belongsTo(SeatType::class, 'seatTypeId', 'id');
+        return $this->belongsTo(SeatType::class, 'id', 'seatTypeId');
     }
 
     public function theater()
     {
-        return $this->belongsTo(Theater::class, 'theaterId', 'id');
+        return $this->belongsTo(Theater::class, 'id', 'theaterId');
     }
 }

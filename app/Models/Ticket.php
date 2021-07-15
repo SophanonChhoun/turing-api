@@ -18,16 +18,16 @@ class Ticket extends Model
 
     public function screening()
     {
-        return $this->belongsTo(Screening::class, 'screeningId', 'id');
+        return $this->belongsTo(Screening::class, 'id', 'screeningId');
     }
 
     public function seat()
     {
-        return $this->belongsTo(Seat::class, 'seatId', 'id');
+        return $this->belongsTo(Seat::class, 'id', 'seatId');
     }
 
     public function payment()
     {
-        return $this->belongsTo(TicketSale::class, 'paymentId', 'id');
+        return $this->belongsTo(TicketSale::class, 'id', 'paymentId');
     }
 }

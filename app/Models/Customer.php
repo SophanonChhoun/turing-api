@@ -2,18 +2,22 @@
 
 namespace App\Models;
 
+use App\Http\Middleware\Authenticate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Customer extends Model
+class Customer extends Authenticatable
 {
+    const REFERENCE_SLUG = 'customer';
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
       'name',
       'email',
       'password',
+      'status',
       'media_id',
     ];
     protected $hidden = [

@@ -17,12 +17,12 @@ class ProductSale extends Model
 
     public function user()
     {
-        return $this->belongsTo(Customer::class, 'userId', 'id');
+        return $this->belongsTo(Customer::class, 'id', 'userId');
     }
 
     public function cinema()
     {
-        return $this->belongsTo(Cinema::class, 'cinemaId', 'id');
+        return $this->belongsTo(Cinema::class, 'id', 'cinemaId');
     }
 
     public function product()

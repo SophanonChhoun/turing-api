@@ -16,6 +16,6 @@ class ProductSelling extends Model
 
     public function product()
     {
-        return $this->belongsTo(ProductVariantAccuracies::class, 'productVariantAccuraciesId', 'id');
+        return $this->belongsTo(ProductVariantAccuracies::class, 'id', 'productVariantAccuraciesId');
     }
 }

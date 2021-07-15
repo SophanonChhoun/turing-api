@@ -21,17 +21,17 @@ class Screening extends Model
 
     public function language()
     {
-        return $this->belongsTo(Language::class, 'languageId', 'id');
+        return $this->belongsTo(Language::class, 'id', 'languageId');
     }
 
     public function movie()
     {
-        return $this->belongsTo(Movie::class, 'movieId', 'id');
+        return $this->belongsTo(Movie::class, 'id', 'movieId');
     }
 
     public function theater()
     {
-        return $this->belongsTo(Theater::class, 'theaterId', 'id');
+        return $this->belongsTo(Theater::class, 'id', 'theaterId');
     }
 
     public function seat()

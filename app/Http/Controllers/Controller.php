@@ -19,6 +19,7 @@ class Controller extends BaseController
     }
     public function success ($data, $statusCode = 200)
     {
+
         return response()->json($data, $statusCode);
     }
 
@@ -28,5 +29,5 @@ class Controller extends BaseController
             "message" => $message,
         ], $statusCode);
     }
-    
+
 }
