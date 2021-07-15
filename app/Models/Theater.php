@@ -19,11 +19,11 @@ class Theater extends Model
 
     public function cinema()
     {
-        return $this->belongsTo(Cinema::class, 'cinemaId', 'id');
+        return $this->belongsTo(Cinema::class, 'id', 'cinemaId');
     }
 
     public function media()
     {
-        return $this->belongsTo(MediaFile::class, 'mediaId', 'media_id');
+        return $this->belongsTo(MediaFile::class, 'media_id', 'mediaId');
     }
 }

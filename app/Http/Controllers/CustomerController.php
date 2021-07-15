@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\CustomerResource;
@@ -22,6 +23,10 @@ class CustomerController extends Controller
             $user = Customer::with("media")->where('email', $request->email)->first();
             if(!$user || !Hash::check($request->password, $user->password)) {
                 return $this->fail('These credentials do not match our records.');
+            }
+            if (!$user->status)
+            {
+                return $this->fail("Your account has been blocked.Please contact our team for more support.");
             }
             $token = $user->createToken('authorization')->plainTextToken;
 
@@ -153,7 +158,7 @@ class CustomerController extends Controller
         }
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(PasswordRequest $request)
     {
         try {
             $user = Customer::find(auth()->user()->id);

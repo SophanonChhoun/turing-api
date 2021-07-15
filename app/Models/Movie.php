@@ -30,7 +30,7 @@ class Movie extends Model
 
     public function media()
     {
-        return $this->belongsTo(MediaFile::class, 'mediaId', 'media_id');
+        return $this->belongsTo(MediaFile::class, 'media_id', 'mediaId');
     }
 
     public function categories()

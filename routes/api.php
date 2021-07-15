@@ -65,6 +65,14 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/{id}', [CustomerController::class, 'show']);
             Route::patch('/{id}', [CustomerController::class, 'updateStatus']);
         });
+
+        Route::group(['prefix' => 'profile'], function (){
+            Route::get('', [UserController::class, 'showProfile']);
+            Route::put('', [UserController::class, 'updateProfile']);
+            Route::get('/avatar', [UserController::class, 'getAvatar']);
+            Route::patch('/avatar', [UserController::class, 'updateAvatar']);
+            Route::patch('', [UserController::class, 'updatePassword']);
+        });
     });
 
 });

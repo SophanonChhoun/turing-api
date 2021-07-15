@@ -51,11 +51,6 @@ class User extends Authenticatable
         return $this->hasOne(MediaFile::class,"media_id","media_id");
     }
 
-    public function cinemas()
-    {
-        return $this->hasMany(CinemaHasUser::class, 'userId');
-    }
-
     public function hasRoles()
     {
         return $this->hasMany(RoleHasUser::class, "userId");

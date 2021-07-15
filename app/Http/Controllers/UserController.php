@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Core\MediaLib;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Requests\UserProfileRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\RolePermissionResource;
 use App\Http\Resources\RoleResource;
@@ -26,6 +28,10 @@ class UserController extends Controller
             $user = User::with("roles.rolePermission", "media")->where('email', $request->email)->first();
             if(!$user || !Hash::check($request->password, $user->password)) {
                 return $this->fail('These credentials do not match our records.');
+            }
+            if (!$user->status)
+            {
+                return $this->fail("Your account has been blocked.Please contact our team for more support.");
             }
             $token = $user->createToken('authorization')->plainTextToken;
             $response = [
@@ -166,6 +172,92 @@ class UserController extends Controller
             }
             return $this->success([
                 "message" => "User deleted."
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function showProfile()
+    {
+        try {
+            $user = User::find(auth()->user()->id);
+            return $this->success([
+               "name" => $user->name,
+               "email" => $user->email,
+               "firstName" => $user->firstName,
+               "lastName" => $user->lastName,
+               "phoneNumber" => $user->phoneNumber
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function updateProfile(UserProfileRequest $request)
+    {
+        try {
+            $user = User::find(auth()->user()->id);
+            if (!$user)
+            {
+                return $this->fail("User not found");
+            }
+            $user = $user->update($request->all());
+            if (!$user)
+            {
+                return $this->fail("Something went wrong");
+            }
+            return $this->success([
+               "message" => "profile updated."
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function getAvatar()
+    {
+        try {
+            $user = User::with("media")->find(auth()->user()->id);
+            return $this->success([
+                "photo" => $user->media->file_url ?? ''
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        try {
+            if($request->image)
+            {
+                $media_id = MediaLib::generateImageBase64($request['image']);
+                User::find(auth()->user()->id)->update([
+                    "media_id" => $media_id
+                ]);
+            }
+            return $this->success([
+                "message" => "Success"
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function updatePassword(PasswordRequest $request)
+    {
+        try {
+            $user = User::find(auth()->user()->id);
+            if(!Hash::check($request['oldPassword'], $user->password))
+            {
+                return $this->fail("Your old password is not correct", 403);
+            }
+            $user->update([
+                'password' => $request['password']
+            ]);
+            return $this->success([
+                "message" => "Password updated."
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
