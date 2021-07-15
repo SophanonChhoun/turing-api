@@ -24,7 +24,6 @@ class UserSeeder extends Seeder
             "name" => "Admin",
             "email" => "admin@Admin.com",
             "password" => 'password',
-            "cinemaId" => 1,
             "status" => 1,
             "firstName" => "Sophanon",
             "lastName" => "Chhoun",

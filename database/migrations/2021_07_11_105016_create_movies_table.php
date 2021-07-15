@@ -23,8 +23,8 @@ class CreateMoviesTable extends Migration
             $table->bigInteger("mediaId");
             $table->boolean("status");
             // Movie Description
-            $table->text("backdrop");
-            $table->date("release_date");
+            $table->bigInteger("backdrop");
+            $table->date("releasedDate");
             $table->timestamps();
         });
     }

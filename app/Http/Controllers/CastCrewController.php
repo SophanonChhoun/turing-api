@@ -6,6 +6,5 @@ use Illuminate\Http\Request;
 
 class CastCrewController extends Controller
 {
-    
-    
+
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CinemaController;
 use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
+use App\Http\Controllers\MovieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +82,10 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
            Route::put('/{id}', [ProductAttributeValueController::class, 'update']);
            Route::patch('/{id}', [ProductAttributeValueController::class, 'updateStatus']);
            Route::delete('/{id}', [ProductAttributeValueController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'movies'], function(){
+            Route::post('', [MovieController::class, 'store']);
         });
     });
 
