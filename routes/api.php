@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'role'], function (){
             Route::post('', [RoleController::class, 'store']);
             Route::get('', [RoleController::class, 'index']);
+            Route::get('/all', [RoleController::class, 'listAll']);
             Route::get('/{id}', [RoleController::class, 'show']);
             Route::put('/{id}', [RoleController::class, 'update']);
             Route::delete('/{id}', [RoleController::class, 'destroy']);
@@ -44,6 +45,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'cinemas'], function (){
             Route::post('', [CinemaController::class, 'store']);
             Route::get('', [CinemaController::class, 'index']);
+            Route::get('/all', [CinemaController::class, 'listAll']);
             Route::get('/{id}', [CinemaController::class, 'show']);
             Route::put('/{id}', [CinemaController::class, 'update']);
             Route::patch('/{id}', [CinemaController::class, 'updateStatus']);
@@ -52,6 +54,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix'=> 'product-attribute'],function (){
             Route::post('',[ProductAttributesController::class,'store']);
             Route::get('',[ProductAttributesController::class,'index']);
+            Route::get('/all',[ProductAttributesController::class,'listAll']);
             Route::put('/{id}',[ProductAttributesController::class,'update']);
             Route::patch('/{id}', [ProductAttributesController::class, 'updateStatus']);
             Route::delete('/{id}',[ProductAttributesController::class,'destroy']);
@@ -80,6 +83,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'productAttributeValue'], function(){
            Route::get('', [ProductAttributeValueController::class, 'index']);
+           Route::get('/all', [ProductAttributeValueController::class, 'listAll']);
            Route::post('', [ProductAttributeValueController::class, 'store']);
            Route::get('/{id}', [ProductAttributeValueController::class, 'show']);
            Route::put('/{id}', [ProductAttributeValueController::class, 'update']);
@@ -94,6 +98,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'productCategory'], function(){
             Route::post('', [ProductCategoryController::class, 'store']);
             Route::get('', [ProductCategoryController::class, 'index']);
+            Route::get('/all', [ProductCategoryController::class, 'listAll']);
             Route::get('/{id}', [ProductCategoryController::class, 'show']);
             Route::put('/{id}', [ProductCategoryController::class, 'update']);
             Route::patch('/{id}', [ProductCategoryController::class, 'updateStatus']);
@@ -103,6 +108,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'products'], function(){
             Route::post('', [ProductController::class, 'store']);
             Route::get('', [ProductController::class, 'index']);
+            Route::get('/all', [ProductController::class, 'listAll']);
             Route::get('/{id}', [ProductController::class, 'show']);
             Route::put('/{id}', [ProductController::class, 'update']);
             Route::patch('/{id}', [ProductController::class, 'updateStatus']);
