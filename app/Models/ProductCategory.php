@@ -16,4 +16,9 @@ class ProductCategory extends Model
       'status',
       'mediaId'
     ];
+
+    public function media()
+    {
+        return $this->hasOne(MediaFile::class,"media_id","mediaId");
+    }
 }

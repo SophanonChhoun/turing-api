@@ -10,6 +10,8 @@ use App\Http\Controllers\CinemaController;
 use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +88,24 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'movies'], function(){
             Route::post('', [MovieController::class, 'store']);
+        });
+
+        Route::group(['prefix' => 'productCategory'], function(){
+            Route::post('', [ProductCategoryController::class, 'store']);
+            Route::get('', [ProductCategoryController::class, 'index']);
+            Route::get('/{id}', [ProductCategoryController::class, 'show']);
+            Route::put('/{id}', [ProductCategoryController::class, 'update']);
+            Route::patch('/{id}', [ProductCategoryController::class, 'updateStatus']);
+            Route::delete('/{id}', [ProductCategoryController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'products'], function(){
+            Route::post('', [ProductController::class, 'store']);
+            Route::get('', [ProductController::class, 'index']);
+            Route::get('/{id}', [ProductController::class, 'show']);
+            Route::put('/{id}', [ProductController::class, 'update']);
+            Route::patch('/{id}', [ProductController::class, 'updateStatus']);
+            Route::delete('/{id}', [ProductController::class, 'destroy']);
         });
     });
 
