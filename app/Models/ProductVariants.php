@@ -17,11 +17,11 @@ class ProductVariants extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'id', 'productId');
+        return $this->belongsTo(Product::class, 'productId', 'id');
     }
 
     public function productAttributeValue()
     {
-        return $this->belongsTo(ProductAttributeValue::class, 'id', 'productAttributeValueId');
+        return $this->belongsTo(ProductAttributeValue::class, 'productAttributeValueId', 'id');
     }
 }

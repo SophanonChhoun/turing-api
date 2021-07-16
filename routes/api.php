@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductAttributeValueController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductVariantsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,15 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::put('/{id}', [ProductController::class, 'update']);
             Route::patch('/{id}', [ProductController::class, 'updateStatus']);
             Route::delete('/{id}', [ProductController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'productVariants'], function(){
+            Route::post('', [ProductVariantsController::class, 'store']);
+            Route::get('', [ProductVariantsController::class, 'index']);
+            Route::get('/{id}', [ProductVariantsController::class, 'show']);
+            Route::put('/{id}', [ProductVariantsController::class, 'update']);
+            Route::patch('/{id}', [ProductVariantsController::class, 'updateStatus']);
+            Route::delete('/{id}', [ProductVariantsController::class, 'destroy']);
         });
     });
 
