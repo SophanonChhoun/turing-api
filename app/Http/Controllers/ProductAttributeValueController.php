@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductAttributeValueRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ProductAttributeValueResource;
+use App\Http\Resources\ListResource;
 use App\Models\ProductAttributeValue;
 use Database\Seeders\ProductAttribute;
 use Illuminate\Http\Request;
@@ -99,6 +100,16 @@ class ProductAttributeValueController extends Controller
             return $this->success([
                 "message" => "Product Attribute Value deleted"
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listAll()
+    {
+        try {
+            $data = ProductAttributeValue::where("status", 1)->get();
+            return $this->success(ListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

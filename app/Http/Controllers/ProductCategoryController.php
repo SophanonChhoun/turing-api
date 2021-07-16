@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Core\MediaLib;
 use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Resources\ListResource;
 use App\Http\Resources\ProductCategoryResource;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
@@ -110,6 +111,16 @@ class ProductCategoryController extends Controller
             return $this->success([
                "message" => "Product category deleted."
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listAll()
+    {
+        try {
+            $categories = ProductCategory::where("status", 1)->get();
+            return $this->success(ListResource::collection($categories));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

@@ -6,6 +6,7 @@ use App\Core\MediaLib;
 use App\Http\Requests\CinemaRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\CinemaListResource;
+use App\Http\Resources\ListResource;
 use App\Models\Cinema;
 use App\Models\Theater;
 use Illuminate\Http\Request;
@@ -136,6 +137,16 @@ class CinemaController extends Controller
             return $this->success([
                'message' => 'Cinema deleted'
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listAll()
+    {
+        try {
+            $data = Cinema::where("status", 1)->get();
+            return $this->success(ListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
