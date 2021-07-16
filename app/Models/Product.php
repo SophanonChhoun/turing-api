@@ -17,7 +17,7 @@ class Product extends Model
 
     public function media()
     {
-        return $this->belongsTo(MediaFile::class, 'media_id', 'mediaId');
+        return $this->belongsTo(MediaFile::class, 'mediaId', 'media_id');
     }
 
     public function category()

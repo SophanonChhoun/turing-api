@@ -2,9 +2,116 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\MediaLib;
+use App\Http\Requests\ProductCategoryRequest;
+use App\Http\Requests\StatusRequest;
+use App\Http\Resources\ProductCategoryResource;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use DB;
+use Exception;
 
 class ProductCategoryController extends Controller
 {
-    //
+    public function index()
+    {
+        try {
+            $data = ProductCategory::with("media")->latest()->get();
+            return $this->success(ProductCategoryResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function store(ProductCategoryRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            if (isset($request['image']))
+            {
+                $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
+            }else{
+                return $this->fail('Image field is required');
+            }
+            $data = ProductCategory::create($request->all());
+            if(!$data)
+            {
+                DB::rollback();
+                return $this->fail("Something went wrong");
+            }
+            DB::commit();
+            return $this->success([
+               "message" => "Product Created."
+            ]);
+        }catch (Exception $exception){
+            DB::rollback();
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $data = ProductCategory::with("media")->findOrFail($id);
+            return $this->success([
+                "id" => $data->id,
+                "name" => $data->name,
+                "description" => $data->description,
+                "photo" => $data->media->file_url ?? ''
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function update($id, ProductCategoryRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $category = ProductCategory::findOrFail($id);
+            if (isset($request['image']))
+            {
+                $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
+            }
+            $category = $category->update($request->all());
+            if(!$category)
+            {
+                DB::rollback();
+                return $this->fail("Something went wrong.");
+            }
+            DB::commit();
+            return $this->success([
+                "message" => "Product category updated."
+            ]);
+        }catch (Exception $exception){
+            DB::rollback();
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function updateStatus($id, StatusRequest $request)
+    {
+        try {
+            ProductCategory::findOrFail($id)->update([
+                "status" => $request->status
+            ]);
+            return $this->success([
+                "message" => "Product status updated"
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            ProductCategory::findOrFail($id)->delete();
+            return $this->success([
+               "message" => "Product category deleted."
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\MediaLib;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\PasswordRequest;
