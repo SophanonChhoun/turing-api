@@ -4,7 +4,14 @@ Web & Mobile Application is the computerized solution for CINEMA Setups, which w
 # Technology 
 Projects is created with : 
 - Front-End : HTML, CSS, JAVASCRIPT, NUXT, VUE, FLUTTER
-- Back-End : PHP, LARAVEL
+- Back-End : PHP, LARAVEL, MySQL
 
 # Installation  
-To run this project, install it locally & run it on browser
+
+- Genrate Key 
+``php
+php artisan key:generate
+- To run project 
+``php
+php artisan serve 
+
