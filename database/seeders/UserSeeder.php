@@ -30,9 +30,5 @@ class UserSeeder extends Seeder
             "phoneNumber" => "061794013",
         ]);
 
-        RoleHasUser::firstOrCreate([
-            "roleId" => 1,
-            "userId" => 1,
-        ]);
     }
 }
