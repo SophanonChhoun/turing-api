@@ -8,10 +8,24 @@ Projects is created with :
 
 # Installation  
 
+- Install & update Composer package 
+```php
+composer install & composer update 
+```
 - Genrate Key 
-`php
+```php
 php artisan key:generate
-- To run project 
+```
+- Migrate Database 
+```php 
+php artisan migrate
+``` 
+- Generate seeders 
+```php
+php artisan db:seed
+```
+- Run project in local server 
 `php
 php artisan serve 
+```
 
