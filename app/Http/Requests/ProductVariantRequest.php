@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoleRequest extends DefaultFormRequest
+class ProductVariantRequest extends FormRequest
 {
 
     /**
@@ -15,11 +15,10 @@ class RoleRequest extends DefaultFormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:roles,name,'.$this->id,
-            "description" => "required",
-            "defaultRole" => "required",
+            "price" => "required",
             "status" => "required",
-            "permission" => "required"
+            "productId" => "required",
+            "productAttributeValueId" => "required"
         ];
     }
 }

@@ -10,7 +10,12 @@ class CastCrew extends Model
     use HasFactory;
     protected $fillable = [
         'firstName',
-        'lastName'
+        'lastName',
+        'mediaId'
     ];
+    public function media()
+    {
+        return $this->hasOne(MediaFile::class,"media_id","mediaId");
+    }
 
 }

@@ -4,9 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoleRequest extends DefaultFormRequest
+class ProductRequest extends FormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,11 +14,9 @@ class RoleRequest extends DefaultFormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:roles,name,'.$this->id,
-            "description" => "required",
-            "defaultRole" => "required",
+            'name' => 'required|unique:products,name,'.$this->id,
             "status" => "required",
-            "permission" => "required"
+            "categoryId" => "required",
         ];
     }
 }

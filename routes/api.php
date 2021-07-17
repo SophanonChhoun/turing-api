@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CastCrewController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -11,6 +13,11 @@ use App\Http\Controllers\MovieGenreController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
+
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductVariantsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +40,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'role'], function (){
             Route::post('', [RoleController::class, 'store']);
             Route::get('', [RoleController::class, 'index']);
+            Route::get('/all', [RoleController::class, 'listAll']);
             Route::get('/{id}', [RoleController::class, 'show']);
             Route::put('/{id}', [RoleController::class, 'update']);
             Route::delete('/{id}', [RoleController::class, 'destroy']);
@@ -43,6 +51,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'cinemas'], function (){
             Route::post('', [CinemaController::class, 'store']);
             Route::get('', [CinemaController::class, 'index']);
+            Route::get('/all', [CinemaController::class, 'listAll']);
             Route::get('/{id}', [CinemaController::class, 'show']);
             Route::put('/{id}', [CinemaController::class, 'update']);
             Route::patch('/{id}', [CinemaController::class, 'updateStatus']);
@@ -52,6 +61,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix'=> 'product-attribute'],function (){
             Route::post('',[ProductAttributesController::class,'store']);
             Route::get('',[ProductAttributesController::class,'index']);
+            Route::get('/all',[ProductAttributesController::class,'listAll']);
             Route::put('/{id}',[ProductAttributesController::class,'update']);
             Route::patch('/{id}', [ProductAttributesController::class, 'updateStatus']);
             Route::delete('/{id}',[ProductAttributesController::class,'destroy']);
@@ -90,6 +100,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'productAttributeValue'], function(){
            Route::get('', [ProductAttributeValueController::class, 'index']);
+           Route::get('/all', [ProductAttributeValueController::class, 'listAll']);
            Route::post('', [ProductAttributeValueController::class, 'store']);
            Route::get('/{id}', [ProductAttributeValueController::class, 'show']);
            Route::put('/{id}', [ProductAttributeValueController::class, 'update']);
@@ -99,6 +110,49 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'movies'], function(){
             Route::post('', [MovieController::class, 'store']);
+        });
+
+        Route::group(['prefix' => 'productCategory'], function(){
+            Route::post('', [ProductCategoryController::class, 'store']);
+            Route::get('', [ProductCategoryController::class, 'index']);
+            Route::get('/all', [ProductCategoryController::class, 'listAll']);
+            Route::get('/{id}', [ProductCategoryController::class, 'show']);
+            Route::put('/{id}', [ProductCategoryController::class, 'update']);
+            Route::patch('/{id}', [ProductCategoryController::class, 'updateStatus']);
+            Route::delete('/{id}', [ProductCategoryController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'products'], function(){
+            Route::post('', [ProductController::class, 'store']);
+            Route::get('', [ProductController::class, 'index']);
+            Route::get('/all', [ProductController::class, 'listAll']);
+            Route::get('/{id}', [ProductController::class, 'show']);
+            Route::put('/{id}', [ProductController::class, 'update']);
+            Route::patch('/{id}', [ProductController::class, 'updateStatus']);
+            Route::delete('/{id}', [ProductController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'productVariants'], function(){
+            Route::post('', [ProductVariantsController::class, 'store']);
+            Route::get('', [ProductVariantsController::class, 'index']);
+            Route::get('/{id}', [ProductVariantsController::class, 'show']);
+            Route::put('/{id}', [ProductVariantsController::class, 'update']);
+            Route::patch('/{id}', [ProductVariantsController::class, 'updateStatus']);
+            Route::delete('/{id}', [ProductVariantsController::class, 'destroy']);
+        });
+        Route::group(['prefix' => 'castcrew'], function(){
+            Route::get('', [CastCrewController::class, 'index']);
+            Route::post('', [CastCrewController::class, 'store']);
+            Route::put('/{id}', [CastCrewController::class, 'update']);
+            Route::delete('/{id}', [CastCrewController::class, 'destroy']);
+
+        });
+        Route::group(['prefix' => 'language'], function(){
+            Route::get('', [LanguageController::class, 'index']);
+            Route::post('', [LanguageController::class, 'store']);
+            Route::put('/{id}', [LanguageController::class, 'update']);
+            Route::delete('/{id}', [LanguageController::class, 'destroy']);
+
         });
     });
 

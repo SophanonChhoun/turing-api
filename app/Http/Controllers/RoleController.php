@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Resources\ListResource;
 use App\Http\Resources\RoleListResource;
 use App\Http\Resources\RolePermissionResource;
 use App\Models\Role;
@@ -106,6 +107,16 @@ class RoleController extends Controller
             return $this->success([
                 "message" => "Role status updated"
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listAll()
+    {
+        try {
+            $data = Role::where('status', 1)->get();
+            return $this->success(ListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

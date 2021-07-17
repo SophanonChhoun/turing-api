@@ -17,7 +17,7 @@ class CreateCastCrewsTable extends Migration
             $table->id();
             $table->string("firstName");
             $table->string("lastName");
-            $table->bigInteger('mediaId');
+            $table->bigInteger('mediaId')->nullable();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductAttributeRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ProductAttributeResource;
+use App\Http\Resources\ListResource;
 use App\Models\ProductAttributes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -115,5 +116,13 @@ class ProductAttributesController extends Controller
         }
     }
 
-
+    public function listAll()
+    {
+        try {
+            $data = ProductAttributes::where("status", 1)->get();
+            return $this->success(ListResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
 }
