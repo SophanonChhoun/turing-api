@@ -4,13 +4,16 @@ use App\Http\Controllers\CastCrewController;
 use App\Http\Controllers\LanguageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\CinemaController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MovieGenreController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
+
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
@@ -43,6 +46,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [RoleController::class, 'destroy']);
             Route::patch("/{id}", [RoleController::class, "updateStatus"]);
         });
+
         Route::get("permission", [PermissionController::class, 'index']);
         Route::group(['prefix' => 'cinemas'], function (){
             Route::post('', [CinemaController::class, 'store']);
@@ -53,6 +57,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [CinemaController::class, 'updateStatus']);
             Route::delete('/{id}', [CinemaController::class, 'destroy']);
         });
+
         Route::group(['prefix'=> 'product-attribute'],function (){
             Route::post('',[ProductAttributesController::class,'store']);
             Route::get('',[ProductAttributesController::class,'index']);
@@ -61,6 +66,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [ProductAttributesController::class, 'updateStatus']);
             Route::delete('/{id}',[ProductAttributesController::class,'destroy']);
         });
+
         Route::group(['prefix' => 'users'], function(){
             Route::post('', [UserController::class, 'store']);
             Route::get('', [UserController::class, 'index']);
@@ -73,6 +79,15 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('', [CustomerController::class, 'index']);
             Route::get('/{id}', [CustomerController::class, 'show']);
             Route::patch('/{id}', [CustomerController::class, 'updateStatus']);
+        });
+
+        Route::group(['prefix' => 'movie-generes'], function(){
+            Route::get('', [MovieGenreController::class, 'index']);
+            Route::post('', [MovieGenreController::class, 'store']);
+            Route::get('/{id}', [MovieGenreController::class, 'show']);
+            Route::put('/{id}', [MovieGenreController::class, 'update']);
+            Route::patch('/{id}', [MovieGenreController::class, 'updateStatus']);
+            Route::delete('/{id}', [MovieGenreController::class, 'destroy']);
         });
 
         Route::group(['prefix' => 'profile'], function (){
