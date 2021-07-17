@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CastCrewController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -129,6 +130,13 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::post('', [CastCrewController::class, 'store']);
             Route::put('/{id}', [CastCrewController::class, 'update']);
             Route::delete('/{id}', [CastCrewController::class, 'destroy']);
+
+        });
+        Route::group(['prefix' => 'language'], function(){
+            Route::get('', [LanguageController::class, 'index']);
+            Route::post('', [LanguageController::class, 'store']);
+            Route::put('/{id}', [LanguageController::class, 'update']);
+            Route::delete('/{id}', [LanguageController::class, 'destroy']);
 
         });
     });
