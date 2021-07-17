@@ -9,9 +9,9 @@ Projects is created with :
 # Installation  
 
 - Genrate Key 
-``php
+`php
 php artisan key:generate
 - To run project 
-``php
+`php
 php artisan serve 
 
