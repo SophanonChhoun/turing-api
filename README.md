@@ -25,7 +25,7 @@ php artisan migrate
 php artisan db:seed
 ```
 - Run project in local server 
-`php
+```php
 php artisan serve 
 ```
 
