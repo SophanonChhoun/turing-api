@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CastCrewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -122,6 +123,13 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::put('/{id}', [ProductVariantsController::class, 'update']);
             Route::patch('/{id}', [ProductVariantsController::class, 'updateStatus']);
             Route::delete('/{id}', [ProductVariantsController::class, 'destroy']);
+        });
+        Route::group(['prefix' => 'castcrew'], function(){
+            Route::get('', [CastCrewController::class, 'index']);
+            Route::post('', [CastCrewController::class, 'store']);
+            Route::put('/{id}', [CastCrewController::class, 'update']);
+            Route::delete('/{id}', [CastCrewController::class, 'destroy']);
+
         });
     });
 

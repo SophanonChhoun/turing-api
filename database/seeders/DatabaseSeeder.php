@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Http\Resources\CastCrewResource;
 use App\Models\ProductAttributes;
 use Illuminate\Database\Seeder;
 
@@ -20,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(ProductAttribute::class);
         $this->call(ProductAttributeValueSeeder::class);
+        $this->call(CastCrewSeeder::class);
     }
 }
