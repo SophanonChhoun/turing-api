@@ -7,12 +7,15 @@ Projects is created with :
 - Back-End : PHP, LARAVEL, MySQL
 
 # Installation  
-
+- Clone
+```shell
+ git clone https://github.com/CSG6Project1/Movie-Theater.git
+```
 - Install & update Composer package 
 ```php
 composer install & composer update 
 ```
-- Genrate Key 
+- Genrate Application Key 
 ```php
 php artisan key:generate
 ```
