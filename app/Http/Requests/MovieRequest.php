@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MovieRequest extends FormRequest
+class MovieRequest extends DefaultFormRequest
 {
 
     /**
@@ -22,9 +22,9 @@ class MovieRequest extends FormRequest
             'runningTime' => 'required',
             'status' => 'required',
             'releasedDate' => 'required',
-            'movieCast' => 'required|array',
-            'movieDirector' => 'required|array',
-            'movieGenre' => 'required|array',
+            'movieCasts' => 'required|array',
+            'movieDirectors' => 'required|array',
+            'movieGenres' => 'required|array',
         ];
     }
 }

@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductAttribute::class);
         $this->call(ProductAttributeValueSeeder::class);
         $this->call(CastCrewSeeder::class);
+        $this->call(CinemaSeeder::class);
+        $this->call(TheaterSeeder::class);
     }
 }

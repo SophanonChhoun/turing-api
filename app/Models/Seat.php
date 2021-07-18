@@ -13,7 +13,7 @@ class Seat extends Model
         'row',
         'col',
         'theaterId',
-        'seatTypeId'
+        'seatTypeId',
     ];
 
     public function seatType()

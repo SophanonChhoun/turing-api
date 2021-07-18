@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ListResource;
 use Exception;
 use App\Models\MovieGenre;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use App\Http\Resources\MovieGenreListResource;
 
 class MovieGenreController extends Controller
 {
-  
+
     public function index()
     {
         try {
@@ -27,21 +28,21 @@ class MovieGenreController extends Controller
 
     public function show($id)
     {
-        
+
             try {
 
                 $MovieGenre = MovieGenre::find($id);
-                
+
                 return $this->success([
                     "name" => $MovieGenre->name,
                     "description" => $MovieGenre->description,
                     "status" => $MovieGenre->status,
                 ]);
-        
+
             }catch (Exception $exception){
                 return $this->fail($exception->getMessage());
             }
-      
+
     }
 
     public function store(MovieGenreRequest $request)
@@ -56,9 +57,11 @@ class MovieGenreController extends Controller
                 return $this->fail('There is something wrong. data store not success');
             }
             DB::commit();
-          
-            return response()->json($MovieGenre, 201);
-            
+
+            return response()->json([
+                "message" => "Movie Genre created."
+            ], 201);
+
         }catch (Exception $exception){
             DB::rollback();
             return $this->fail($exception->getMessage());
@@ -90,7 +93,7 @@ class MovieGenreController extends Controller
             DB::commit();
 
             return $this->success([
-               "message" => "Movie Genere fields updated"
+               "message" => "Movie Genre fields updated"
             ]);
 
         }catch (Exception $exception){
@@ -105,7 +108,7 @@ class MovieGenreController extends Controller
             $MovieGenre = MovieGenre::find($id);
             if(!$MovieGenre)
             {
-                return $this->fail("Cinema not exist.");
+                return $this->fail("Movie Genre not exist.");
             }
             $MovieGenre = $MovieGenre->update([
                 "status" => $request->status
@@ -115,7 +118,7 @@ class MovieGenreController extends Controller
                 return $this->fail("Something went wrong");
             }
             return $this->success([
-                "message" => "Movie Genere status updated."
+                "message" => "Movie Genre status updated."
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -136,11 +139,19 @@ class MovieGenreController extends Controller
                 return $this->fail("Something went wrong");
             }
             return $this->success([
-               'message' => 'Movie Genere deleted.'
+               'message' => 'Movie Genre deleted.'
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
-    }   
-  
+    }
+
+    public function listAll()
+    {
+        try {
+            return $this->success(ListResource::collection(MovieGenre::where("status", 1)->get()));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
 }

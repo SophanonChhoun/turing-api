@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\CastCrewController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\SeatTypeController;
+use App\Http\Controllers\TheaterController;
+use App\Models\SeatType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -16,6 +19,7 @@ use App\Http\Controllers\ProductAttributeValueController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVariantsController;
+use App\Http\Controllers\MovieRatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +114,12 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'movies'], function(){
             Route::post('', [MovieController::class, 'store']);
+            Route::get('', [MovieController::class, 'index']);
+            Route::get('/all', [MovieController::class, 'listAll']);
+            Route::get('/{id}', [MovieController::class, 'show']);
+            Route::put('/{id}', [MovieController::class, 'update']);
+            Route::patch('/{id}', [MovieController::class, 'updateStatus']);
+            Route::delete('/{id}', [MovieController::class, 'destroy']);
         });
 
         Route::group(['prefix' => 'productCategory'], function(){
@@ -142,6 +152,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         });
         Route::group(['prefix' => 'castcrew'], function(){
             Route::get('', [CastCrewController::class, 'index']);
+            Route::get('/count', [CastCrewController::class, 'count_cast_crew']);
             Route::post('', [CastCrewController::class, 'store']);
             Route::put('/{id}', [CastCrewController::class, 'update']);
             Route::delete('/{id}', [CastCrewController::class, 'destroy']);
@@ -153,6 +164,31 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::put('/{id}', [LanguageController::class, 'update']);
             Route::delete('/{id}', [LanguageController::class, 'destroy']);
 
+        });
+        Route::group(['prefix' => 'theater'], function(){
+            Route::get('', [TheaterController::class, 'index']);
+            Route::post('', [TheaterController::class, 'store']);
+            Route::get('/{id}', [TheaterController::class, 'show']);
+            Route::put('/{id}', [TheaterController::class, 'update']);
+            Route::patch('/{id}', [TheaterController::class, 'updateStatus']);
+            Route::delete('/{id}', [TheaterController::class, 'destroy']);
+
+        });
+        Route::group(['prefix' => 'seattype'], function(){
+            Route::post('', [SeatTypeController::class, 'store']);
+            Route::get('', [SeatTypeController::class, 'index']);
+            Route::put('/{id}', [SeatTypeController::class, 'update']);
+            Route::patch('/{id}', [SeatTypeController::class, 'updateStatus']);
+            Route::delete('/{id}', [SeatTypeController::class, 'destroy']);
+
+        });
+        Route::group(['prefix' => 'movieRating'], function (){
+            Route::post('', [MovieRatingController::class, 'store']);
+            Route::get('', [MovieRatingController::class, 'index']);
+            Route::put('/{id}', [MovieRatingController::class, 'update']);
+            Route::patch('/{id}', [MovieRatingController::class, 'updateStatus']);
+            Route::delete('/{id}', [MovieRatingController::class, 'destroy']);
+            Route::get('/all', [MovieRatingController::class, 'listAll']);
         });
     });
 

@@ -30,7 +30,7 @@ class CastCrewController extends Controller
             }
             DB::commit();
             return $this->success([
-                'message' => "CastCrew Created successfully with  Fistname:$firstname and LastName:$lastname"
+                'message' => "CastCrew Created successfully with  Fist name:$firstname and Last name:$lastname"
             ]);
         }catch (Exception $exception){
             DB::rollback();
@@ -41,7 +41,8 @@ class CastCrewController extends Controller
     public function index(){
         try{
             $data = CastCrew::with("media")->get();
-            return $this->success(CastCrewResource::collection($data));
+            return $data;
+//            return $this->success(CastCrewResource::collection($data));
         }
         catch (Exception $exception){
             DB::rollback();
@@ -96,6 +97,17 @@ class CastCrewController extends Controller
                 'message' => "CastCrew id: $id deleted"
             ]);
         }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+    public function count_cast_crew(){
+        try{
+            $data = CastCrew::count();
+            return $data;
+//            return $this->success(CastCrewResource::collection($data));
+        }
+        catch (Exception $exception){
+            DB::rollback();
             return $this->fail($exception->getMessage());
         }
     }
