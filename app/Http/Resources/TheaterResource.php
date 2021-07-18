@@ -21,7 +21,7 @@ class TheaterResource extends JsonResource
             "col"=>$this->col,
             "status"=>$this->status,
             "cinemaId"=>$this->cinemaId,
-            "mediaId"=>$this->mediaId
+            "mediaId"=>$this->mediaId,
         ];
     }
 }

@@ -29,7 +29,8 @@ class TheaterRequest extends DefaultFormRequest
             "row"=>"required",
             "col"=>"required",
             "status"=>"required",
-            "cinemaId"=>"required"
+            "cinemaId"=>"required",
+            "seatId"=>"array",
         ];
     }
 }

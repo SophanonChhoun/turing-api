@@ -22,10 +22,6 @@ class SeatTypeRequest extends DefaultFormRequest
      * @return array
      */
     public function rules()
-//        $table->string("name");
-//            $table->double("priceFactor");
-//            $table->bigInteger("cinemaId");
-//            $table->boolean("status");
     {
         return [
             "name" => "required",
