@@ -7,6 +7,7 @@ use App\Http\Requests\StatusRequest;
 use App\Http\Requests\TheaterRequest;
 use App\Http\Resources\ListResource;
 use App\Http\Resources\TheaterResource;
+use App\Models\Seat;
 use App\Models\Theater;
 use Exception;
 use Illuminate\Http\Request;

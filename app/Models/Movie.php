@@ -30,7 +30,12 @@ class Movie extends Model
 
     public function media()
     {
-        return $this->belongsTo(MediaFile::class, 'media_id', 'mediaId');
+        return $this->belongsTo(MediaFile::class, 'mediaId', 'media_id');
+    }
+
+    public function backdropImage()
+    {
+        return $this->belongsTo(MediaFile::class, 'backdrop', 'media_id');
     }
 
     public function genres()
@@ -46,5 +51,20 @@ class Movie extends Model
     public function casts()
     {
         return $this->belongsToMany(CastCrew::class, MovieCast::class, 'movieId', 'castId');
+    }
+
+    public function movieDirectors()
+    {
+        return $this->hasMany(MovieDirector::class,"movieId",);
+    }
+
+    public function movieCasts()
+    {
+        return $this->hasMany(MovieCast::class,"movieId",);
+    }
+
+    public function movieGenres()
+    {
+        return $this->hasMany(MovieGenreHasMovie::class,"movieId",);
     }
 }

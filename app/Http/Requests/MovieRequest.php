@@ -22,9 +22,9 @@ class MovieRequest extends DefaultFormRequest
             'runningTime' => 'required',
             'status' => 'required',
             'releasedDate' => 'required',
-            'movieCast' => 'required|array',
-            'movieDirector' => 'required|array',
-            'movieGenre' => 'required|array',
+            'movieCasts' => 'required|array',
+            'movieDirectors' => 'required|array',
+            'movieGenres' => 'required|array',
         ];
     }
 }
