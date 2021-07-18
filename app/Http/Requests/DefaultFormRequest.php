@@ -23,6 +23,9 @@ class DefaultFormRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json($validator->errors(), 412));
+        throw new HttpResponseException(response()->json([
+            "type" => "InvalidRequestError",
+            "messages" => $validator->errors()->all(),
+        ], 412));
     }
 }
