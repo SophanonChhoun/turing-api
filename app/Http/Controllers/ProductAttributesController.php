@@ -51,9 +51,7 @@ class ProductAttributesController extends Controller
             $productattribute= ProductAttributes::find($id);
             if (!$productattribute)
             {
-                return $this->fail([
-                    "message" => "productattribute not found"
-                ], 404);
+                return $this->fail("productattribute not found", 404);
             }
             $productattribute= $productattribute->update($request->all());
             if(!$productattribute)

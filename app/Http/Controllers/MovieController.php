@@ -28,10 +28,10 @@ class MovieController extends Controller
                 $request['mediaId'] = MediaLib::generateImageBase64($request['poster']);
                 $request['backdrop'] = MediaLib::generateImageBase64($request['backdrop']);
             }else{
-                return $this->fail([
+                return $this->fail("", [
                     "poster field is required.",
                     "backdrop field is required."
-                ]);
+                ], "InvalidRequestError", 412);
             }
 
             $movie = Movie::create($request->all());

@@ -1,9 +1,5 @@
 <?php
 
-use App\Http\Controllers\CastCrewController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\SeatTypeController;
-use App\Http\Controllers\TheaterController;
 use App\Models\SeatType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,15 +7,20 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\CinemaController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TheaterController;
+use App\Http\Controllers\CastCrewController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\SeatTypeController;
+use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\MovieGenreController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\MovieRatingController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductVariantsController;
 use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
-use App\Http\Controllers\ProductCategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductVariantsController;
-use App\Http\Controllers\MovieRatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,7 @@ Route::post("register", [CustomerController::class, 'signUp']);
 
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+
     Route::group(['prefix' => 'admin'], function(){
         Route::group(['prefix' => 'role'], function (){
             Route::post('', [RoleController::class, 'store']);
@@ -77,6 +79,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [UserController::class, 'updateStatus']);
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });
+        
         Route::group(['prefix' => 'customers'], function(){
             Route::get('', [CustomerController::class, 'index']);
             Route::get('/{id}', [CustomerController::class, 'show']);
@@ -187,6 +190,16 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [MovieRatingController::class, 'updateStatus']);
             Route::delete('/{id}', [MovieRatingController::class, 'destroy']);
             Route::get('/all', [MovieRatingController::class, 'listAll']);
+        });
+
+        Route::group(['prefix' => 'screenings'], function (){
+            Route::post('', [ScreeningController::class, 'store']);
+            Route::get('', [ScreeningController::class, 'index']);
+            Route::put('/{id}', [ScreeningController::class, 'update']);
+            Route::patch('/{id}', [ScreeningController::class, 'updateStatus']);
+            Route::delete('/{id}', [ScreeningController::class, 'destroy']);
+            Route::get('/all', [ScreeningController::class, 'listAll']);
+            Route::get('/{id}', [ScreeningController::class, 'show']);
         });
     });
 

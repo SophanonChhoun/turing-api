@@ -165,7 +165,7 @@ class CustomerController extends Controller
             $user = Customer::find(auth()->user()->id);
             if(!Hash::check($request['oldPassword'], $user->password))
             {
-                return $this->fail("Your old password is not correct", 403);
+                return $this->fail("Your old password is not correct", "",403);
             }
             $user->update([
                 'password' => $request['password']

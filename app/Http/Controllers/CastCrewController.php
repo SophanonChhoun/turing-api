@@ -18,7 +18,9 @@ class CastCrewController extends Controller
             {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
             }else{
-                return $this->fail('Image field is required');
+                return $this->fail("", [
+                    'Image field is required'
+                ], "InvalidRequestError");
             }
             $firstname=$request['firstName'];
             $lastname=$request['lastName'];
@@ -56,9 +58,7 @@ class CastCrewController extends Controller
             $CastCrew = CastCrew::find($id);
             if (!$CastCrew)
             {
-                return $this->fail([
-                    "message" => "CastCrew ID: $id not found"
-                ], 404);
+                return $this->fail("CastCrew ID: $id not found", "");
             }
             if (isset($request['image']))
             {
@@ -86,7 +86,7 @@ class CastCrewController extends Controller
             $castcrew = CastCrew::find($id);
             if(!$castcrew)
             {
-                return $this->fail("CastCrew id :$id not exist.");
+                return $this->fail("CastCrew id :$id not exist.", "", 404);
             }
             $castcrew = $castcrew->delete();
             if(!$castcrew)

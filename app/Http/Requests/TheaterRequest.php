@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TheaterRequest extends FormRequest
+class TheaterRequest extends DefaultFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

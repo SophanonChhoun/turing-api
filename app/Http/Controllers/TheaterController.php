@@ -24,7 +24,9 @@ class TheaterController extends Controller
             {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
             }else{
-                return $this->fail('Image field is required');
+                return $this->fail("", [
+                    'Image field is required'
+                ], "InvalidRequestError", 412);
             }
 //            $cast = MovieCast::store($movie->id, $request['movieCasts']);
             $data = Theater::create($request->all());
@@ -161,7 +163,7 @@ class TheaterController extends Controller
             $name=$Theater->name;
             if(!$Theater)
             {
-                return $this->fail("Theater not exist.");
+                return $this->fail("Theater not exist.", [], "Not Found", 404);
             }
             $Theater = $Theater->delete();
 
