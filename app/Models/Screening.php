@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,17 +20,17 @@ class Screening extends Model
 
     public function language()
     {
-        return $this->belongsTo(Language::class, 'id', 'languageId');
+        return $this->hasOne(Language::class, 'id', 'languageId');
     }
 
     public function movie()
     {
-        return $this->belongsTo(Movie::class, 'id', 'movieId');
+        return $this->hasOne(Movie::class, 'id', 'movieId');
     }
 
     public function theater()
     {
-        return $this->belongsTo(Theater::class, 'id', 'theaterId');
+        return $this->hasOne(Theater::class, 'id', 'theaterId');
     }
 
     public function seat()
