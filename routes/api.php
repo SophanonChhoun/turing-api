@@ -34,6 +34,7 @@ Route::post("register", [CustomerController::class, 'signUp']);
 
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+
     Route::group(['prefix' => 'admin'], function(){
         Route::group(['prefix' => 'role'], function (){
             Route::post('', [RoleController::class, 'store']);
@@ -73,6 +74,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [UserController::class, 'updateStatus']);
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });
+        
         Route::group(['prefix' => 'customers'], function(){
             Route::get('', [CustomerController::class, 'index']);
             Route::get('/{id}', [CustomerController::class, 'show']);
