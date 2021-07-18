@@ -14,16 +14,20 @@ class Theater extends Model
         'col',
         'cinemaId',
         'mediaId',
-        'status'
+        'status',
+        'seatId',
     ];
 
     public function cinema()
     {
-        return $this->belongsTo(Cinema::class, 'id', 'cinemaId');
+        return $this->hasOne(Cinema::class, 'id', 'cinemaId');
     }
 
     public function media()
     {
-        return $this->belongsTo(MediaFile::class, 'media_id', 'mediaId');
+        return $this->hasOne(MediaFile::class,"media_id","mediaId");
+    }
+    public function seat(){
+        return $this->hasMany(Seat::class,"theaterId");
     }
 }

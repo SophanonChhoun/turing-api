@@ -14,14 +14,17 @@ class TheaterSeeder extends Seeder
      */
     public function run()
     {
-        $data =[
-            "name"=>"Hall 01",
-            "row"=>30,
-            "col"=>20,
-            "status"=>1,
-            "cinemaId"=>1,
-            "mediaId"=>1,
+        Theater::truncate();
+        $data=[
+            [
+                "name"=>"Hall 01",
+                "row"=>30,
+                "col"=>20,
+                "status"=>1,
+                "cinemaId"=>1,
+                "mediaId"=>1,
+            ],
         ];
-        Theater::create($data);
+        Theater::insert($data);
     }
 }

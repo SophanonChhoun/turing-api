@@ -17,7 +17,7 @@ class SeatType extends Model
 
     public function cinema()
     {
-        return $this->belongsTo(Cinema::class, 'id', 'cinemaId');
+        return $this->belongsTo(Cinema::class, 'cinemaId', 'id');
     }
 
 }
