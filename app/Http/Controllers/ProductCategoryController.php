@@ -32,7 +32,9 @@ class ProductCategoryController extends Controller
             {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
             }else{
-                return $this->fail('Image field is required');
+                return $this->fail("", [
+                    'Image field is required'
+                ], 'InvalidRequestError', 412);
             }
             $data = ProductCategory::create($request->all());
             if(!$data)

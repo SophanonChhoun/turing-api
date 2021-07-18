@@ -23,7 +23,9 @@ class TheaterController extends Controller
             {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
             }else{
-                return $this->fail('Image field is required');
+                return $this->fail("", [
+                    'Image field is required'
+                ], "InvalidRequestError", 412);
             }
             $data = Theater::create($request->all());
             $name = $request['name'];
@@ -101,9 +103,7 @@ class TheaterController extends Controller
             $Theater = Theater::find($id);
             if (!$Theater)
             {
-                return $this->fail([
-                    "message" => "Theater not found"
-                ], 404);
+                return $this->fail("Theater not found", [], "Not Found", 404);
             }
             if (isset($request['image']))
             {
@@ -131,7 +131,7 @@ class TheaterController extends Controller
             $name=$Theater->name;
             if(!$Theater)
             {
-                return $this->fail("Theater not exist.");
+                return $this->fail("Theater not exist.", [], "Not Found", 404);
             }
             $Theater = $Theater->delete();
 

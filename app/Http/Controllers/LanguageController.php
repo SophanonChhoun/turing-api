@@ -47,9 +47,7 @@ class LanguageController extends Controller
             $language= Language::find($id);
             if (!$language)
             {
-                return $this->fail([
-                    "message" => "language ID:$id not found"
-                ], 404);
+                return $this->fail("language ID:$id not found", 404);
             }
             $language= $language->update($request->all());
             if(!$language)

@@ -28,7 +28,6 @@ class MovieGenreController extends Controller
 
     public function show($id)
     {
-
             try {
 
                 $MovieGenre = MovieGenre::find($id);
@@ -78,9 +77,7 @@ class MovieGenreController extends Controller
 
             if(!$MovieGenre)
             {
-                return $this->fail([
-                    "Movie Genre not found."
-                ], 404);
+                return $this->fail("Movie Genre not found.", "", "", 404);
             }
 
             $MovieGenre = $MovieGenre->update($request->all());
