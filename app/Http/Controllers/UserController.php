@@ -57,7 +57,9 @@ class UserController extends Controller
             {
                 $request['media_id'] = MediaLib::generateImageBase64($request['image']);
             }else{
-                return $this->fail('Image field is required');
+                return $this->fail("", [
+                    'Image field is required'
+                ], "InvalidRequestError", 412);
             }
             $user = User::create($request->all());
             $cinemas = CinemaHasUser::store($user->id, $request['cinemas']);
@@ -140,7 +142,7 @@ class UserController extends Controller
             $user = User::find($id);
             if(!$user)
             {
-                return $this->fail('User not found');
+                return $this->fail('User not found', [], "Not Found", 404);
             }
             $user = $user->update([
                 "status" => $request['status']
@@ -163,7 +165,7 @@ class UserController extends Controller
             $user = User::find($id);
             if(!$user)
             {
-                return $this->fail('User not found');
+                return $this->fail('User not found', [], "Not Found", 404);
             }
             $user = $user->delete();
             if (!$user)
@@ -200,7 +202,7 @@ class UserController extends Controller
             $user = User::find(auth()->user()->id);
             if (!$user)
             {
-                return $this->fail("User not found");
+                return $this->fail("User not found", [], "Not Found", 404);
             }
             $user = $user->update($request->all());
             if (!$user)
