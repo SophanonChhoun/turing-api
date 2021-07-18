@@ -23,9 +23,10 @@ class Controller extends BaseController
         return response()->json($data, $statusCode);
     }
 
-    public function fail($message,$statusCode = 400)
+    public function fail($message, $default="ConstraintViolationError", $statusCode = 400)
     {
         return response()->json([
+            "default" => $default,
             "message" => $message,
         ], $statusCode);
     }

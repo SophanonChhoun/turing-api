@@ -13,8 +13,6 @@ use App\Http\Controllers\MovieGenreController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
-
-use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVariantsController;

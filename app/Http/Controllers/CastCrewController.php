@@ -30,7 +30,7 @@ class CastCrewController extends Controller
             }
             DB::commit();
             return $this->success([
-                'message' => "CastCrew Created successfully with  Fistname:$firstname and LastName:$lastname"
+                'message' => "CastCrew Created successfully with  Fist name:$firstname and Last name:$lastname"
             ]);
         }catch (Exception $exception){
             DB::rollback();
