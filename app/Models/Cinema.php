@@ -9,6 +9,7 @@ class Cinema extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id',
         'name',
         'location',
         'status',
@@ -18,5 +19,8 @@ class Cinema extends Model
     public function media()
     {
         return $this->hasOne(MediaFile::class,"media_id","mediaId");
+    }
+    public function theater(){
+        return $this->hasMany(Theater::class,"cinemaId",);
     }
 }

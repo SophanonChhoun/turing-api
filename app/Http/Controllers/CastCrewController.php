@@ -41,7 +41,8 @@ class CastCrewController extends Controller
     public function index(){
         try{
             $data = CastCrew::with("media")->get();
-            return $this->success(CastCrewResource::collection($data));
+            return $data;
+//            return $this->success(CastCrewResource::collection($data));
         }
         catch (Exception $exception){
             DB::rollback();

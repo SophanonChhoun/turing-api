@@ -11,7 +11,7 @@ use App\Models\Role;
 use App\Models\RoleHasPermission;
 use Illuminate\Http\Request;
 use Exception;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {

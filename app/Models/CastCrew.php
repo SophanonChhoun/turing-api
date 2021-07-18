@@ -17,5 +17,4 @@ class CastCrew extends Model
     {
         return $this->hasOne(MediaFile::class,"media_id","mediaId");
     }
-
 }
