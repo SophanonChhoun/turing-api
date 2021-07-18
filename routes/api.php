@@ -19,6 +19,7 @@ use App\Http\Controllers\ProductAttributeValueController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVariantsController;
+use App\Http\Controllers\MovieRatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,6 +112,12 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'movies'], function(){
             Route::post('', [MovieController::class, 'store']);
+            Route::get('', [MovieController::class, 'index']);
+            Route::get('/all', [MovieController::class, 'listAll']);
+            Route::get('/{id}', [MovieController::class, 'show']);
+            Route::put('/{id}', [MovieController::class, 'update']);
+            Route::patch('/{id}', [MovieController::class, 'updateStatus']);
+            Route::delete('/{id}', [MovieController::class, 'destroy']);
         });
 
         Route::group(['prefix' => 'productCategory'], function(){
@@ -171,6 +178,14 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [SeatTypeController::class, 'updateStatus']);
             Route::delete('/{id}', [SeatTypeController::class, 'destroy']);
 
+        });
+        Route::group(['prefix' => 'movieRating'], function (){
+            Route::post('', [MovieRatingController::class, 'store']);
+            Route::get('', [MovieRatingController::class, 'index']);
+            Route::put('/{id}', [MovieRatingController::class, 'update']);
+            Route::patch('/{id}', [MovieRatingController::class, 'updateStatus']);
+            Route::delete('/{id}', [MovieRatingController::class, 'destroy']);
+            Route::get('/all', [MovieRatingController::class, 'listAll']);
         });
     });
 

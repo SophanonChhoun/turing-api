@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeatTypeRequest extends FormRequest
+class SeatTypeRequest extends DefaultFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

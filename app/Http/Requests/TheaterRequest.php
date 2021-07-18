@@ -25,12 +25,11 @@ class TheaterRequest extends FormRequest
     public function rules()
     {
         return [
-                'name' => 'required|unique:theaters,name,'.$this->id,
-                "row"=>"required",
-                "col"=>"required",
-                "status"=>"required",
-                "image"=>"required",
-                "cinemaId"=>"required"
+            'name' => 'required',
+            "row"=>"required",
+            "col"=>"required",
+            "status"=>"required",
+            "cinemaId"=>"required"
         ];
     }
 }
