@@ -100,4 +100,15 @@ class CastCrewController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
+    public function count_cast_crew(){
+        try{
+            $data = CastCrew::count();
+            return $data;
+//            return $this->success(CastCrewResource::collection($data));
+        }
+        catch (Exception $exception){
+            DB::rollback();
+            return $this->fail($exception->getMessage());
+        }
+    }
 }
