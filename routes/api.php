@@ -130,6 +130,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         });
         Route::group(['prefix' => 'castcrew'], function(){
             Route::get('', [CastCrewController::class, 'index']);
+            Route::get('/count', [CastCrewController::class, 'count_cast_crew']);
             Route::post('', [CastCrewController::class, 'store']);
             Route::put('/{id}', [CastCrewController::class, 'update']);
             Route::delete('/{id}', [CastCrewController::class, 'destroy']);
