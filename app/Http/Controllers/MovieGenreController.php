@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ListResource;
 use Exception;
 use App\Models\MovieGenre;
@@ -72,7 +73,6 @@ class MovieGenreController extends Controller
     {
         DB::beginTransaction();
         try {
-
             $MovieGenre = MovieGenre::find($id);
 
             if(!$MovieGenre)
@@ -99,7 +99,7 @@ class MovieGenreController extends Controller
         }
     }
 
-    public function updateStatus(MovieGenreRequest $request, $id)
+    public function updateStatus(StatusRequest $request, $id)
     {
         try {
             $MovieGenre = MovieGenre::find($id);

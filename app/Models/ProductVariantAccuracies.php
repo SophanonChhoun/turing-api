@@ -12,7 +12,7 @@ class ProductVariantAccuracies extends Model
       'productVariantsId',
       'name',
       'price',
-      'attribute',
-      'attributeValue'
+      'attributeValue',
+      'category'
     ];
 }

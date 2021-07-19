@@ -21,6 +21,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductVariantsController;
 use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
+use App\Http\Controllers\ProductSaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix'=> 'product-attribute'],function (){
             Route::post('',[ProductAttributesController::class,'store']);
             Route::get('',[ProductAttributesController::class,'index']);
+            Route::get('/{id}',[ProductAttributesController::class,'show']);
             Route::get('/all',[ProductAttributesController::class,'listAll']);
             Route::put('/{id}',[ProductAttributesController::class,'update']);
             Route::patch('/{id}', [ProductAttributesController::class, 'updateStatus']);
@@ -79,7 +81,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [UserController::class, 'updateStatus']);
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });
-        
+
         Route::group(['prefix' => 'customers'], function(){
             Route::get('', [CustomerController::class, 'index']);
             Route::get('/{id}', [CustomerController::class, 'show']);
@@ -88,6 +90,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'movie-generes'], function(){
             Route::get('', [MovieGenreController::class, 'index']);
+            Route::get('/all', [MovieGenreController::class, 'listAll']);
             Route::post('', [MovieGenreController::class, 'store']);
             Route::get('/{id}', [MovieGenreController::class, 'show']);
             Route::put('/{id}', [MovieGenreController::class, 'update']);
@@ -157,7 +160,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::post('', [CastCrewController::class, 'store']);
             Route::put('/{id}', [CastCrewController::class, 'update']);
             Route::delete('/{id}', [CastCrewController::class, 'destroy']);
-
+            Route::get("/{id}", [CastCrewController::class, 'show']);
+            Route::patch("/{id}", [CastCrewController::class, 'show']);
         });
         Route::group(['prefix' => 'language'], function(){
             Route::get('', [LanguageController::class, 'index']);
@@ -186,6 +190,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'movieRating'], function (){
             Route::post('', [MovieRatingController::class, 'store']);
             Route::get('', [MovieRatingController::class, 'index']);
+            Route::get('/{id}', [MovieRatingController::class, 'show']);
             Route::put('/{id}', [MovieRatingController::class, 'update']);
             Route::patch('/{id}', [MovieRatingController::class, 'updateStatus']);
             Route::delete('/{id}', [MovieRatingController::class, 'destroy']);
@@ -200,6 +205,10 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [ScreeningController::class, 'destroy']);
             Route::get('/all', [ScreeningController::class, 'listAll']);
             Route::get('/{id}', [ScreeningController::class, 'show']);
+        });
+
+        Route::group(['prefix' => 'sale'], function (){
+           Route::post('', [ProductSaleController::class, 'store']);
         });
     });
 

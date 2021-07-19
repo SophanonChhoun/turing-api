@@ -28,35 +28,10 @@ class TheaterController extends Controller
                     'Image field is required'
                 ], "InvalidRequestError", 412);
             }
-//            $cast = MovieCast::store($movie->id, $request['movieCasts']);
             $data = Theater::create($request->all());
             $name = $data->name;
-            //create seat in theater
-            $row_theater = $data->row;
-            $col_theater = $data->col;
-            $alphabet = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-                'AA','BB','CC','DD','EE','FF','GG','HH','II','JJ','KK','LL','MM','NN','OO','PP','QQ','RR','SS','TT','UU','VV','WW','XX','YY','ZZ',);
-            for($col=1;$col<=$col_theater;$col++){
-                for($row=1;$row<=$row_theater;$row++){
-                    $alphabet_index=$col-1;
-                    $seat_name= "$row"."$alphabet[$alphabet_index]";
-                    $seat_data [] =[
-                        "name"=>$seat_name,
-                        "row"=>$row,
-                        "col"=>$col,
-                        "theaterId"=>$data->id,
-                        "seatTypeId"=>1,
-                    ];
-                }
-            }
-            $SeatData = Seat::insert($seat_data);
-
-            if(!$SeatData)
-            {
-                DB::rollback();
-                return $this->fail('Seat not insert');
-            }
-            if(!$data)
+            $seats = Seat::store($data->id, $request['seats']);
+            if(!$data || !$seats)
             {
                 DB::rollback();
                 return $this->fail('There is something wrong.');

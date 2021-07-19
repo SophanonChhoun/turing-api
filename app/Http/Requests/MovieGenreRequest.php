@@ -9,7 +9,7 @@ class MovieGenreRequest extends DefaultFormRequest
     public function rules()
     {
         return [
-            "name" => "required|unique:movie_genres,name".$this->id,
+            "name" => "required|unique:movie_genres,name,".$this->id,
             "description"=> "required",
             "status"=> "required",
         ];

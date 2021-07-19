@@ -16,8 +16,7 @@ class CastCrewResource extends JsonResource
     {
         return [
             "id"=>$this->id,
-            "firstName"=> $this->firstName,
-            "lastName"=> $this->lastName,
+            "name" => $this->name,
             "image" => $this->media->file_url ?? ''
         ];
     }

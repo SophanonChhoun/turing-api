@@ -32,7 +32,6 @@ class MediaLib
                 'file_name'	=> $filename,
                 'size'		=> 'Original',
             ]);
-
             return $media_id;
         }catch(Exception $e) {
             return $e->getMessage();

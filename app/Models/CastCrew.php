@@ -13,6 +13,12 @@ class CastCrew extends Model
         'lastName',
         'mediaId'
     ];
+
+    public function getNameAttribute()
+    {
+        return $this->firstName . " " . $this->lastName;
+    }
+
     public function media()
     {
         return $this->hasOne(MediaFile::class,"media_id","mediaId");
