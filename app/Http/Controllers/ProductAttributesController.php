@@ -123,4 +123,18 @@ class ProductAttributesController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
+
+    public function show($id)
+    {
+        try {
+            $data = ProductAttributes::findOrFail($id);
+            return $this->success([
+                "id" => $data->id,
+                "name" => $data->name,
+                "status" => $data->status
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
 }
