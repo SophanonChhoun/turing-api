@@ -7,17 +7,19 @@ use App\Http\Requests\SeatRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\TheaterRequest;
 use App\Http\Resources\ListResource;
+use App\Http\Resources\SeatResource;
 use App\Http\Resources\TheaterResource;
 use App\Models\Seat;
 use App\Models\Theater;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Array_;
+use Ramsey\Uuid\Type\Integer;
 
 class TheaterController extends Controller
 {
     public function store(TheaterRequest $request){
-
         DB::beginTransaction();
         try {
             if (isset($request['image']))
@@ -49,7 +51,6 @@ class TheaterController extends Controller
     public function index(){
         try {
             $data = Theater::with("media","cinema","seat")->latest()->get();
-//            return $data;
             return $this->success(TheaterResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -59,21 +60,34 @@ class TheaterController extends Controller
     public function show($id)
     {
         try {
-            $Theater = Theater::with("media","cinema","seat")->find($id);
+            $Theater = Theater::with("media","cinema")->find($id);
             if(!$Theater){
                 return $this->fail("Theater ID:$id not found");
             }
-//            return $this->success([
-//                "id" => $Theater->id,
-//                "name" => $Theater->name,
-//                "row" => $Theater->row,
-//                "col" => $Theater->col,
-//                "status" => $Theater->status,
-//                "cinemaId" => $Theater->cinemaId,
-//                "image" => $Theater->media->file_url ?? '',
-//                "seatId"=>$Theater->seat->id,
-//            ]);
-            return $Theater;
+            for ($i=0; $i < $Theater->row; $i++) {
+                for ($j=0; $j< $Theater->col; $j++) {
+                    $grid[$i][$j] = null;
+                }
+            }
+            $seats = SeatResource::collection(Seat::with("seatType")->where("theaterId", $id)->where("status", true)->get());
+            foreach ($seats as $key => $seat) {
+                $grid[$seat->row][$seat->col] = [
+                    "id" => $seat->id,
+                    "name" => $seat->name,
+                    "seatType" => $seat->seatType
+                ];
+            }
+
+            return $this->success([
+                "id" => $Theater->id,
+                "name" => $Theater->name,
+                "row" => $Theater->row,
+                "col" => $Theater->col,
+                "status" => $Theater->status,
+                "cinemaId" => $Theater->cinemaId,
+                "image" => $Theater->media->file_url ?? '',
+                "seats" => $grid
+            ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

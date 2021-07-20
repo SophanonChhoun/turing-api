@@ -25,7 +25,6 @@ class ProductAttributeRequest extends DefaultFormRequest
     {
         return [
             'name' => 'required|unique:product_attributes,name,'.$this->id,
-            'status' => 'required',
         ];
     }
 
