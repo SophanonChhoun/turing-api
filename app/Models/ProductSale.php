@@ -17,16 +17,16 @@ class ProductSale extends Model
 
     public function user()
     {
-        return $this->belongsTo(Customer::class, 'id', 'userId');
+        return $this->belongsTo(Customer::class, 'userId', 'id');
     }
 
     public function cinema()
     {
-        return $this->belongsTo(Cinema::class, 'id', 'cinemaId');
+        return $this->belongsTo(Cinema::class, 'cinemaId', 'id');
     }
 
-    public function product()
+    public function products()
     {
-        return $this->hasMany(ProductSelling::class, 'sale_id', 'id');
+        return $this->hasMany(ProductSelling::class, 'saleId', 'id');
     }
 }

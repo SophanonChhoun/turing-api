@@ -16,7 +16,6 @@ class ProductAttributeValueRequest extends DefaultFormRequest
     {
         return [
             "name" => "required",
-            "status" => "required",
             "productAttributeId" => "required"
         ];
     }

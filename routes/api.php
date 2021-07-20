@@ -209,6 +209,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'sale'], function (){
            Route::post('', [ProductSaleController::class, 'store']);
+           Route::get('', [ProductSaleController::class, 'index']);
+           Route::get('/{id}', [ProductSaleController::class, 'show']);
         });
     });
 

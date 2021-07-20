@@ -25,7 +25,7 @@ class CinemaController extends Controller
             }else{
                 return $this->fail('Image field is required');
             }
-            $data = Theater::create($request->all());
+            $data = Cinema::create($request->all());
             if(!$data)
             {
                 DB::rollback();
@@ -33,7 +33,7 @@ class CinemaController extends Controller
             }
             DB::commit();
             return $this->success([
-                'message' => 'Theater created'
+                'message' => 'Cinema created'
             ]);
         }catch (Exception $exception){
             DB::rollback();

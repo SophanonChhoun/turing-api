@@ -16,7 +16,6 @@ class ProductVariantRequest extends DefaultFormRequest
     {
         return [
             "price" => "required",
-            "status" => "required",
             "productId" => "required",
             "productAttributeValueId" => "required"
         ];
