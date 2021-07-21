@@ -16,7 +16,6 @@ class Seat extends Model
         'theaterId',
         'seatTypeId',
         "status",
-        "space"
     ];
 
     public function seatType()
@@ -41,7 +40,6 @@ class Seat extends Model
                     "row" => $seat['row'],
                     "col" => $seat['col'],
                     "status" => $seat['status'],
-                    "space" => $seat['space'],
                     "seatTypeId" => $seat['seatTypeId']
                 ]);
                 if (!$data)
