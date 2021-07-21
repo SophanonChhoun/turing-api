@@ -66,8 +66,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix'=> 'product-attribute'],function (){
             Route::post('',[ProductAttributesController::class,'store']);
             Route::get('',[ProductAttributesController::class,'index']);
-            Route::get('/{id}',[ProductAttributesController::class,'show']);
             Route::get('/all',[ProductAttributesController::class,'listAll']);
+            Route::get('/{id}',[ProductAttributesController::class,'show']);
             Route::put('/{id}',[ProductAttributesController::class,'update']);
             Route::patch('/{id}', [ProductAttributesController::class, 'updateStatus']);
             Route::delete('/{id}',[ProductAttributesController::class,'destroy']);

@@ -21,7 +21,7 @@ class CreateMoviesTable extends Migration
             $table->bigInteger("ratedId");
             $table->integer("runningTime");
             $table->bigInteger("mediaId");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             // Movie Description
             $table->bigInteger("backdrop");
             $table->date("releasedDate");

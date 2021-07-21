@@ -18,7 +18,7 @@ class CreateSeatTypesTable extends Migration
             $table->string("name");
             $table->double("priceFactor");
             $table->bigInteger("cinemaId");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             $table->timestamps();
         });
     }

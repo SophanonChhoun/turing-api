@@ -16,7 +16,7 @@ class CreateProductVariantsTable extends Migration
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
             $table->double("price");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             $table->bigInteger("productId");
             $table->bigInteger("productAttributeValueId");
             $table->timestamps();

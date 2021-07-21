@@ -16,7 +16,7 @@ class CreateProductAttributesTable extends Migration
         Schema::create('product_attributes', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             $table->timestamps();
         });
     }

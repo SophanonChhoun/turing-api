@@ -17,7 +17,7 @@ class CreateCinemasTable extends Migration
             $table->id();
             $table->string("name");
             $table->string("location");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             $table->bigInteger("mediaId");
             $table->timestamps();
         });
