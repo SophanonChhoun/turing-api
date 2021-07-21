@@ -26,10 +26,17 @@ class TheaterController extends Controller
             $data = Theater::create($request->all());
             $name = $data->name;
             $seats = Seat::store($data->id, $request['seats']);
-            if(!$data || !$seats)
+
+            if(!$data)
             {
                 DB::rollback();
-                return $this->fail('There is something wrong.');
+                return $this->fail('There is something wrong when insert theater.');
+            }
+
+            if(!$seats)
+            {
+                DB::rollBack();
+                return $this->fail("There is something wrong when insert seats.");
             }
             DB::commit();
             return $this->success([
