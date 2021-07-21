@@ -26,8 +26,8 @@ class TheaterRequest extends DefaultFormRequest
     {
         return [
             'name' => 'required',
-            "row"=>"required",
-            "col"=>"required",
+            "row"=>"required|max:50|numeric",
+            "col"=>"required|max:50|numeric",
             "status"=>"required",
             "cinemaId"=>"required",
             "seats"=>"array",

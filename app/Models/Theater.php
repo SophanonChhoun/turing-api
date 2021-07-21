@@ -23,10 +23,6 @@ class Theater extends Model
         return $this->hasOne(Cinema::class, 'id', 'cinemaId');
     }
 
-    public function media()
-    {
-        return $this->hasOne(MediaFile::class,"media_id","mediaId");
-    }
     public function seat(){
         return $this->hasMany(Seat::class,"theaterId");
     }

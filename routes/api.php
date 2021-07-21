@@ -149,6 +149,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'productVariants'], function(){
             Route::post('', [ProductVariantsController::class, 'store']);
             Route::get('', [ProductVariantsController::class, 'index']);
+            Route::get('/all', [ProductVariantsController::class, 'listAll']);
             Route::get('/{id}', [ProductVariantsController::class, 'show']);
             Route::put('/{id}', [ProductVariantsController::class, 'update']);
             Route::patch('/{id}', [ProductVariantsController::class, 'updateStatus']);
@@ -172,6 +173,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         });
         Route::group(['prefix' => 'theater'], function(){
             Route::get('', [TheaterController::class, 'index']);
+            Route::get('/all', [TheaterController::class, 'listAll']);
             Route::post('', [TheaterController::class, 'store']);
             Route::get('/{id}', [TheaterController::class, 'show']);
             Route::put('/{id}', [TheaterController::class, 'update']);
