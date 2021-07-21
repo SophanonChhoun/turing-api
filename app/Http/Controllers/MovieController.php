@@ -23,7 +23,7 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
-            if(isset($request['poster']) && isset($request['backdrop']))
+            if(isset($request['poster']) && isset($request['backdrop'])  && !empty($request['poster'])  && !empty($request['backdrop']))
             {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['poster']);
                 $request['backdrop'] = MediaLib::generateImageBase64($request['backdrop']);
