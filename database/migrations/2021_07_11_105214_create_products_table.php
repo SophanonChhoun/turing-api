@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->string("name");
             $table->bigInteger("categoryId");
             $table->bigInteger("mediaId");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             $table->timestamps();
         });
     }

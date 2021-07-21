@@ -18,7 +18,7 @@ class CreateRolesTable extends Migration
             $table->string("name");
             $table->boolean("defaultRole");
             $table->text("description");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             $table->timestamps();
         });
     }

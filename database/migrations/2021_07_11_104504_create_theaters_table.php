@@ -20,7 +20,7 @@ class CreateTheatersTable extends Migration
             $table->integer("col");
             $table->bigInteger("cinemaId");
             $table->bigInteger("mediaId");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             $table->timestamps();
         });
     }
