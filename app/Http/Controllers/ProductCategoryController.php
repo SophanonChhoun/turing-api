@@ -60,7 +60,8 @@ class ProductCategoryController extends Controller
                 "id" => $data->id,
                 "name" => $data->name,
                 "description" => $data->description,
-                "photo" => $data->media->file_url ?? ''
+                "photo" => $data->media->file_url ?? '',
+                "status" => $data->status
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
