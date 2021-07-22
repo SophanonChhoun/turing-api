@@ -15,6 +15,10 @@ class Role extends Model
       'status'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function rolePermission()
     {
         return $this->hasMany(RoleHasPermission::class, "roleId");

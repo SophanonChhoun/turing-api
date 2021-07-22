@@ -15,6 +15,10 @@ class ProductVariants extends Model
       'productAttributeValueId'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function getNameAttribute()
     {
         return $this->product->name . ' ' . $this->productAttributeValue->name;

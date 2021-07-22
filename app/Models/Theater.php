@@ -18,6 +18,10 @@ class Theater extends Model
         'seatId',
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function cinema()
     {
         return $this->hasOne(Cinema::class, 'id', 'cinemaId');

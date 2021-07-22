@@ -16,6 +16,10 @@ class Cinema extends Model
         'mediaId'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function media()
     {
         return $this->hasOne(MediaFile::class,"media_id","mediaId");

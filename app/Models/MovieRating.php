@@ -13,6 +13,10 @@ class MovieRating extends Model
       'description',
       'status'
     ];
+
+    protected $casts = [
+        'status' => 'boolean'
+    ];
 }
 
 

@@ -6,6 +6,7 @@ use App\Core\MediaLib;
 use App\Http\Requests\MovieRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ListTitleResource;
+use App\Http\Resources\MovieCustomerResource;
 use App\Http\Resources\MovieResource;
 use App\Models\Movie;
 use App\Models\MovieCast;
@@ -13,9 +14,11 @@ use App\Models\MovieDirector;
 use App\Models\MovieGenre;
 use App\Models\MovieGenreHasMovie;
 use App\Models\MovieRating;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 use Exception;
+use Illuminate\Support\Facades\Date;
 
 class MovieController extends Controller
 {
@@ -157,6 +160,20 @@ class MovieController extends Controller
         try {
             $data = Movie::where("status", 1)->latest()->get();
             return $this->success(ListTitleResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function showUpComingMovie()
+    {
+        try {
+            $upComingMovies = Movie::with("rating", "media", "backdropImage", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->limit(10)->get();
+            $nowShowingMovies = Movie::where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->limit(5)->get();
+            return $this->success([
+                'upComingMovies' => MovieCustomerResource::collection($upComingMovies),
+                'nowShowingMovies' => MovieCustomerResource::collection($nowShowingMovies)
+            ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

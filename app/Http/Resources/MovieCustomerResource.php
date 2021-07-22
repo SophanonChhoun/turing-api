@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RolePermissionResource extends JsonResource
+class MovieCustomerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +15,11 @@ class RolePermissionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'permissionId' => $this->permissionId,
-            'name' => $this->permission->name ?? '',
-            'read' => $this->read,
-            'create' => $this->create,
-            'delete' => $this->delete,
-            'update' => $this->update
+            'title' => $this->title,
+            'synopsis' => $this->synopsis,
+            'poster' => $this->media->file_url ?? '',
+            "rated" => $this->rating->title ?? '',
+            "genres" => $this->genres->pluck('name')
         ];
     }
 }

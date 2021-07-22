@@ -218,6 +218,10 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 });
 
+Route::group(['prefix' => 'movie'], function(){
+    Route::get('', [MovieController::class, 'showUpComingMovie']);
+});
+
 Route::middleware(['auth:sanctum', 'customer'])->group(function () {
     Route::group(['prefix' => 'profile'], function (){
        Route::get('', [CustomerController::class, 'showProfile']);
