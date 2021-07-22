@@ -18,6 +18,10 @@ class Screening extends Model
       'status'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function language()
     {
         return $this->hasOne(Language::class, 'id', 'languageId');

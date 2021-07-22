@@ -14,6 +14,10 @@ class SeatType extends Model
         'status'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function cinema()
     {
         return $this->belongsTo(Cinema::class, 'cinemaId', 'id');

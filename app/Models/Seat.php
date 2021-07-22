@@ -18,6 +18,10 @@ class Seat extends Model
         "status",
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function seatType()
     {
         return $this->belongsTo(SeatType::class, 'seatTypeId', 'id');

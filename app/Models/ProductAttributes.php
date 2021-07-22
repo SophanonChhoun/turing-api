@@ -13,4 +13,8 @@ class ProductAttributes extends Model
         'name',
         'status'
     ];
+
+    protected $casts = [
+        'status' => 'boolean'
+    ];
 }

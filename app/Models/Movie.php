@@ -22,6 +22,10 @@ class Movie extends Model
       'releasedDate'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function rating()
     {
         // select * from movies join movieRating on movies.ratedId = movieRating.id

@@ -15,6 +15,10 @@ class Product extends Model
         'status'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function media()
     {
         return $this->belongsTo(MediaFile::class, 'mediaId', 'media_id');

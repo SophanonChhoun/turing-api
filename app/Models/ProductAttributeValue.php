@@ -14,6 +14,10 @@ class ProductAttributeValue extends Model
       'productAttributeId'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function productAttribute()
     {
         return $this->belongsTo(ProductAttributes::class, 'productAttributeId', 'id');

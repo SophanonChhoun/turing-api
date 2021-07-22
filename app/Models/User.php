@@ -24,6 +24,10 @@ class User extends Authenticatable
         'phoneNumber'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     protected $hidden = [
         'password',
         'media_id',
@@ -44,6 +48,11 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, RoleHasUser::class, 'userId', 'roleId');
+    }
+
+    public function getCinemaIdsAttribute()
+    {
+        return $this->hasCinemas()->pluck("cinemaId");
     }
 
     public function media()

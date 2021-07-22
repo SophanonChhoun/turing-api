@@ -44,7 +44,7 @@ class CinemaController extends Controller
     public function index()
     {
         try {
-            $data = Cinema::with("media")->latest()->get();
+            $data = Cinema::with("media")->whereIn('id', auth()->user()->cinemaIds)->latest()->get();
             return $this->success(CinemaListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
