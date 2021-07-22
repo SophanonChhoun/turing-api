@@ -22,7 +22,6 @@ class TheaterSeeder extends Seeder
                 "col"=>20,
                 "status"=>1,
                 "cinemaId"=>1,
-                "mediaId"=>1,
             ],
         ];
         Theater::insert($data);

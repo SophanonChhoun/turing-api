@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductVariantRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Resources\ListResource;
 use App\Http\Resources\ProductVariantResource;
 use App\Models\ProductVariants;
 use Illuminate\Http\Request;
@@ -97,6 +98,17 @@ class ProductVariantsController extends Controller
                "message" => "Product variant deleted."
             ]);
         }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listAll()
+    {
+        try {
+            $data = ProductVariants::where("status", true)->get();
+
+            return $this->success(ListResource::collection($data));
+        }catch (Exception $exception) {
             return $this->fail($exception->getMessage());
         }
     }

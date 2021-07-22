@@ -66,8 +66,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix'=> 'product-attribute'],function (){
             Route::post('',[ProductAttributesController::class,'store']);
             Route::get('',[ProductAttributesController::class,'index']);
-            Route::get('/{id}',[ProductAttributesController::class,'show']);
             Route::get('/all',[ProductAttributesController::class,'listAll']);
+            Route::get('/{id}',[ProductAttributesController::class,'show']);
             Route::put('/{id}',[ProductAttributesController::class,'update']);
             Route::patch('/{id}', [ProductAttributesController::class, 'updateStatus']);
             Route::delete('/{id}',[ProductAttributesController::class,'destroy']);
@@ -149,6 +149,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'productVariants'], function(){
             Route::post('', [ProductVariantsController::class, 'store']);
             Route::get('', [ProductVariantsController::class, 'index']);
+            Route::get('/all', [ProductVariantsController::class, 'listAll']);
             Route::get('/{id}', [ProductVariantsController::class, 'show']);
             Route::put('/{id}', [ProductVariantsController::class, 'update']);
             Route::patch('/{id}', [ProductVariantsController::class, 'updateStatus']);
@@ -172,6 +173,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         });
         Route::group(['prefix' => 'theater'], function(){
             Route::get('', [TheaterController::class, 'index']);
+            Route::get('/all', [TheaterController::class, 'listAll']);
             Route::post('', [TheaterController::class, 'store']);
             Route::get('/{id}', [TheaterController::class, 'show']);
             Route::put('/{id}', [TheaterController::class, 'update']);
@@ -209,6 +211,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'sale'], function (){
            Route::post('', [ProductSaleController::class, 'store']);
+           Route::get('', [ProductSaleController::class, 'index']);
+           Route::get('/{id}', [ProductSaleController::class, 'show']);
         });
     });
 

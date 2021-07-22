@@ -26,7 +26,6 @@ class SeatTypeRequest extends DefaultFormRequest
         return [
             "name" => "required",
             "priceFactor"=>"required",
-            "cinemaId"=>"required",
             "status"=>"required",
         ];
     }

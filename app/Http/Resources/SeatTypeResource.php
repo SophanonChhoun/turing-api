@@ -19,7 +19,6 @@ class SeatTypeResource extends JsonResource
             "name"=>$this->name,
             "priceFactor"=>$this->priceFactor,
             "status"=>$this->status,
-            "cinemaId"=>$this->cinemaId,
         ];
     }
 }

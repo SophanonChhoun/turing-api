@@ -15,7 +15,6 @@ class ProductRequest extends DefaultFormRequest
     {
         return [
             'name' => 'required|unique:products,name,'.$this->id,
-            "status" => "required",
             "categoryId" => "required",
         ];
     }

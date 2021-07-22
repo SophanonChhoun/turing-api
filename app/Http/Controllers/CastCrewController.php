@@ -17,7 +17,7 @@ class CastCrewController extends Controller
     {
         DB::beginTransaction();
         try {
-            if (isset($request['image'])) {
+            if (isset($request['image'])  && !empty($request['image'])) {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
             } else {
                 return $this->fail("", [

@@ -20,7 +20,6 @@ class MovieRequest extends DefaultFormRequest
             'synopsis' => 'required',
             'ratedId' => 'required',
             'runningTime' => 'required',
-            'status' => 'required',
             'releasedDate' => 'required',
             'movieCasts' => 'required|array',
             'movieDirectors' => 'required|array',

@@ -11,7 +11,6 @@ class MovieGenreRequest extends DefaultFormRequest
         return [
             "name" => "required|unique:movie_genres,name,".$this->id,
             "description"=> "required",
-            "status"=> "required",
         ];
     }
 }

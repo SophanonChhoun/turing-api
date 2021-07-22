@@ -53,7 +53,7 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
-            if (isset($request['image']))
+            if (isset($request['image'])  && !empty($request['image']))
             {
                 $request['media_id'] = MediaLib::generateImageBase64($request['image']);
             }else{

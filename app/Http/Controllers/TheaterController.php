@@ -6,35 +6,37 @@ use App\Core\MediaLib;
 use App\Http\Requests\SeatRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\TheaterRequest;
+use App\Http\Requests\TheaterUpdateRequest;
 use App\Http\Resources\ListResource;
+use App\Http\Resources\SeatResource;
 use App\Http\Resources\TheaterResource;
 use App\Models\Seat;
 use App\Models\Theater;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Array_;
+use Ramsey\Uuid\Type\Integer;
 
 class TheaterController extends Controller
 {
     public function store(TheaterRequest $request){
-
         DB::beginTransaction();
         try {
-            if (isset($request['image']))
-            {
-                $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
-            }else{
-                return $this->fail("", [
-                    'Image field is required'
-                ], "InvalidRequestError", 412);
-            }
             $data = Theater::create($request->all());
             $name = $data->name;
             $seats = Seat::store($data->id, $request['seats']);
-            if(!$data || !$seats)
+
+            if(!$data)
             {
                 DB::rollback();
-                return $this->fail('There is something wrong.');
+                return $this->fail('There is something wrong when insert theater.');
+            }
+
+            if(!$seats)
+            {
+                DB::rollBack();
+                return $this->fail("There is something wrong when insert seats.");
             }
             DB::commit();
             return $this->success([
@@ -48,8 +50,7 @@ class TheaterController extends Controller
 
     public function index(){
         try {
-            $data = Theater::with("media","cinema","seat")->latest()->get();
-//            return $data;
+            $data = Theater::with("cinema","seat")->latest()->get();
             return $this->success(TheaterResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -59,10 +60,24 @@ class TheaterController extends Controller
     public function show($id)
     {
         try {
-            $Theater = Theater::with("media","cinema","seat")->find($id);
+            $Theater = Theater::find($id);
             if(!$Theater){
                 return $this->fail("Theater ID:$id not found");
             }
+//            for ($i=0; $i < $Theater->row; $i++) {
+//                for ($j=0; $j< $Theater->col; $j++) {
+//                    $grid[$i][$j] = null;
+//                }
+//            }
+//            $seats = SeatResource::collection(Seat::with("seatType")->where("theaterId", $id)->where("status", true)->get());
+//            foreach ($seats as $key => $seat) {
+//                $grid[$seat->row][$seat->col] = [
+//                    "id" => $seat->id,
+//                    "name" => $seat->name,
+//                    "seatType" => $seat->seatType
+//                ];
+//            }
+//
 //            return $this->success([
 //                "id" => $Theater->id,
 //                "name" => $Theater->name,
@@ -71,9 +86,17 @@ class TheaterController extends Controller
 //                "status" => $Theater->status,
 //                "cinemaId" => $Theater->cinemaId,
 //                "image" => $Theater->media->file_url ?? '',
-//                "seatId"=>$Theater->seat->id,
+//                "seats" => $grid
 //            ]);
-            return $Theater;
+
+            return $this->success([
+                "id" => $Theater->id,
+                "name" => $Theater->name,
+                "status" => $Theater->status,
+                "col" => $Theater->col,
+                "row" => $Theater->row,
+                "cinemaId" => $Theater->cinemaId,
+            ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
@@ -101,7 +124,7 @@ class TheaterController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
-    public function update($id, TheaterRequest $request)
+    public function update($id, TheaterUpdateRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -111,10 +134,6 @@ class TheaterController extends Controller
                 return $this->fail([
                     "message" => "Theater ID: $id not found"
                 ], 404);
-            }
-            if (isset($request['image']))
-            {
-                $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
             }
             $Theater = $Theater->update($request->all());
             if(!$Theater)
@@ -141,8 +160,8 @@ class TheaterController extends Controller
                 return $this->fail("Theater not exist.", [], "Not Found", 404);
             }
             $Theater = $Theater->delete();
-
-            if(!$Theater)
+            $seats = Seat::where("cinemaId", $id)->delete();
+            if(!$Theater || !$seats)
             {
                 return $this->fail("Something went wrong");
             }

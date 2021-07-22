@@ -21,7 +21,7 @@ class CreateScreeningsTable extends Migration
             $table->bigInteger("theaterId");
             $table->date("date");
             $table->time("start_time");
-            $table->boolean("status");
+            $table->boolean("status")->default(false);
             $table->timestamps();
         });
     }
