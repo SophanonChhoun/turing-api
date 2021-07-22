@@ -83,6 +83,7 @@ class UserController extends Controller
     {
         try {
             $users = User::with("media")->latest()->get();
+            
             return $this->success(UserResource::collection($users));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
