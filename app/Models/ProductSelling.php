@@ -15,7 +15,6 @@ class ProductSelling extends Model
         'productVariantId',
         'name',
         'price',
-        'attribute'
     ];
 
     public function product()
@@ -29,14 +28,12 @@ class ProductSelling extends Model
         try {
             foreach ($productVariants as $key => $productVariant)
             {
-                $findProductVariant = ProductVariants::with("product", "productAttributeValue")->findOrFail($productVariant['id']);
                 $data = ProductSelling::create([
                    "quantity" => $productVariant['quantity'],
                    "saleId" => $id,
                    "productVariantId" => $productVariant['id'],
-                   "name" => $findProductVariant->product->name ?? '',
-                   "price" => $findProductVariant->price,
-                   "attribute" => $findProductVariant->productAttributeValue->name,
+                   "name" => $productVariant['name'],
+                   "price" => $productVariant['price'],
                 ]);
                 if (!$data)
                 {

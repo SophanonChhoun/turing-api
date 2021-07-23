@@ -9,6 +9,7 @@ use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\CustomerResource;
+use App\Http\Resources\ListResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -173,6 +174,16 @@ class CustomerController extends Controller
             return $this->success([
                 "message" => "Password updated."
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listAll()
+    {
+        try {
+            $customers = Customer::where("status", true)->get();
+            return $this->success(ListResource::collection($customers));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

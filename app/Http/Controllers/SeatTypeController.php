@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SeatTypeRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Resources\ListResource;
 use App\Http\Resources\SeatTypeResource;
 use App\Models\SeatType;
 use Exception;
@@ -110,6 +111,16 @@ class SeatTypeController extends Controller
             return $this->success([
                 'message' => 'seattype'.$id.'deleted'
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listAll()
+    {
+        try {
+            $data = SeatType::where("status", true)->get();
+            return $this->success(ListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
