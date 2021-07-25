@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Core\MediaLib;
 use App\Http\Requests\SeatRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\TheaterRequest;
@@ -13,10 +12,7 @@ use App\Http\Resources\TheaterResource;
 use App\Models\Seat;
 use App\Models\Theater;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Expr\Array_;
-use Ramsey\Uuid\Type\Integer;
 
 class TheaterController extends Controller
 {
@@ -61,7 +57,7 @@ class TheaterController extends Controller
     {
         try {
             $Theater = Theater::find($id);
-            if(!$Theater){
+            if (!$Theater) {
                 return $this->fail("Theater ID:$id not found");
             }
             for ($i=0; $i < $Theater->row; $i++) {

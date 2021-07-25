@@ -4,9 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductVariantRequest extends DefaultFormRequest
+class ProductVariantCreateRequest extends DefaultFormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,10 +14,8 @@ class ProductVariantRequest extends DefaultFormRequest
     public function rules()
     {
         return [
-            "price" => "required",
             "productId" => "required",
-            "productAttributeValueId" => "required",
-            "size" => "required"
+            "productVariants" => "required|array"
         ];
     }
 }

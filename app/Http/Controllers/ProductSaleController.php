@@ -53,6 +53,7 @@ class ProductSaleController extends Controller
                 "userName" => $sales->user->name ?? '',
                 "cinema" => $sales->cinema->name ?? '',
                 "total" => $sales->total,
+                "currency" => $sales->currency,
                 "products" => ProductSellingResource::collection($sales->products),
                 "createdAt" => $sales->created_at->format('Y-m-d')
             ]);
