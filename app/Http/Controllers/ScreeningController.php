@@ -45,6 +45,28 @@ class ScreeningController extends Controller
         }
     }
 
+    public function store(ScreeningRequest $request)
+    {
+        DB::beginTransaction();
+        try{
+            $data = Screening::create($request->all());
+            if(!$data)
+            {
+                DB::rollback();
+                return $this->fail("Screening failed to created.");
+            }
+
+            DB::commit();
+            return $this->success([
+               "message"  => "Screening created."
+            ]);
+        }catch(Exception $exception)
+        {
+            DB::rollback();
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function update($id, ScreeningRequest $request)
     {
         DB::beginTransaction();
