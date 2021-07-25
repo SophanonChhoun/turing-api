@@ -16,6 +16,7 @@ class RolePermissionResource extends JsonResource
     {
         return [
             'permissionId' => $this->permissionId,
+            'name' => $this->permission->name ?? '',
             'read' => $this->read,
             'create' => $this->create,
             'delete' => $this->delete,

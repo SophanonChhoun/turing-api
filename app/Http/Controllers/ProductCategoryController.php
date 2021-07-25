@@ -28,11 +28,13 @@ class ProductCategoryController extends Controller
     {
         DB::beginTransaction();
         try {
-            if (isset($request['image']))
+            if (isset($request['image'])  && !empty($request['image']))
             {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
             }else{
-                return $this->fail('Image field is required');
+                return $this->fail("", [
+                    'Image field is required'
+                ], 'InvalidRequestError', 412);
             }
             $data = ProductCategory::create($request->all());
             if(!$data)
@@ -58,7 +60,8 @@ class ProductCategoryController extends Controller
                 "id" => $data->id,
                 "name" => $data->name,
                 "description" => $data->description,
-                "photo" => $data->media->file_url ?? ''
+                "photo" => $data->media->file_url ?? '',
+                "status" => $data->status
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

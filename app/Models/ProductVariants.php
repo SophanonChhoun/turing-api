@@ -15,6 +15,15 @@ class ProductVariants extends Model
       'productAttributeValueId'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
+    public function getNameAttribute()
+    {
+        return $this->product->name . ' ' . $this->productAttributeValue->name;
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'productId', 'id');

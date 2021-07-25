@@ -19,13 +19,13 @@ class CinemaController extends Controller
     {
         DB::beginTransaction();
         try {
-            if (isset($request['image']))
+            if (isset($request['image'])  && !empty($request['image']))
             {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
             }else{
                 return $this->fail('Image field is required');
             }
-            $data = Theater::create($request->all());
+            $data = Cinema::create($request->all());
             if(!$data)
             {
                 DB::rollback();
@@ -33,7 +33,7 @@ class CinemaController extends Controller
             }
             DB::commit();
             return $this->success([
-                'message' => 'Theater created'
+                'message' => 'Cinema created'
             ]);
         }catch (Exception $exception){
             DB::rollback();
@@ -44,7 +44,7 @@ class CinemaController extends Controller
     public function index()
     {
         try {
-            $data = Cinema::with("media")->latest()->get();
+            $data = Cinema::with("media")->whereIn('id', auth()->user()->cinemaIds)->latest()->get();
             return $this->success(CinemaListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

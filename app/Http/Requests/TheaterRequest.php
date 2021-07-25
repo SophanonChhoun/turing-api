@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TheaterRequest extends FormRequest
+class TheaterRequest extends DefaultFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +26,11 @@ class TheaterRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            "row"=>"required",
-            "col"=>"required",
+            "row"=>"required|max:50|numeric",
+            "col"=>"required|max:50|numeric",
             "status"=>"required",
-            "cinemaId"=>"required"
+            "cinemaId"=>"required",
+            "seats"=>"array",
         ];
     }
 }

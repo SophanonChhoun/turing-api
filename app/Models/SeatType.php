@@ -11,13 +11,17 @@ class SeatType extends Model
     protected $fillable = [
         'name',
         'priceFactor',
-        'cinemaId',
-        'status'
+        'status',
+        'color'
+    ];
+
+    protected $casts = [
+        'status' => 'boolean'
     ];
 
     public function cinema()
     {
-        return $this->belongsTo(Cinema::class, 'id', 'cinemaId');
+        return $this->belongsTo(Cinema::class, 'cinemaId', 'id');
     }
 
 }

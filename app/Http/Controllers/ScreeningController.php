@@ -27,9 +27,7 @@ class ScreeningController extends Controller
             $data = Screening::find($id);
             if (!$data)
             {
-                return $this->fail([
-                    "message" => "data not found"
-                ], 404);
+                return $this->fail("data not found" ,[], "", 404);
             }
             return $this->success([
                 "id" => $data->id,
@@ -54,11 +52,9 @@ class ScreeningController extends Controller
             $data = Screening::find($id);
             if (!$data)
             {
-                return $this->fail([
-                    "message" => "Screening not found"
-                ], 404);
+                return $this->fail("Screening not found", [], "Not Found", 404);
             }
-      
+
             $Screening = $data->update($request->all());
             if(!$Screening)
             {

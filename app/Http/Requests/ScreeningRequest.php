@@ -16,7 +16,6 @@ class ScreeningRequest extends DefaultFormRequest
             'date' =>'required',
             'start_time' => 'required',
             'theaterId' => 'required',
-            'status' => 'required'
         ];
     }
 }

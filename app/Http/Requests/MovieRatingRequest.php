@@ -11,7 +11,6 @@ class MovieRatingRequest extends DefaultFormRequest
         return [
             'title' => 'required|unique:movie_ratings,title,'.$this->id,
             "description"=>"required",
-            "status"=>"required",
         ];
     }
 }

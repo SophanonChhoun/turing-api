@@ -17,6 +17,16 @@ class RoleHasPermission extends Model
       'delete'
     ];
 
+    public function getNameAttribute()
+    {
+        return $this->permission();
+    }
+
+    public function permission()
+    {
+        return $this->belongsTo(Permission::class, 'permissionId', 'id');
+    }
+
     public static function store($id, $permissions){
         RoleHasPermission::where("roleId", $id)->delete();
         foreach($permissions as $permission){
