@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TicketSale extends Model
 {
@@ -16,18 +16,18 @@ class TicketSale extends Model
       'screeningId'
     ];
 
-    public function user()
+    public function customer()
     {
-        return $this->belongsTo(Customer::class, 'id', 'userId');
+        return $this->belongsTo(Customer::class, 'userId', 'id');
     }
 
     public function cinema()
     {
-        return $this->belongsTo(Cinema::class, 'id', 'cinemaId');
+        return $this->belongsTo(Cinema::class, 'cinemaId', 'id');
     }
 
     public function screening()
     {
-        return $this->belongsTo(Screening::class, 'id', 'screeningId');
+        return $this->belongsTo(Screening::class, 'screeningId', 'id');
     }
 }
