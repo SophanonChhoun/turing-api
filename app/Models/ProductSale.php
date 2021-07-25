@@ -12,7 +12,8 @@ class ProductSale extends Model
     protected $fillable = [
         'userId',
         'cinemaId',
-        'total'
+        'total',
+        'currency'
     ];
 
     public function user()

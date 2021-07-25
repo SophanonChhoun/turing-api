@@ -24,6 +24,7 @@ use App\Http\Controllers\ProductVariantsController;
 use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
 use App\Http\Controllers\ProductSaleController;
+use App\Http\Controllers\CurrencyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,8 +44,8 @@ Route::post("register", [CustomerController::class, 'signUp']);
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
-    Route::group(['prefix' => 'admin'], function(){
-        Route::group(['prefix' => 'role'], function (){
+    Route::group(['prefix' => 'admin'], function() {
+        Route::group(['prefix' => 'role'], function () {
             Route::post('', [RoleController::class, 'store']);
             Route::get('', [RoleController::class, 'index']);
             Route::get('/all', [RoleController::class, 'listAll']);
@@ -55,7 +56,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         });
 
         Route::get("permission", [PermissionController::class, 'index']);
-        Route::group(['prefix' => 'cinemas'], function (){
+        Route::group(['prefix' => 'cinemas'], function () {
             Route::post('', [CinemaController::class, 'store']);
             Route::get('', [CinemaController::class, 'index']);
             Route::get('/all', [CinemaController::class, 'listAll']);
@@ -65,17 +66,17 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [CinemaController::class, 'destroy']);
         });
 
-        Route::group(['prefix'=> 'product-attribute'],function (){
-            Route::post('',[ProductAttributesController::class,'store']);
-            Route::get('',[ProductAttributesController::class,'index']);
-            Route::get('/all',[ProductAttributesController::class,'listAll']);
-            Route::get('/{id}',[ProductAttributesController::class,'show']);
-            Route::put('/{id}',[ProductAttributesController::class,'update']);
+        Route::group(['prefix' => 'product-attribute'], function () {
+            Route::post('', [ProductAttributesController::class, 'store']);
+            Route::get('', [ProductAttributesController::class, 'index']);
+            Route::get('/all', [ProductAttributesController::class, 'listAll']);
+            Route::get('/{id}', [ProductAttributesController::class, 'show']);
+            Route::put('/{id}', [ProductAttributesController::class, 'update']);
             Route::patch('/{id}', [ProductAttributesController::class, 'updateStatus']);
-            Route::delete('/{id}',[ProductAttributesController::class,'destroy']);
+            Route::delete('/{id}', [ProductAttributesController::class, 'destroy']);
         });
 
-        Route::group(['prefix' => 'users'], function(){
+        Route::group(['prefix' => 'users'], function () {
             Route::post('', [UserController::class, 'store']);
             Route::get('', [UserController::class, 'index']);
             Route::get('/{id}', [UserController::class, 'show']);
@@ -84,14 +85,14 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });
 
-        Route::group(['prefix' => 'customers'], function(){
+        Route::group(['prefix' => 'customers'], function () {
             Route::get('', [CustomerController::class, 'index']);
             Route::get('/all', [CustomerController::class, 'listAll']);
             Route::get('/{id}', [CustomerController::class, 'show']);
             Route::patch('/{id}', [CustomerController::class, 'updateStatus']);
         });
 
-        Route::group(['prefix' => 'movie-generes'], function(){
+        Route::group(['prefix' => 'movie-generes'], function () {
             Route::get('', [MovieGenreController::class, 'index']);
             Route::get('/all', [MovieGenreController::class, 'listAll']);
             Route::post('', [MovieGenreController::class, 'store']);
@@ -101,7 +102,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [MovieGenreController::class, 'destroy']);
         });
 
-        Route::group(['prefix' => 'profile'], function (){
+        Route::group(['prefix' => 'profile'], function () {
             Route::get('', [UserController::class, 'showProfile']);
             Route::put('', [UserController::class, 'updateProfile']);
             Route::get('/avatar', [UserController::class, 'getAvatar']);
@@ -109,17 +110,17 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('', [UserController::class, 'updatePassword']);
         });
 
-        Route::group(['prefix' => 'productAttributeValue'], function(){
-           Route::get('', [ProductAttributeValueController::class, 'index']);
-           Route::get('/all', [ProductAttributeValueController::class, 'listAll']);
-           Route::post('', [ProductAttributeValueController::class, 'store']);
-           Route::get('/{id}', [ProductAttributeValueController::class, 'show']);
-           Route::put('/{id}', [ProductAttributeValueController::class, 'update']);
-           Route::patch('/{id}', [ProductAttributeValueController::class, 'updateStatus']);
-           Route::delete('/{id}', [ProductAttributeValueController::class, 'destroy']);
+        Route::group(['prefix' => 'productAttributeValue'], function () {
+            Route::get('', [ProductAttributeValueController::class, 'index']);
+            Route::get('/all', [ProductAttributeValueController::class, 'listAll']);
+            Route::post('', [ProductAttributeValueController::class, 'store']);
+            Route::get('/{id}', [ProductAttributeValueController::class, 'show']);
+            Route::put('/{id}', [ProductAttributeValueController::class, 'update']);
+            Route::patch('/{id}', [ProductAttributeValueController::class, 'updateStatus']);
+            Route::delete('/{id}', [ProductAttributeValueController::class, 'destroy']);
         });
 
-        Route::group(['prefix' => 'movies'], function(){
+        Route::group(['prefix' => 'movies'], function () {
             Route::post('', [MovieController::class, 'store']);
             Route::get('', [MovieController::class, 'index']);
             Route::get('/all', [MovieController::class, 'listAll']);
@@ -129,7 +130,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [MovieController::class, 'destroy']);
         });
 
-        Route::group(['prefix' => 'productCategory'], function(){
+        Route::group(['prefix' => 'productCategory'], function () {
             Route::post('', [ProductCategoryController::class, 'store']);
             Route::get('', [ProductCategoryController::class, 'index']);
             Route::get('/all', [ProductCategoryController::class, 'listAll']);
@@ -139,7 +140,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [ProductCategoryController::class, 'destroy']);
         });
 
-        Route::group(['prefix' => 'products'], function(){
+        Route::group(['prefix' => 'products'], function () {
             Route::post('', [ProductController::class, 'store']);
             Route::get('', [ProductController::class, 'index']);
             Route::get('/all', [ProductController::class, 'listAll']);
@@ -149,7 +150,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [ProductController::class, 'destroy']);
         });
 
-        Route::group(['prefix' => 'productVariants'], function(){
+        Route::group(['prefix' => 'productVariants'], function () {
             Route::post('', [ProductVariantsController::class, 'store']);
             Route::get('', [ProductVariantsController::class, 'index']);
             Route::get('/all', [ProductVariantsController::class, 'listAll']);
@@ -158,7 +159,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [ProductVariantsController::class, 'updateStatus']);
             Route::delete('/{id}', [ProductVariantsController::class, 'destroy']);
         });
-        Route::group(['prefix' => 'castcrew'], function(){
+        Route::group(['prefix' => 'castcrew'], function () {
             Route::get('', [CastCrewController::class, 'index']);
             Route::get('/count', [CastCrewController::class, 'count_cast_crew']);
             Route::post('', [CastCrewController::class, 'store']);
@@ -167,14 +168,14 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get("/{id}", [CastCrewController::class, 'show']);
             Route::patch("/{id}", [CastCrewController::class, 'show']);
         });
-        Route::group(['prefix' => 'language'], function(){
+        Route::group(['prefix' => 'language'], function () {
             Route::get('', [LanguageController::class, 'index']);
             Route::post('', [LanguageController::class, 'store']);
             Route::put('/{id}', [LanguageController::class, 'update']);
             Route::delete('/{id}', [LanguageController::class, 'destroy']);
 
         });
-        Route::group(['prefix' => 'theatres'], function(){
+        Route::group(['prefix' => 'theatres'], function () {
             Route::get('', [TheaterController::class, 'index']);
             Route::get('/all', [TheaterController::class, 'listAll']);
             Route::post('', [TheaterController::class, 'store']);
@@ -184,7 +185,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [TheaterController::class, 'destroy']);
 
         });
-        Route::group(['prefix' => 'seat-types'], function(){
+        Route::group(['prefix' => 'seat-types'], function () {
             Route::post('', [SeatTypeController::class, 'store']);
             Route::get('', [SeatTypeController::class, 'index']);
             Route::get('/all', [SeatTypeController::class, 'listAll']);
@@ -194,7 +195,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [SeatTypeController::class, 'destroy']);
 
         });
-        Route::group(['prefix' => 'movieRating'], function (){
+        Route::group(['prefix' => 'movieRating'], function () {
             Route::post('', [MovieRatingController::class, 'store']);
             Route::get('', [MovieRatingController::class, 'index']);
             Route::get('/{id}', [MovieRatingController::class, 'show']);
@@ -204,7 +205,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/all', [MovieRatingController::class, 'listAll']);
         });
 
-        Route::group(['prefix' => 'screenings'], function (){
+        Route::group(['prefix' => 'screenings'], function () {
             Route::post('', [ScreeningController::class, 'store']);
             Route::get('', [ScreeningController::class, 'index']);
             Route::put('/{id}', [ScreeningController::class, 'update']);
@@ -214,28 +215,31 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/{id}', [ScreeningController::class, 'show']);
         });
 
-        Route::group(['prefix' => 'ticket-sales'], function (){
+        Route::group(['prefix' => 'ticket-sales'], function () {
             Route::post('', [TicketSaleController::class, 'store']);
             Route::get('', [TicketSaleController::class, 'index']);
             Route::get('/{id}', [TicketSaleController::class, 'show']);
         });
-      
-        Route::group(['prefix' => 'tickets'], function (){
+
+        Route::group(['prefix' => 'tickets'], function () {
             Route::post('', [TicketController::class, 'store']);
             Route::get('', [TicketController::class, 'index']);
             Route::patch('/{id}', [TicketController::class, 'updateStatus']);
             Route::get('/all', [TicketController::class, 'listAll']);
             Route::get('/{id}', [TicketController::class, 'show']);
-        });    
-
-        Route::group(['prefix' => 'sale'], function (){
-           Route::post('', [ProductSaleController::class, 'store']);
-           Route::get('', [ProductSaleController::class, 'index']);
-           Route::get('/{id}', [ProductSaleController::class, 'show']);
         });
 
+        Route::group(['prefix' => 'sale'], function () {
+            Route::post('', [ProductSaleController::class, 'store']);
+            Route::get('', [ProductSaleController::class, 'index']);
+            Route::get('/{id}', [ProductSaleController::class, 'show']);
+        });
+        Route::group(['prefix' => 'currency'], function () {
+            Route::get('', [CurrencyController::class, 'index']);
+            Route::get('/show', [CurrencyController::class, 'show']);
+            Route::put('/{id}', [CurrencyController::class, 'update']);
+        });
     });
-
 });
 
 Route::group(['prefix' => 'movie'], function(){

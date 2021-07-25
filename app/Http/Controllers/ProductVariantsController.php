@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductVariantCreateRequest;
 use App\Http\Requests\ProductVariantRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ListResource;
@@ -13,10 +14,10 @@ use Exception;
 
 class ProductVariantsController extends Controller
 {
-    public function store(ProductVariantRequest $request)
+    public function store(ProductVariantCreateRequest $request)
     {
         try {
-            $data = ProductVariants::create($request->all());
+            $data = ProductVariants::store($request['productId'], $request['productVariants']);
             if (!$data)
             {
                 return $this->fail("Something went wrong");
@@ -48,7 +49,8 @@ class ProductVariantsController extends Controller
                "price" => $productVariant->price,
                "status" => $productVariant->status,
                "productId" => $productVariant->productId,
-               "productAttributeValueId" => $productVariant->productAttributeValueId
+               "productAttributeValueId" => $productVariant->productAttributeValueId,
+               "size" => $productVariant->size
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
