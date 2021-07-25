@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Seat;
+use App\Models\Screening;
+use App\Models\TicketSale;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Ticket extends Model
 {
@@ -18,16 +21,16 @@ class Ticket extends Model
 
     public function screening()
     {
-        return $this->belongsTo(Screening::class, 'id', 'screeningId');
+        return $this->belongsTo(Screening::class, 'screeningId', 'id');
     }
 
     public function seat()
     {
-        return $this->belongsTo(Seat::class, 'id', 'seatId');
+        return $this->belongsTo(Seat::class, 'seatId', 'id');
     }
 
     public function payment()
     {
-        return $this->belongsTo(TicketSale::class, 'id', 'paymentId');
+        return $this->belongsTo(TicketSale::class, 'paymentId', 'id');
     }
 }

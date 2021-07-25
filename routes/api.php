@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\CinemaController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\CastCrewController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\SeatTypeController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\MovieGenreController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\TicketSaleController;
 use App\Http\Controllers\MovieRatingController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductVariantsController;
@@ -201,6 +203,18 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/all', [ScreeningController::class, 'listAll']);
             Route::get('/{id}', [ScreeningController::class, 'show']);
         });
+        Route::group(['prefix' => 'ticket-sales'], function (){
+            Route::post('', [TicketSaleController::class, 'store']);
+            Route::get('', [TicketSaleController::class, 'index']);
+            Route::get('/{id}', [TicketSaleController::class, 'show']);
+        });
+        Route::group(['prefix' => 'tickets'], function (){
+            Route::post('', [TicketController::class, 'store']);
+            Route::get('', [TicketController::class, 'index']);
+            Route::patch('/{id}', [TicketController::class, 'updateStatus']);
+            Route::get('/all', [TicketController::class, 'listAll']);
+            Route::get('/{id}', [TicketController::class, 'show']);
+        });    
     });
 
 });

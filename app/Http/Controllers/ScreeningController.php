@@ -24,7 +24,6 @@ class ScreeningController extends Controller
     public function show($id)
     {
         try {
-            // $data = Screening::with("language","movie","theater")->find($id);
             $data = Screening::find($id);
             if (!$data)
             {
