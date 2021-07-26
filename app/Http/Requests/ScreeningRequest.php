@@ -12,7 +12,7 @@ class ScreeningRequest extends DefaultFormRequest
     {
         return [
             'movieId' => 'required',
-            'price' => "required|regex:/^\d+(\.\d{1,2})?$/|min:1",
+            'price' => "required|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1",
             'date' =>'required',
             'start_time' => 'required',
             'theaterId' => 'required',

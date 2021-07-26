@@ -25,6 +25,10 @@ class Customer extends Authenticatable
         'media_id',
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     /**
      * Encrypt password field.
      *

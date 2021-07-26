@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SeatTypeRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Resources\ListResource;
+use App\Http\Resources\ListSeatTypeResource;
 use App\Http\Resources\SeatTypeResource;
 use App\Models\SeatType;
+use App\Models\Theater;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,6 +46,22 @@ class SeatTypeController extends Controller
 
         }catch (Exception $exception){
             DB::rollback();
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $data = SeatType::findOrFail($id);
+            return $this->success([
+               'id' => $data->id,
+               'name' => $data->name,
+               'priceFactor' => $data->priceFactor,
+               'status' => $data->status,
+               'color' => $data->color
+            ]);
+        }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
     }
@@ -110,6 +129,16 @@ class SeatTypeController extends Controller
             return $this->success([
                 'message' => 'seattype'.$id.'deleted'
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listAll()
+    {
+        try {
+            $data = SeatType::where("status", true)->get();
+            return $this->success(ListSeatTypeResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

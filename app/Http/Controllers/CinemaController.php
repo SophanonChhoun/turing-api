@@ -44,7 +44,7 @@ class CinemaController extends Controller
     public function index()
     {
         try {
-            $data = Cinema::with("media")->latest()->get();
+            $data = Cinema::with("media")->whereIn('id', auth()->user()->cinemaIds)->latest()->get();
             return $this->success(CinemaListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -145,8 +145,8 @@ class CinemaController extends Controller
     public function listAll()
     {
         try {
-            $data = Cinema::where("status", 1)->get();
-            return $this->success(ListResource::collection($data));
+            $data = Cinema::with("media")->where("status", 1)->get();
+            return $this->success(CinemaListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

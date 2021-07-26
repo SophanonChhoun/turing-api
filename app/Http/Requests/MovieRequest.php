@@ -12,7 +12,7 @@ class MovieRequest extends DefaultFormRequest
      *
      * @return array
      */
-    public function rules()
+public function rules()
     {
         return [
             'title' => 'required',

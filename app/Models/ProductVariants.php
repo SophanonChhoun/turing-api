@@ -12,12 +12,17 @@ class ProductVariants extends Model
       'price',
       'status',
       'productId',
-      'productAttributeValueId'
+      'productAttributeValueId',
+      'size'
+    ];
+
+    protected $casts = [
+        'status' => 'boolean'
     ];
 
     public function getNameAttribute()
     {
-        return $this->product->name . ' ' . $this->productAttributeValue->name;
+        return $this->product->name . ' ' . $this->productAttributeValue->name . " " . $this->size;
     }
 
     public function product()
@@ -28,5 +33,20 @@ class ProductVariants extends Model
     public function productAttributeValue()
     {
         return $this->belongsTo(ProductAttributeValue::class, 'productAttributeValueId', 'id');
+    }
+
+    public static function store($id, $productVariants)
+    {
+        self::where("productId", $id)->delete();
+        foreach ($productVariants as $key => $productVariant)
+        {
+            $productVariant['productId'] = $id;
+            $data = self::create($productVariant);
+            if (!$data)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

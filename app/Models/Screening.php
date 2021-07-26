@@ -15,8 +15,19 @@ class Screening extends Model
       'theaterId',
       'date',
       'start_time',
-      'status'
+      'status',
+      'cinemaId'
     ];
+
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
+    public function getCinemaIdAttribute()
+    {
+        return $this->theater->cinemaId;
+    }
+
 
     public function language()
     {

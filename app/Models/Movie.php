@@ -22,6 +22,10 @@ class Movie extends Model
       'releasedDate'
     ];
 
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function rating()
     {
         // select * from movies join movieRating on movies.ratedId = movieRating.id
@@ -66,5 +70,10 @@ class Movie extends Model
     public function movieGenres()
     {
         return $this->hasMany(MovieGenreHasMovie::class,"movieId",);
+    }
+
+    public function screenings()
+    {
+        return $this->hasMany(Screening::class,"movieId",);
     }
 }

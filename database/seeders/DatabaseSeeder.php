@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CastCrewSeeder::class);
         $this->call(CinemaSeeder::class);
         $this->call(TheaterSeeder::class);
+        $this->call(CurrencySeeder::class);
     }
 }
