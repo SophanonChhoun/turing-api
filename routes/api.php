@@ -242,8 +242,19 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     });
 });
 
-Route::group(['prefix' => 'movie'], function(){
-    Route::get('', [MovieController::class, 'showUpComingMovie']);
+Route::group(['prefix' => 'mobile'], function(){
+    Route::group(['prefix' => 'movie'], function(){
+        Route::get('', [MovieController::class, 'showMovieMobile']);
+    });
+});
+
+Route::group(['prefix' => 'web'], function() {
+    Route::group(['prefix' => 'movies'], function(){
+        Route::get('/upcoming', [MovieController::class, 'upcomingMovie']);
+        Route::get('/now-showing', [MovieController::class, 'nowShowingMovie']);
+        Route::get('/advertisement', [MovieController::class, 'advertisement']);
+        Route::get('/{id}', [MovieController::class, 'movieDetail']);
+    });
 });
 
 Route::middleware(['auth:sanctum', 'customer'])->group(function () {
