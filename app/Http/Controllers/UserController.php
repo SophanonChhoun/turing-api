@@ -110,7 +110,7 @@ class UserController extends Controller
         }
     }
 
-    public function update($id, Request $request)
+    public function update($id, UserRequest $request)
     {
         DB::beginTransaction();
         try {

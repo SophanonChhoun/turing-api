@@ -8,12 +8,16 @@ use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ListTitleResource;
 use App\Http\Resources\MovieCustomerResource;
 use App\Http\Resources\MovieResource;
+use App\Http\Resources\PhotoResource;
+use App\Http\Resources\ScreeningCinemaResource;
+use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\MovieCast;
 use App\Models\MovieDirector;
 use App\Models\MovieGenre;
 use App\Models\MovieGenreHasMovie;
 use App\Models\MovieRating;
+use App\Models\Screening;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
@@ -165,16 +169,66 @@ class MovieController extends Controller
         }
     }
 
-    public function showUpComingMovie()
+    public function showMovieMobile()
     {
         try {
-            $upComingMovies = Movie::with("rating", "media", "backdropImage", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->limit(10)->get();
+            $upComingMovies = Movie::with("rating", "media", "backdropImage", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
             $nowShowingMovies = Movie::where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->limit(5)->get();
             return $this->success([
                 'upComingMovies' => MovieCustomerResource::collection($upComingMovies),
                 'nowShowingMovies' => MovieCustomerResource::collection($nowShowingMovies)
             ]);
         }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function upcomingMovie()
+    {
+        try {
+            $upComingMovies = Movie::with("media")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
+            return $this->success(PhotoResource::collection($upComingMovies));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function nowShowingMovie()
+    {
+        try {
+            $nowShowingMovies = Movie::where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->get();
+            return $this->success(PhotoResource::collection($nowShowingMovies));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function advertisement()
+    {
+        try {
+            return $this->success(MovieCustomerResource::collection(Movie::with("rating", "media", "backdropImage", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->limit(3)->get()));
+        }catch (Exception $exception) {
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function movieDetail($id)
+    {
+        try {
+            $movie = Movie::with("rating", "media", "backdropImage", "genres")->findOrFail($id);
+            $cinemaId = Screening::where("movieId", $id)->get()->pluck('cinemaId');
+            $cinema = Cinema::with("availableScreenings")->whereIn("id", $cinemaId)->get();
+            return $this->success([
+                "id" => $movie->id,
+                "title" => $movie->title,
+                "synopsis" => $movie->synopsis,
+                "rated" => $movie->rating->title ?? '',
+                "genres" => $movie->genres->pluck("name"),
+                "poster" => $movie->media->file_url ?? '',
+                "backdrop" => $movie->backdropImage->file_url ?? '',
+                "cinemas" => ScreeningCinemaResource::collection($cinema),
+            ]);
+        }catch (Exception $exception) {
             return $this->fail($exception->getMessage());
         }
     }

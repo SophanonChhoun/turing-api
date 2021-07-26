@@ -78,6 +78,7 @@ class CustomerController extends Controller
                 return $this->fail("Customer not found.");
             }
             return $this->success([
+               "id" => $customer->id,
                "name" => $customer->name,
                "email" => $customer->email,
                "status" => $customer->status,

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Screening;
+use App\Models\Theater;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\ScreeningRequest;
 use App\Http\Resources\ScreeningResource;
+use TheSeer\Tokenizer\Exception;
 
 class ScreeningController extends Controller
 {
@@ -49,6 +51,7 @@ class ScreeningController extends Controller
     {
         DB::beginTransaction();
         try{
+            $request['cinemaId'] = Theater::findOrFail($request['theaterId'])->cinemaId;
             $data = Screening::create($request->all());
             if(!$data)
             {
@@ -76,7 +79,7 @@ class ScreeningController extends Controller
             {
                 return $this->fail("Screening not found", [], "Not Found", 404);
             }
-
+            $request['cinemaId'] = Theater::findOrFail($request['theaterId'])->cinemaId;
             $Screening = $data->update($request->all());
             if(!$Screening)
             {
