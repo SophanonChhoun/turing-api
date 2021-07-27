@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ScreeningCreateRequest;
 use App\Models\Screening;
 use App\Models\Theater;
 use Illuminate\Http\Request;
@@ -47,12 +48,11 @@ class ScreeningController extends Controller
         }
     }
 
-    public function store(ScreeningRequest $request)
+    public function store(ScreeningCreateRequest $request)
     {
         DB::beginTransaction();
         try{
-            $request['cinemaId'] = Theater::findOrFail($request['theaterId'])->cinemaId;
-            $data = Screening::create($request->all());
+            $data = Screening::store($request['movieId'], $request['screenings']);
             if(!$data)
             {
                 DB::rollback();
