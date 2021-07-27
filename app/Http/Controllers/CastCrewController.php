@@ -32,9 +32,7 @@ class CastCrewController extends Controller
                 return $this->fail('There is something wrong. data store not success');
             }
             DB::commit();
-            return $this->success([
-                'message' => "CastCrew Created successfully with  Fist name:$firstname and Last name:$lastname"
-            ]);
+            return $this->success($data);
         } catch (Exception $exception) {
             DB::rollback();
             return $this->fail($exception->getMessage());
@@ -69,9 +67,7 @@ class CastCrewController extends Controller
                 return $this->fail("There is something wrong");
             }
             DB::commit();
-            return $this->success([
-                "message" => "CastCrew ID: $id updated"
-            ]);
+            return $this->success($CastCrew);
         } catch (Exception $exception) {
             DB::rollback();
             return $this->fail($exception->getMessage());

@@ -27,9 +27,7 @@ class SeatTypeController extends Controller
                 return $this->fail('There is something wrong. data store not success');
             }
             DB::commit();
-            return $this->success([
-                'message' => "Seat type ID:$id Created successfully"
-            ]);
+            return $this->success($data);
 
         }catch (Exception $exception){
             DB::rollback();
@@ -83,9 +81,7 @@ class SeatTypeController extends Controller
                 return $this->fail("There is something wrong");
             }
             DB::commit();
-            return $this->success([
-                "message" => "seattype '.$id.'updated"
-            ]);
+            return $this->success($seattype);
         }catch (Exception $exception){
             DB::rollback();
             return $this->fail($exception->getMessage());
