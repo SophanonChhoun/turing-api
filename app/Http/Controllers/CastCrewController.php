@@ -26,7 +26,10 @@ class CastCrewController extends Controller
                 return $this->fail('There is something wrong. data store not success');
             }
             DB::commit();
-            return $this->success($data);
+            return $this->success([
+                'id' => $data->id,
+                'name' => $data->name
+            ]);
         } catch (Exception $exception) {
             DB::rollback();
             return $this->fail($exception->getMessage());
