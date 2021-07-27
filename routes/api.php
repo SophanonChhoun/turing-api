@@ -92,7 +92,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [CustomerController::class, 'updateStatus']);
         });
 
-        Route::group(['prefix' => 'movie-generes'], function () {
+        Route::group(['prefix' => 'movie-genres'], function () {
             Route::get('', [MovieGenreController::class, 'index']);
             Route::get('/all', [MovieGenreController::class, 'listAll']);
             Route::post('', [MovieGenreController::class, 'store']);

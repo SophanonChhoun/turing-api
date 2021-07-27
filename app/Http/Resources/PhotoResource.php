@@ -16,7 +16,8 @@ class PhotoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'photo' => $this->media->file_url ?? ''
-        ];
+            'poster' => $this->poster,
+            'backdrop' => $this->backdrop,
+         ];
     }
 }

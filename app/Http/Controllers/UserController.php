@@ -57,10 +57,6 @@ class UserController extends Controller
             if (isset($request['image'])  && !empty($request['image']))
             {
                 $request['media_id'] = MediaLib::generateImageBase64($request['image']);
-            }else{
-                return $this->fail("", [
-                    'Image field is required'
-                ], "InvalidRequestError", 412);
             }
             $user = User::create($request->all());
             $cinemas = CinemaHasUser::store($user->id, $request['cinemas']);

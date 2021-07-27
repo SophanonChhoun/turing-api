@@ -16,7 +16,7 @@ class Movie extends Model
       'synopsis',
       'ratedId',
       'runningTime',
-      'mediaId',
+      'poster',
       'status',
       'backdrop',
       'releasedDate'
@@ -30,16 +30,6 @@ class Movie extends Model
     {
         // select * from movies join movieRating on movies.ratedId = movieRating.id
         return $this->belongsTo(MovieRating::class, 'ratedId', 'id');
-    }
-
-    public function media()
-    {
-        return $this->belongsTo(MediaFile::class, 'mediaId', 'media_id');
-    }
-
-    public function backdropImage()
-    {
-        return $this->belongsTo(MediaFile::class, 'backdrop', 'media_id');
     }
 
     public function genres()

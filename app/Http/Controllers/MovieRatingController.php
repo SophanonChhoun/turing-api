@@ -20,9 +20,7 @@ class MovieRatingController extends Controller
             if (!$data) {
                 return $this->fail("Something went wrong.");
             }
-            return $this->success([
-                "message" => "Movie Rating created."
-            ]);
+            return $this->success($data);
         } catch (Exception $exception) {
             return $this->fail($exception->getMessage());
         }
@@ -61,9 +59,7 @@ class MovieRatingController extends Controller
             {
                 return $this->fail("Something went wrong");
             }
-            return $this->success([
-               "message" => "Movie Rating updated."
-            ]);
+            return $this->success($data);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

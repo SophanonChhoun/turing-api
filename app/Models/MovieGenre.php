@@ -12,7 +12,6 @@ class MovieGenre extends Model
     protected $fillable = [
       'name',
       'status',
-      'description'
     ];
 
     protected $casts = [
