@@ -19,13 +19,7 @@ class CastCrewController extends Controller
         try {
             if (isset($request['image'])  && !empty($request['image'])) {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
-            } else {
-                return $this->fail("", [
-                    'Image field is required'
-                ], "InvalidRequestError");
             }
-            $firstname = $request['firstName'];
-            $lastname = $request['lastName'];
             $data = CastCrew::create($request->all());
             if (!$data) {
                 DB::rollback();
