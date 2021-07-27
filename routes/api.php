@@ -92,7 +92,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [CustomerController::class, 'updateStatus']);
         });
 
-        Route::group(['prefix' => 'movie-genres'], function () {
+        Route::group(['prefix' => 'genres'], function () {
             Route::get('', [MovieGenreController::class, 'index']);
             Route::get('/all', [MovieGenreController::class, 'listAll']);
             Route::post('', [MovieGenreController::class, 'store']);
@@ -195,7 +195,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [SeatTypeController::class, 'destroy']);
 
         });
-        Route::group(['prefix' => 'movieRating'], function () {
+        Route::group(['prefix' => 'ratings'], function () {
             Route::post('', [MovieRatingController::class, 'store']);
             Route::get('', [MovieRatingController::class, 'index']);
             Route::get('/{id}', [MovieRatingController::class, 'show']);
