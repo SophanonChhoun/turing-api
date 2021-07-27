@@ -173,7 +173,6 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::post('', [LanguageController::class, 'store']);
             Route::put('/{id}', [LanguageController::class, 'update']);
             Route::delete('/{id}', [LanguageController::class, 'destroy']);
-
         });
         Route::group(['prefix' => 'theatres'], function () {
             Route::get('', [TheaterController::class, 'index']);
@@ -183,7 +182,6 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::put('/{id}', [TheaterController::class, 'update']);
             Route::patch('/{id}', [TheaterController::class, 'updateStatus']);
             Route::delete('/{id}', [TheaterController::class, 'destroy']);
-
         });
         Route::group(['prefix' => 'seat-types'], function () {
             Route::post('', [SeatTypeController::class, 'store']);
