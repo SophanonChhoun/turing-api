@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Exception;
 
 class Screening extends Model
 {
@@ -47,5 +48,24 @@ class Screening extends Model
     public function seat()
     {
         return $this->hasMany(Seat::class, 'theaterId', 'theaterId');
+    }
+
+    public static function store($id, $screenings)
+    {
+        try {
+            foreach ($screenings as $key => $screening)
+            {
+                $screening['movieId'] = $id;
+                $screening['cinemaId'] = Theater::findOrFail($id)->cinemaId;
+                $data = self::create($screening);
+                if (!$data)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }catch (Exception $exception){
+            return false;
+        }
     }
 }
