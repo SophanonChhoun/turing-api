@@ -56,7 +56,7 @@ class Screening extends Model
             foreach ($screenings as $key => $screening)
             {
                 $screening['movieId'] = $id;
-                $screening['cinemaId'] = Theater::findOrFail($id)->cinemaId;
+                $screening['cinemaId'] = Theater::findOrFail($screening['theaterId'])->cinemaId;
                 $data = self::create($screening);
                 if (!$data)
                 {
