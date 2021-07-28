@@ -3,28 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Core\MediaLib;
-use App\Http\Requests\ProductCategoryRequest;
-use App\Http\Requests\StatusRequest;
-use App\Http\Resources\ListResource;
-use App\Http\Resources\ProductCategoryResource;
-use App\Models\ProductCategory;
+use App\Http\Requests\AdvertisementRequest;
+use App\Http\Resources\AdvertisementResource;
+use App\Models\Advertisement;
 use Illuminate\Http\Request;
-use DB;
+use Telegram\Bot\FileUpload\InputFile;
+use Telegram\Bot\Laravel\Facades\Telegram;
 use Exception;
+use DB;
 
-class ProductCategoryController extends Controller
+class AdvertisementController extends Controller
 {
     public function index()
     {
         try {
-            $data = ProductCategory::with("media")->latest()->get();
-            return $this->success(ProductCategoryResource::collection($data));
+            $data = Advertisement::with("media")->latest()->get();
+            return $this->success(AdvertisementResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
     }
 
-    public function store(ProductCategoryRequest $request)
+    public function store(AdvertisementRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -36,7 +36,7 @@ class ProductCategoryController extends Controller
                     'Image field is required'
                 ], 'InvalidRequestError', 412);
             }
-            $data = ProductCategory::create($request->all());
+            $data = Advertisement::create($request->all());
             if(!$data)
             {
                 DB::rollback();
@@ -44,7 +44,7 @@ class ProductCategoryController extends Controller
             }
             DB::commit();
             return $this->success([
-               "message" => "Product category Created."
+                "message" => "Advertisement Created."
             ]);
         }catch (Exception $exception){
             DB::rollback();
@@ -55,37 +55,35 @@ class ProductCategoryController extends Controller
     public function show($id)
     {
         try {
-            $data = ProductCategory::with("media")->findOrFail($id);
+            $data = Advertisement::with("media")->findOrFail($id);
             return $this->success([
                 "id" => $data->id,
-                "name" => $data->name,
                 "description" => $data->description,
-                "photo" => $data->media->file_url ?? '',
-                "status" => $data->status
+                "photo" => $data->media->file_url ?? ''
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
     }
 
-    public function update($id, ProductCategoryRequest $request)
+    public function update($id, AdvertisementRequest $request)
     {
         DB::beginTransaction();
         try {
-            $category = ProductCategory::findOrFail($id);
+            $advertisement = Advertisement::findOrFail($id);
             if (isset($request['image']))
             {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
             }
-            $category = $category->update($request->all());
-            if(!$category)
+            $advertisement = $advertisement->update($request->all());
+            if(!$advertisement)
             {
                 DB::rollback();
                 return $this->fail("Something went wrong.");
             }
             DB::commit();
             return $this->success([
-                "message" => "Product category updated."
+                "message" => "Advertisement updated."
             ]);
         }catch (Exception $exception){
             DB::rollback();
@@ -93,39 +91,30 @@ class ProductCategoryController extends Controller
         }
     }
 
-    public function updateStatus($id, StatusRequest $request)
-    {
-        try {
-            ProductCategory::findOrFail($id)->update([
-                "status" => $request->status
-            ]);
-            return $this->success([
-                "message" => "Product status updated"
-            ]);
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     public function destroy($id)
     {
         try {
-            ProductCategory::findOrFail($id)->delete();
+            Advertisement::findOrFail($id)->delete();
             return $this->success([
-               "message" => "Product category deleted."
+                "message" => "Advertisement deleted."
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
     }
 
-    public function listAll()
+    public function test(Request $request)
     {
-        try {
-            $categories = ProductCategory::where("status", 1)->get();
-            return $this->success(ListResource::collection($categories));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
+        $text = "A new contact us query\n"
+            . "<b>Email Address: </b>\n"
+            . "$request->email\n"
+            . "<b>Message: </b>\n"
+            . $request->message;
+        $photo = \App\Models\ProductCategory::with('media')->find(1)->media->file_name ?? '';
+        Telegram::sendPhoto([
+            'chat_id' => env('TELEGRAM_CHAT_ID', ''),
+            'photo' => InputFile::create(public_path('uploads/images/'. $photo)),
+        ]);
+        return 'Successful';
     }
 }
