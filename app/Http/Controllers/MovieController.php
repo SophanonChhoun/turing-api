@@ -65,6 +65,7 @@ class MovieController extends Controller
         try {
             $data = Movie::with(
                 "directors",
+                "rating",
                 "casts",
                 "genres",
             )->findOrFail($id);
@@ -73,7 +74,7 @@ class MovieController extends Controller
                 "title" => $data->title,
                 "releasedDate" => $data->releasedDate,
                 "synopsis" => $data->synopsis,
-                "ratedId" => $data->ratedId,
+                "ratedId" => $data->rating,
                 "trailerUrl" => $data->trailerUrl,
                 "runningTime" => $data->runningTime,
                 "poster" => $data->poster,

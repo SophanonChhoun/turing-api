@@ -26,6 +26,7 @@ use App\Http\Controllers\ProductAttributeValueController;
 use App\Http\Controllers\ProductSaleController;
 use App\Http\Controllers\CurrencyController;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use App\Http\Controllers\AdvertisementController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,21 +45,6 @@ Route::post("register", [CustomerController::class, 'signUp']);
 Route::post('/bot/getupdates', function() {
     $updates = Telegram::getUpdates();
     return (json_encode($updates));
-});
-Route::post('bot/sendmessage', function(Request $request) {
-    $text = "A new contact us query\n"
-        . "<b>Email Address: </b>\n"
-        . "$request->email\n"
-        . "<b>Message: </b>\n"
-        . $request->message;
-    $photo = \App\Models\ProductCategory::with('media')->find(1)->media->file_url ?? '';
-    Telegram::sendMessage([
-        'chat_id' => env('TELEGRAM_CHAT_ID', ''),
-        'text' => $text,
-        'parse_mode' => 'HTML',
-        'photo' => new \Telegram\Bot\FileUpload\InputFile($photo),
-    ]);
-    return;
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
@@ -102,6 +88,14 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::put('/{id}', [UserController::class, 'update']);
             Route::patch('/{id}', [UserController::class, 'updateStatus']);
             Route::delete('/{id}', [UserController::class, 'destroy']);
+        });
+
+        Route::group(['prefix' => 'advertisements'], function() {
+            Route::post('', [AdvertisementController::class, 'store']);
+            Route::get('', [AdvertisementController::class, 'store']);
+            Route::put('/{id}', [AdvertisementController::class, 'update']);
+            Route::get('/{id}', [AdvertisementController::class, 'show']);
+            Route::delete('/{id}', [AdvertisementController::class, 'destroy']);
         });
 
         Route::group(['prefix' => 'customers'], function () {
