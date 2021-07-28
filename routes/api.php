@@ -25,7 +25,7 @@ use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
 use App\Http\Controllers\ProductSaleController;
 use App\Http\Controllers\CurrencyController;
-
+use Telegram\Bot\Laravel\Facades\Telegram;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,6 +41,25 @@ Route::post("admin/login", [UserController::class, 'login']);
 Route::post("login", [CustomerController::class, 'login']);
 Route::post("register", [CustomerController::class, 'signUp']);
 
+Route::post('/bot/getupdates', function() {
+    $updates = Telegram::getUpdates();
+    return (json_encode($updates));
+});
+Route::post('bot/sendmessage', function(Request $request) {
+    $text = "A new contact us query\n"
+        . "<b>Email Address: </b>\n"
+        . "$request->email\n"
+        . "<b>Message: </b>\n"
+        . $request->message;
+    $photo = \App\Models\ProductCategory::with('media')->find(1)->media->file_url ?? '';
+    Telegram::sendMessage([
+        'chat_id' => env('TELEGRAM_CHAT_ID', ''),
+        'text' => $text,
+        'parse_mode' => 'HTML',
+        'photo' => new \Telegram\Bot\FileUpload\InputFile($photo),
+    ]);
+    return;
+});
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
