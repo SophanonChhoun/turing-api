@@ -74,7 +74,7 @@ class MovieController extends Controller
                 "title" => $data->title,
                 "releasedDate" => $data->releasedDate,
                 "synopsis" => $data->synopsis,
-                "ratedId" => $data->rating,
+                "rated" => $data->rating,
                 "trailerUrl" => $data->trailerUrl,
                 "runningTime" => $data->runningTime,
                 "poster" => $data->poster,
