@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Core\MediaLib;
 use App\Http\Requests\MovieRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Resources\ListResource;
 use App\Http\Resources\ListTitleResource;
 use App\Http\Resources\MovieCustomerResource;
 use App\Http\Resources\MovieResource;
@@ -63,9 +64,9 @@ class MovieController extends Controller
     {
         try {
             $data = Movie::with(
-                "movieDirectors",
-                "movieCasts",
-                "movieGenres",
+                "directors",
+                "casts",
+                "genres",
             )->findOrFail($id);
             return $this->success([
                 "id" => $data->id,
@@ -77,9 +78,9 @@ class MovieController extends Controller
                 "runningTime" => $data->runningTime,
                 "poster" => $data->poster,
                 "backdrop" => $data->backdrop,
-                "movieDirectors" => $data->movieDirectors->pluck("directorId") ?? '',
-                "movieCasts" => $data->movieCasts->pluck("castId") ?? '',
-                "movieGenres" => $data->movieGenres->pluck("movieGenreId") ?? '',
+                "movieDirectors" => ListResource::collection($data->directors),
+                "movieCasts" => ListResource::collection($data->casts),
+                "movieGenres" => ListResource::collection($data->genres),
                 "status" => $data->status
             ]);
         }catch (Exception $exception){
