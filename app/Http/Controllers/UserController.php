@@ -98,6 +98,7 @@ class UserController extends Controller
                 "email" => $user->email,
                 "firstName" => $user->firstName,
                 "lastName" => $user->lastName,
+                "phoneNumber" => $user->phoneNumber,
                 "status" => $user->status,
                 "photo" => $user->media->file_url ?? '',
                 "roles" => $user->hasRoles->pluck("roleId"),

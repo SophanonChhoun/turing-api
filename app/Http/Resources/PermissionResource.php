@@ -17,10 +17,10 @@ class PermissionResource extends JsonResource
         return [
             "name" => $this->name,
             "id" => $this->id,
-            "create" => 0,
-            "read" => 0,
-            "update" => 0,
-            "delete" => 0,
+            "create" => false,
+            "read" => false,
+            "update" => false,
+            "delete" => false,
         ];
     }
 }
