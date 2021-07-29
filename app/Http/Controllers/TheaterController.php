@@ -70,7 +70,8 @@ class TheaterController extends Controller
                 $grid[$seat->row][$seat->col] = [
                     "id" => $seat->id,
                     "name" => $seat->name,
-                    "seatType" => $seat->seatType
+                    "seatType" => $seat->seatType,
+                    "status" => $seat->status
                 ];
             }
 
