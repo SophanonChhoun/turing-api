@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Core\MediaLib;
 use App\Http\Requests\MovieRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Resources\ListResource;
 use App\Http\Resources\ListTitleResource;
 use App\Http\Resources\MovieCustomerResource;
 use App\Http\Resources\MovieResource;
@@ -30,17 +31,6 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
-            if(isset($request['poster']) && isset($request['backdrop'])  && !empty($request['poster'])  && !empty($request['backdrop']))
-            {
-                $request['mediaId'] = MediaLib::generateImageBase64($request['poster']);
-                $request['backdrop'] = MediaLib::generateImageBase64($request['backdrop']);
-            }else{
-                return $this->fail("", [
-                    "poster field is required.",
-                    "backdrop field is required."
-                ], "InvalidRequestError", 412);
-            }
-
             $movie = Movie::create($request->all());
             $cast = MovieCast::store($movie->id, $request['movieCasts']);
             $directors = MovieDirector::store($movie->id, $request['movieDirectors']);
@@ -63,7 +53,7 @@ class MovieController extends Controller
     public function index()
     {
         try {
-            $data = Movie::with("rating", "media", "backdropImage", "genres", "directors", "casts")->latest()->get();
+            $data = Movie::with("rating", "genres", "directors", "casts")->latest()->get();
             return $this->success(MovieResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -74,25 +64,24 @@ class MovieController extends Controller
     {
         try {
             $data = Movie::with(
-                "movieDirectors",
-                "movieCasts",
-                "movieGenres",
-                "media",
-                "backdropImage",
+                "directors",
+                "rating",
+                "casts",
+                "genres",
             )->findOrFail($id);
             return $this->success([
                 "id" => $data->id,
                 "title" => $data->title,
                 "releasedDate" => $data->releasedDate,
                 "synopsis" => $data->synopsis,
-                "ratedId" => $data->ratedId,
+                "rated" => $data->rating,
                 "trailerUrl" => $data->trailerUrl,
                 "runningTime" => $data->runningTime,
-                "poster" => $data->media->file_url ?? '',
-                "backdrop" => $data->backdropImage->file_url ?? '',
-                "movieDirectors" => $data->movieDirectors->pluck("directorId") ?? '',
-                "movieCasts" => $data->movieCasts->pluck("castId") ?? '',
-                "movieGenres" => $data->movieGenres->pluck("movieGenreId") ?? '',
+                "poster" => $data->poster,
+                "backdrop" => $data->backdrop,
+                "movieDirectors" => ListResource::collection($data->directors),
+                "movieCasts" => ListResource::collection($data->casts),
+                "movieGenres" => ListResource::collection($data->genres),
                 "status" => $data->status
             ]);
         }catch (Exception $exception){
@@ -104,12 +93,6 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
-            if(isset($request['poster']) && isset($request['backdrop']))
-            {
-                $request['mediaId'] = MediaLib::generateImageBase64($request['poster']);
-                $request['backdrop'] = MediaLib::generateImageBase64($request['backdrop']);
-            }
-
             $movie = Movie::findOrFail($id)->update($request->all());
             $cast = MovieCast::store($id, $request['movieCasts']);
             $directors = MovieDirector::store($id, $request['movieDirectors']);
@@ -186,7 +169,7 @@ class MovieController extends Controller
     public function upcomingMovie()
     {
         try {
-            $upComingMovies = Movie::with("media")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
+            $upComingMovies = Movie::where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
             return $this->success(PhotoResource::collection($upComingMovies));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -206,7 +189,7 @@ class MovieController extends Controller
     public function advertisement()
     {
         try {
-            return $this->success(MovieCustomerResource::collection(Movie::with("rating", "media", "backdropImage", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->limit(3)->get()));
+            return $this->success(MovieCustomerResource::collection(Movie::with("rating", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->limit(3)->get()));
         }catch (Exception $exception) {
             return $this->fail($exception->getMessage());
         }
@@ -215,7 +198,7 @@ class MovieController extends Controller
     public function movieDetail($id)
     {
         try {
-            $movie = Movie::with("rating", "media", "backdropImage", "genres")->findOrFail($id);
+            $movie = Movie::with("rating", "genres")->findOrFail($id);
             $cinemaId = Screening::where("movieId", $id)->get()->pluck('cinemaId');
             $cinema = Cinema::with("availableScreenings")->whereIn("id", $cinemaId)->get();
             return $this->success([
@@ -224,8 +207,8 @@ class MovieController extends Controller
                 "synopsis" => $movie->synopsis,
                 "rated" => $movie->rating->title ?? '',
                 "genres" => $movie->genres->pluck("name"),
-                "poster" => $movie->media->file_url ?? '',
-                "backdrop" => $movie->backdropImage->file_url ?? '',
+                "poster" => $movie->poster,
+                "backdrop" => $movie->backdrop,
                 "cinemas" => ScreeningCinemaResource::collection($cinema),
             ]);
         }catch (Exception $exception) {

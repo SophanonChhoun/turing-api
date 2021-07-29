@@ -19,13 +19,7 @@ class CastCrewController extends Controller
         try {
             if (isset($request['image'])  && !empty($request['image'])) {
                 $request['mediaId'] = MediaLib::generateImageBase64($request['image']);
-            } else {
-                return $this->fail("", [
-                    'Image field is required'
-                ], "InvalidRequestError");
             }
-            $firstname = $request['firstName'];
-            $lastname = $request['lastName'];
             $data = CastCrew::create($request->all());
             if (!$data) {
                 DB::rollback();
@@ -33,7 +27,8 @@ class CastCrewController extends Controller
             }
             DB::commit();
             return $this->success([
-                'message' => "CastCrew Created successfully with  Fist name:$firstname and Last name:$lastname"
+                'id' => $data->id,
+                'name' => $data->name
             ]);
         } catch (Exception $exception) {
             DB::rollback();
@@ -69,9 +64,7 @@ class CastCrewController extends Controller
                 return $this->fail("There is something wrong");
             }
             DB::commit();
-            return $this->success([
-                "message" => "CastCrew ID: $id updated"
-            ]);
+            return $this->success($CastCrew);
         } catch (Exception $exception) {
             DB::rollback();
             return $this->fail($exception->getMessage());

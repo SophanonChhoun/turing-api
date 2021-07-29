@@ -128,6 +128,12 @@ class PermissionSeeder extends Seeder
               "name" => "Tickets Sale",
               "category" => "Ticket Management",
               "slug" => "ticketSale"
+          ],
+          [
+              "id" => 20,
+              "name" => "Advertisement",
+              "category" => "Advertisement Management",
+              "slug" => "advertisement"
           ]
         ];
 

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MovieCustomerResource extends JsonResource
+class AdvertisementResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,9 @@ class MovieCustomerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'synopsis' => $this->synopsis,
-            'poster' => $this->poster,
-            "rated" => $this->rating->title ?? '',
-            "genres" => $this->genres->pluck('name')
+            'description' => strlen($this->description) <= 100 ? $this->description : mb_substr($this->description, 0, 100) . '...',
+            'amountSend' => $this->amountSend,
+            'photo' => $this->media->file_url ?? '',
         ];
     }
 }

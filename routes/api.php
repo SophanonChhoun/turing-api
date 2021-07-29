@@ -25,7 +25,9 @@ use App\Http\Controllers\ProductAttributesController;
 use App\Http\Controllers\ProductAttributeValueController;
 use App\Http\Controllers\ProductSaleController;
 use App\Http\Controllers\CurrencyController;
-
+use Telegram\Bot\Laravel\Facades\Telegram;
+use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\MailController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,6 +43,12 @@ Route::post("admin/login", [UserController::class, 'login']);
 Route::post("login", [CustomerController::class, 'login']);
 Route::post("register", [CustomerController::class, 'signUp']);
 
+Route::get('senmail', [MailController::class, 'sendEmail']);
+
+Route::post('/bot/getupdates', function() {
+    $updates = Telegram::getUpdates();
+    return (json_encode($updates));
+});
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
@@ -85,6 +93,15 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });
 
+        Route::group(['prefix' => 'advertisements'], function() {
+            Route::post('', [AdvertisementController::class, 'store']);
+            Route::get('', [AdvertisementController::class, 'index']);
+            Route::put('/{id}', [AdvertisementController::class, 'update']);
+            Route::get('/{id}', [AdvertisementController::class, 'show']);
+            Route::delete('/{id}', [AdvertisementController::class, 'destroy']);
+            Route::get('/send/{id}', [AdvertisementController::class, 'send']);
+        });
+
         Route::group(['prefix' => 'customers'], function () {
             Route::get('', [CustomerController::class, 'index']);
             Route::get('/all', [CustomerController::class, 'listAll']);
@@ -92,7 +109,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [CustomerController::class, 'updateStatus']);
         });
 
-        Route::group(['prefix' => 'movie-generes'], function () {
+        Route::group(['prefix' => 'genres'], function () {
             Route::get('', [MovieGenreController::class, 'index']);
             Route::get('/all', [MovieGenreController::class, 'listAll']);
             Route::post('', [MovieGenreController::class, 'store']);
@@ -159,7 +176,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [ProductVariantsController::class, 'updateStatus']);
             Route::delete('/{id}', [ProductVariantsController::class, 'destroy']);
         });
-        Route::group(['prefix' => 'castcrew'], function () {
+        Route::group(['prefix' => 'cast-crew'], function () {
             Route::get('', [CastCrewController::class, 'index']);
             Route::get('/count', [CastCrewController::class, 'count_cast_crew']);
             Route::post('', [CastCrewController::class, 'store']);
@@ -173,7 +190,6 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::post('', [LanguageController::class, 'store']);
             Route::put('/{id}', [LanguageController::class, 'update']);
             Route::delete('/{id}', [LanguageController::class, 'destroy']);
-
         });
         Route::group(['prefix' => 'theatres'], function () {
             Route::get('', [TheaterController::class, 'index']);
@@ -183,7 +199,6 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::put('/{id}', [TheaterController::class, 'update']);
             Route::patch('/{id}', [TheaterController::class, 'updateStatus']);
             Route::delete('/{id}', [TheaterController::class, 'destroy']);
-
         });
         Route::group(['prefix' => 'seat-types'], function () {
             Route::post('', [SeatTypeController::class, 'store']);
@@ -195,7 +210,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::delete('/{id}', [SeatTypeController::class, 'destroy']);
 
         });
-        Route::group(['prefix' => 'movieRating'], function () {
+        Route::group(['prefix' => 'ratings'], function () {
             Route::post('', [MovieRatingController::class, 'store']);
             Route::get('', [MovieRatingController::class, 'index']);
             Route::get('/{id}', [MovieRatingController::class, 'show']);

@@ -44,7 +44,7 @@ class ProductCategoryController extends Controller
             }
             DB::commit();
             return $this->success([
-               "message" => "Product Created."
+               "message" => "Product category Created."
             ]);
         }catch (Exception $exception){
             DB::rollback();

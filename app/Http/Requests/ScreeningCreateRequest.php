@@ -4,12 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MovieGenreRequest extends DefaultFormRequest
+class ScreeningCreateRequest extends DefaultFormRequest
 {
     public function rules()
     {
         return [
-            "name" => "required|unique:movie_genres,name,".$this->id,
+            'movieId' => 'required',
+            'screenings' => 'required|array'
         ];
     }
 }

@@ -162,7 +162,7 @@ class TheaterController extends Controller
     public function listAll()
     {
         try {
-            $data = Theater::where("status", 1)->get();
+            $data = Theater::all();
             return $this->success(ListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
