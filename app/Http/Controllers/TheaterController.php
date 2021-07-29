@@ -139,23 +139,31 @@ class TheaterController extends Controller
     }
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
             $Theater = Theater::find($id);
-            $name=$Theater->name;
             if(!$Theater)
             {
                 return $this->fail("Theater not exist.", [], "Not Found", 404);
             }
             $Theater = $Theater->delete();
-            $seats = Seat::where("cinemaId", $id)->delete();
-            if(!$Theater || !$seats)
+            if(!$Theater)
             {
+                DB::rollBack();
+                return $this->fail("Something went wrong with theater");
+            }
+            $seats = Seat::where('theaterId', $id)->delete();
+            if(!$seats)
+            {
+                DB::rollBack();
                 return $this->fail("Something went wrong");
             }
+            DB::commit();
             return $this->success([
-                'message' => "Theater ID:$id Name: $name deleted"
+                'message' => "Theater deleted"
             ]);
         }catch (Exception $exception){
+            DB::rollBack();
             return $this->fail($exception->getMessage());
         }
     }
