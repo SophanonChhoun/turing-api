@@ -19,8 +19,8 @@ class Controller extends BaseController
         return $validator->errors()->all();
     }
 
-    public function success ($data, $statusCode = 200)    {
-
+    public function success ($data, $statusCode = 200)
+    {
         return response()->json($data, $statusCode);
     }
 
