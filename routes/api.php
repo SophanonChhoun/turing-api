@@ -92,10 +92,11 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'advertisements'], function() {
             Route::post('', [AdvertisementController::class, 'store']);
-            Route::get('', [AdvertisementController::class, 'store']);
+            Route::get('', [AdvertisementController::class, 'index']);
             Route::put('/{id}', [AdvertisementController::class, 'update']);
             Route::get('/{id}', [AdvertisementController::class, 'show']);
             Route::delete('/{id}', [AdvertisementController::class, 'destroy']);
+            Route::get('/send/{id}', [AdvertisementController::class, 'send']);
         });
 
         Route::group(['prefix' => 'customers'], function () {
