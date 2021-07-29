@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -17,8 +18,8 @@ class Controller extends BaseController
     {
         return $validator->errors()->all();
     }
-    public function success ($data, $statusCode = 200)
-    {
+
+    public function success ($data, $statusCode = 200)    {
 
         return response()->json($data, $statusCode);
     }

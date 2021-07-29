@@ -80,6 +80,7 @@ class UserController extends Controller
     {
         try {
             $users = User::with("media")->latest()->get();
+            
             return $this->success(UserResource::collection($users));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -97,6 +98,7 @@ class UserController extends Controller
                 "email" => $user->email,
                 "firstName" => $user->firstName,
                 "lastName" => $user->lastName,
+                "phoneNumber" => $user->phoneNumber,
                 "status" => $user->status,
                 "photo" => $user->media->file_url ?? '',
                 "roles" => $user->hasRoles->pluck("roleId"),
