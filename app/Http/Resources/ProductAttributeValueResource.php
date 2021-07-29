@@ -19,7 +19,7 @@ class ProductAttributeValueResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'status' => $this->status,
-            "productAttribute" => $this->productAttribute->name
+            "productAttribute" => $this->productAttribute->name ?? ''
         ];
     }
 }

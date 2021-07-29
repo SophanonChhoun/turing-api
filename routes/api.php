@@ -27,6 +27,7 @@ use App\Http\Controllers\ProductSaleController;
 use App\Http\Controllers\CurrencyController;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\MailController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,6 +42,8 @@ use App\Http\Controllers\AdvertisementController;
 Route::post("admin/login", [UserController::class, 'login']);
 Route::post("login", [CustomerController::class, 'login']);
 Route::post("register", [CustomerController::class, 'signUp']);
+
+Route::get('senmail', [MailController::class, 'sendEmail']);
 
 Route::post('/bot/getupdates', function() {
     $updates = Telegram::getUpdates();
