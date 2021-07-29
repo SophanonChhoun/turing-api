@@ -43,7 +43,8 @@ class Seat extends Model
                     "name" => $seat['name'],
                     "row" => $seat['row'],
                     "col" => $seat['col'],
-                    "seatTypeId" => $seat['seatTypeId']
+                    "seatTypeId" => $seat['seatTypeId'],
+                    "status" => $seat['status']
                 ]);
                 if (!$data)
                 {
