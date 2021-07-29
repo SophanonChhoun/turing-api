@@ -65,12 +65,13 @@ class TheaterController extends Controller
                     $grid[$i][$j] = null;
                 }
             }
-            $seats = SeatResource::collection(Seat::with("seatType")->where("theaterId", $id)->where("status", true)->get());
+            $seats = SeatResource::collection(Seat::with("seatType")->where("theaterId", $id)->get());
             foreach ($seats as $key => $seat) {
                 $grid[$seat->row][$seat->col] = [
                     "id" => $seat->id,
                     "name" => $seat->name,
-                    "seatType" => $seat->seatType
+                    "seatType" => $seat->seatType,
+                    "status" => $seat->status
                 ];
             }
 
@@ -162,7 +163,7 @@ class TheaterController extends Controller
     public function listAll()
     {
         try {
-            $data = Theater::all();
+            $data = Theater::where("status", true)->get();
             return $this->success(ListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
