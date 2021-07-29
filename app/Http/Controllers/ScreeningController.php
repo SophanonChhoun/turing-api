@@ -34,14 +34,17 @@ class ScreeningController extends Controller
             }
             return $this->success([
                 "id" => $data->id,
-                "movie_title" => $data->movie->title,
+                "movie_title" => $data->movie->title ?? '',
                 "price" => $data->price,
-                "theater" => $data->theater->name,
-                "language_sub" => $data->language->sub,
-                "language_dub" => $data->language->dub,
+                "theater" => $data->theater->name ?? '',
+                "language_sub" => $data->language->sub ?? '',
+                "language_dub" => $data->language->dub ?? '',
                 "date" => $data->date,
                 "start_time" => $data->start_time,
                 "status" => $data->status,
+                "theaterId" => $data->theaterId,
+                "languageId" => $data->languageId,
+                "movieId" => $data->movieId,
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

@@ -16,7 +16,7 @@ class AdvertisementResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'description' => $this->description,
+            'description' => strlen($this->description) <= 100 ? $this->description : mb_substr($this->description, 0, 100) . '...',
             'amountSend' => $this->amountSend,
             'photo' => $this->media->file_url ?? '',
         ];

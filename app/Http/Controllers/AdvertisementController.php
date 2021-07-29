@@ -103,6 +103,31 @@ class AdvertisementController extends Controller
         }
     }
 
+    public function send($id)
+    {
+        try {
+            $data = Advertisement::findOrFail($id);
+            if (!$data) {
+                return $this->fail('Data not found.');
+            }
+            $send = Telegram::sendPhoto([
+                'chat_id' => env('TELEGRAM_CHAT_ID', ''),
+                'photo' => InputFile::create(public_path('uploads/images/'. $data->file_name)),
+                'caption' => $data->description,
+                'parse_mode' => 'HTML',
+            ]);
+            if (!$send)
+            {
+                return $this->fail('Something went wrong');
+            }
+            return $this->success([
+               'message' => "Sent to telegram completed"
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function test(Request $request)
     {
         $text = "A new contact us query\n"

@@ -13,4 +13,14 @@ class Advertisement extends Model
         'description',
         'amountSend'
     ];
+
+    public function media()
+    {
+        return $this->hasOne(MediaFile::class,"media_id","mediaId");
+    }
+
+    public function getFileNameAttribute()
+    {
+        return $this->media->file_name;
+    }
 }
