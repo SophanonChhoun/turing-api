@@ -10,19 +10,15 @@ use Illuminate\Queue\SerializesModels;
 class SendMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public  $title;
-    public $customer_details;
-    public $order_details;
+    public  $code;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($title, $customer_details, $order_details)
+    public function __construct($code)
     {
-        $this->title = $title;
-        $this->customer_details= $customer_details;
-        $this->order_details = $order_details;
+        $this->code = $code;
     }
 
     /**
@@ -32,6 +28,6 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->title)->view('customer_mail');
+        return $this->subject("Reset Password")->view('customer_mail');
     }
 }
