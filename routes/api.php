@@ -43,7 +43,9 @@ Route::post("admin/login", [UserController::class, 'login']);
 Route::post("login", [CustomerController::class, 'login']);
 Route::post("register", [CustomerController::class, 'signUp']);
 
-Route::get('senmail', [MailController::class, 'sendEmail']);
+Route::post('admin/send-mail', [MailController::class, 'sendEmail']);
+Route::post("admin/verify-code", [MailController::class, "verifyCode"]);
+Route::put("admin/reset-password", [MailController::class, "updatePassword"]);
 
 Route::post('/bot/getupdates', function() {
     $updates = Telegram::getUpdates();
