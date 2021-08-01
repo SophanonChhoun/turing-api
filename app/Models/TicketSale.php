@@ -11,9 +11,11 @@ class TicketSale extends Model
     protected $table = "ticket_sales";
     protected $fillable = [
       'userId',
-      'cinemaId',
+      'cinemaName',
       'total',
-      'screeningId'
+      'screeningId',
+      'theaterName',
+      'movieName'
     ];
 
     public function customer()

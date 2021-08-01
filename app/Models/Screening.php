@@ -40,6 +40,11 @@ class Screening extends Model
         return $this->hasOne(Movie::class, 'id', 'movieId');
     }
 
+    public function cinema()
+    {
+        return $this->hasOne(Cinema::class, 'id', 'cinemaId');
+    }
+
     public function theater()
     {
         return $this->hasOne(Theater::class, 'id', 'theaterId');
@@ -56,7 +61,7 @@ class Screening extends Model
             foreach ($screenings as $key => $screening)
             {
                 $screening['movieId'] = $id;
-                $screening['cinemaId'] = Theater::findOrFail($screening['theaterId'])->cinemaId;
+                $screening['cinemaId'] = Theater::find($screening['theaterId'])->cinemaId ?? 0;
                 $data = self::create($screening);
                 if (!$data)
                 {

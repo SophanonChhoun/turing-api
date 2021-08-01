@@ -229,13 +229,12 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [ScreeningController::class, 'updateStatus']);
             Route::delete('/{id}', [ScreeningController::class, 'destroy']);
             Route::get('/all', [ScreeningController::class, 'listAll']);
+            Route::get('/grid/{id}', [ScreeningController::class, 'getGrid']);
             Route::get('/{id}', [ScreeningController::class, 'show']);
         });
 
         Route::group(['prefix' => 'ticket-sales'], function () {
-            Route::post('', [TicketSaleController::class, 'store']);
-            Route::get('', [TicketSaleController::class, 'index']);
-            Route::get('/{id}', [TicketSaleController::class, 'show']);
+            Route::get('/getMovies', [MovieController::class, 'listMovie']);
         });
 
         Route::group(['prefix' => 'tickets'], function () {

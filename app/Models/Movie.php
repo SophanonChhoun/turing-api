@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Carbon\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -65,5 +66,10 @@ class Movie extends Model
     public function screenings()
     {
         return $this->hasMany(Screening::class,"movieId",);
+    }
+
+    public function availableScreenings()
+    {
+        return $this->screenings()->where('status', true)->where("date", Carbon::now()->toDateString());
     }
 }

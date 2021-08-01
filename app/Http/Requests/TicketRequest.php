@@ -10,9 +10,11 @@ class TicketRequest extends DefaultFormRequest
     public function rules()
     {
         return [
-            'price' => "required|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1",
-            'seatId' => 'required',
-            'screeningId' => 'required'
+            'screeningId' => 'required',
+            'seats' => 'required|array',
+            'movieName' => 'required',
+            'cinemaName' => 'required',
+            'theaterName' => 'required'
         ];
     }
 }

@@ -48,5 +48,17 @@ class TicketSaleController extends Controller
         {
             return $this->fail($exception->getMessage());
         }
-    }    
+    }
+
+    public function store(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $data = TicketSale::create($request->all());
+
+        }catch (Exception $exception){
+            DB::rollBack();
+            return $this->fail($exception->getMessage());
+        }
+    }
 }

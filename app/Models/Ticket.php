@@ -7,16 +7,25 @@ use App\Models\Screening;
 use App\Models\TicketSale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Exception;
 
 class Ticket extends Model
 {
     use HasFactory;
     protected $fillable = [
         'price',
-        'screeningId',
         'seatId',
-        'paymentId',
-        'checked_in'
+        'checked_in',
+        'seatType',
+        'seatName',
+        'screeningId',
+        'theaterName',
+        'movieName',
+        'cinemaName',
+        'userId'
+    ];
+    protected $casts = [
+        'checked_in' => 'boolean'
     ];
 
     public function screening()
@@ -29,8 +38,8 @@ class Ticket extends Model
         return $this->belongsTo(Seat::class, 'seatId', 'id');
     }
 
-    public function payment()
+    public function user()
     {
-        return $this->belongsTo(TicketSale::class, 'paymentId', 'id');
+        return $this->belongsTo(Customer::class, 'userId', 'id');
     }
 }
