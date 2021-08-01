@@ -9,6 +9,7 @@ use App\Http\Resources\ListResource;
 use App\Http\Resources\ListTitleResource;
 use App\Http\Resources\MovieCustomerResource;
 use App\Http\Resources\MovieResource;
+use App\Http\Resources\MovieTimeResource;
 use App\Http\Resources\PhotoResource;
 use App\Http\Resources\ScreeningCinemaResource;
 use App\Models\Cinema;
@@ -212,6 +213,18 @@ class MovieController extends Controller
                 "cinemas" => ScreeningCinemaResource::collection($cinema),
             ]);
         }catch (Exception $exception) {
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listMovie()
+    {
+        try {
+            $movies = Movie::with("availableScreenings.language")
+                ->where("releasedDate", '<=',Carbon::now()->toDateString())
+                ->where("status", true)->get();
+            return $this->success(MovieTimeResource::collection($movies));
+        }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
     }

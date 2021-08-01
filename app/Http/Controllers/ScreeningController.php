@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ScreeningCreateRequest;
+use App\Http\Resources\SeatResource;
 use App\Models\Screening;
+use App\Models\Seat;
 use App\Models\Theater;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\ScreeningRequest;
 use App\Http\Resources\ScreeningResource;
-use TheSeer\Tokenizer\Exception;
+use Exception;
 
 class ScreeningController extends Controller
 {
@@ -153,5 +156,37 @@ class ScreeningController extends Controller
         }
     }
 
-
+    public function getGrid($id)
+    {
+        try {
+            $screening = Screening::with("movie")->findOrFail($id);
+            $theater = Theater::with("cinema")->findOrFail($screening->theaterId);
+            for ($i=1; $i <= $theater->row; $i++) {
+                for ($j=1; $j <= $theater->col; $j++) {
+                    $grid[$i][$j] = null;
+                }
+            }
+            $seats = SeatResource::collection(Seat::with("seatType")->where("theaterId", $screening->theaterId)->get());
+            foreach ($seats as $key => $seat) {
+                $avaliable = Ticket::where("seatId", $seat->id)->where("screeningId", $id)->get()->first();
+                $grid[$seat->row][$seat->col] = [
+                    "id" => $seat->id,
+                    "name" => $seat->name,
+                    "seatType" => $seat->seatType,
+                    "status" => $seat->status,
+                    "booked" => $avaliable ? true : false,
+                    "price" => round(($seat->seatType->priceFactor * $screening->price), 3)
+                ];
+            }
+            return $this->success([
+                "screeningId" => $id,
+                "cinemaName" => $theater->cinema->name ?? '',
+                "theaterName" => $theater->name,
+                "movieName" => $screening->movie->title ?? '',
+                "grid" => $grid
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
 }

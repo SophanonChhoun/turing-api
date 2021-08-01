@@ -9,6 +9,7 @@ use App\Http\Requests\TheaterUpdateRequest;
 use App\Http\Resources\ListResource;
 use App\Http\Resources\SeatResource;
 use App\Http\Resources\TheaterResource;
+use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Theater;
 use Exception;
@@ -60,8 +61,8 @@ class TheaterController extends Controller
             if (!$Theater) {
                 return $this->fail("Theater ID:$id not found");
             }
-            for ($i=0; $i < $Theater->row; $i++) {
-                for ($j=0; $j< $Theater->col; $j++) {
+            for ($i=1; $i <= $Theater->row; $i++) {
+                for ($j=1; $j <= $Theater->col; $j++) {
                     $grid[$i][$j] = null;
                 }
             }
@@ -71,10 +72,9 @@ class TheaterController extends Controller
                     "id" => $seat->id,
                     "name" => $seat->name,
                     "seatType" => $seat->seatType,
-                    "status" => $seat->status
+                    "status" => $seat->status,
                 ];
             }
-
             return $this->success([
                 "id" => $Theater->id,
                 "name" => $Theater->name,
@@ -111,6 +111,7 @@ class TheaterController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
+
     public function update($id, TheaterUpdateRequest $request)
     {
         DB::beginTransaction();
@@ -137,6 +138,7 @@ class TheaterController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
+
     public function destroy($id)
     {
         DB::beginTransaction();
