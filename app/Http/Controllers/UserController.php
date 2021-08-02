@@ -80,7 +80,7 @@ class UserController extends Controller
     {
         try {
             $users = User::with("media")->latest()->get();
-            
+
             return $this->success(UserResource::collection($users));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -238,8 +238,9 @@ class UserController extends Controller
                     "media_id" => $media_id
                 ]);
             }
+            $user = User::with("media")->findOrFail(auth()->user()->id);
             return $this->success([
-                "message" => "Success"
+                "photo" => $user->media->file_url ?? ''
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
