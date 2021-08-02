@@ -61,8 +61,8 @@ class TheaterController extends Controller
             if (!$Theater) {
                 return $this->fail("Theater ID:$id not found");
             }
-            for ($i=1; $i <= $Theater->row; $i++) {
-                for ($j=1; $j <= $Theater->col; $j++) {
+            for ($i=0; $i < $Theater->row; $i++) {
+                for ($j=0; $j < $Theater->col; $j++) {
                     $grid[$i][$j] = null;
                 }
             }
@@ -116,25 +116,37 @@ class TheaterController extends Controller
     {
         DB::beginTransaction();
         try {
-            $Theater = Theater::find($id);
-            if (!$Theater)
+            $data = Theater::findOrFail($id)->update($request->all());
+            $seats = Seat::store($id, $request['seats']['create']);
+            $deleteSeats = Seat::whereIn("id", $request['seats']['delete'])->delete();
+            $updateSeats = Seat::updateSeat($id, $request['seats']['put']);
+            if (!$data || !$seats || !$deleteSeats || !$updateSeats)
             {
-                return $this->fail([
-                    "message" => "Theater ID: $id not found"
-                ], 404);
-            }
-            $Theater = $Theater->update($request->all());
-            if(!$Theater)
-            {
-                DB::rollback();
+                DB::rollBack();
+                if (!$data)
+                {
+                    return $this->fail("There is something wrong with update theatre");
+                }
+                if (!$seats)
+                {
+                    return $this->fail("There is something wrong with create seats");
+                }
+                if (!$deleteSeats)
+                {
+                    return $this->fail("There is something wrong with delete seats");
+                }
+                if (!$updateSeats)
+                {
+                    return $this->fail("There is something wrong with update seats");
+                }
                 return $this->fail("There is something wrong");
             }
             DB::commit();
             return $this->success([
-                "message" => "Theater ID:$id updated"
+               "message" => "Theatre updated successfully"
             ]);
         }catch (Exception $exception){
-            DB::rollback();
+            DB::rollBack();
             return $this->fail($exception->getMessage());
         }
     }

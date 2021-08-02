@@ -161,8 +161,8 @@ class ScreeningController extends Controller
         try {
             $screening = Screening::with("movie")->findOrFail($id);
             $theater = Theater::with("cinema")->findOrFail($screening->theaterId);
-            for ($i=1; $i <= $theater->row; $i++) {
-                for ($j=1; $j <= $theater->col; $j++) {
+            for ($i=0; $i < $theater->row; $i++) {
+                for ($j=0; $j < $theater->col; $j++) {
                     $grid[$i][$j] = null;
                 }
             }
