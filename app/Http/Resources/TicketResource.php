@@ -17,11 +17,11 @@ class TicketResource extends JsonResource
         return [
             'id' => $this->id,
             'price' => $this->price,
-            'movie' => $this->screening->movie->title ?? '',
-            'seat' => $this->seat->name ?? '',
-            'cinema' => $this->payment->cinema->name ?? '',
-            'customer' => $this->payment->customer->name ?? '',
-            'theater' => $this->screening->theater->name ?? '',
+            'movie' => $this->movieName,
+            'seat' => $this->seatName,
+            'cinema' => $this->theaterName,
+            'customer' => $this->user->name ?? '',
+            'theater' => $this->theaterName,
             'checked_in'=> $this->checked_in
         ];
     }
