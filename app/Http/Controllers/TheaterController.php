@@ -40,7 +40,7 @@ class TheaterController extends Controller
                 'message' => "Theater with name:$name created"
             ]);
         }catch (Exception $exception){
-            DB::rollback();
+            DB::rollBack();
             return $this->fail($exception->getMessage());
         }
     }

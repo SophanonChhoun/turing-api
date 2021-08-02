@@ -17,7 +17,7 @@ class TicketController extends Controller
     public function index()
     {
         try {
-            $data = Ticket::with('seat','screening','payment')->latest()->get();
+            $data = Ticket::with('seat')->latest()->get();
             return $this->success(TicketResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -66,7 +66,6 @@ class TicketController extends Controller
                 'seatType' => $data->seatType,
                 'seatName' => $data->seatName,
                 'theaterName' => $data->theaterName,
-                'movieName' => $data->movieName,
                 'cinemaName'=> $data->cinemaName,
                 'userName' => $data->user->name ?? '',
                 'checked_in' => $data->checked_in
