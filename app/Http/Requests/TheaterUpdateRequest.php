@@ -19,7 +19,8 @@ class TheaterUpdateRequest extends FormRequest
             "col" => "required|max:50|numeric",
             "row" => "required|max:50|numeric",
             "status" => "required",
-            "cinemaId" => "required"
+            "cinemaId" => "required",
+            "seats" => "required"
         ];
     }
 }

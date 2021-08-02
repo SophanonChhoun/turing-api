@@ -198,8 +198,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/all', [TheaterController::class, 'listAll']);
             Route::post('', [TheaterController::class, 'store']);
             Route::get('/{id}', [TheaterController::class, 'show']);
-            Route::put('/{id}', [TheaterController::class, 'update']);
-            Route::patch('/{id}', [TheaterController::class, 'updateStatus']);
+            Route::patch('/{id}', [TheaterController::class, 'update']);
+            Route::patch('/status/{id}', [TheaterController::class, 'updateStatus']);
             Route::delete('/{id}', [TheaterController::class, 'destroy']);
         });
         Route::group(['prefix' => 'seat-types'], function () {
