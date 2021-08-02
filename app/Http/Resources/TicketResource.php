@@ -21,7 +21,7 @@ class TicketResource extends JsonResource
             'seat' => $this->seatName,
             'cinema' => $this->theaterName,
             'customer' => $this->user->name ?? '',
-            'theater' => $this->theaterName,
+            'theatre' => $this->theaterName,
             'checked_in'=> $this->checked_in
         ];
     }
