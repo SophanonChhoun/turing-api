@@ -85,7 +85,7 @@ class TicketController extends Controller
         }
     }
 
-    public function updateStatus($id, StatusRequest $request)
+    public function updateStatus($id, Request $request)
     {
         try {
             $data = Ticket::find($id);
@@ -94,7 +94,7 @@ class TicketController extends Controller
                 return $this->fail("Ticket not exist.");
             }
             $data = $data->update([
-                "checked_in" => $request->status
+                "checked_in" => $request->checked_in
             ]);
             if(!$data)
             {
