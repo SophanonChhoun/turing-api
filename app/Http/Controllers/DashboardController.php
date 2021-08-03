@@ -10,7 +10,6 @@ class DashboardController extends Controller
     public function index()
     {
         try {
-
         } catch (Exception $exception) {
             return $this->fail($exception->getMessage());
         }

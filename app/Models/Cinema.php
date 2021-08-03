@@ -37,4 +37,8 @@ class Cinema extends Model
     {
         return $this->screenings()->where('status', true)->where("date", ">=", Carbon::now()->toDateString());
     }
+    public function productSale()
+    {
+        return $this->hasMany(ProductSale::class, 'cinemaId');
+    }
 }
