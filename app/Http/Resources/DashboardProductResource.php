@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ShowScreeningResource extends JsonResource
+class DashboardProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,8 @@ class ShowScreeningResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'sub' => $this->language->sub ?? '',
-            'dub' => $this->language->dub ?? '',
-            'start_time' => $this->start_time,
-            'price' => $this->price
+            'name' => $this->name,
+            'total' => $this->productSale->pluck("total")->sum() ?? ''
         ];
     }
 }

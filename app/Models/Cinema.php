@@ -41,4 +41,8 @@ class Cinema extends Model
     {
         return $this->hasMany(ProductSale::class, 'cinemaId');
     }
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'cinemaName', 'name');
+    }
 }
