@@ -28,6 +28,7 @@ use App\Http\Controllers\CurrencyController;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -55,6 +56,9 @@ Route::post('/bot/getupdates', function() {
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
     Route::group(['prefix' => 'admin'], function() {
+
+        Route::get('/dashboard', [DashboardController::class, 'index']);
+
         Route::group(['prefix' => 'role'], function () {
             Route::post('', [RoleController::class, 'store']);
             Route::get('', [RoleController::class, 'index']);
