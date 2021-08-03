@@ -34,7 +34,7 @@ class AddFieldsToTicketsTable extends Migration
             if (Schema::hasColumn("tickets", "seatType")) {
                 $table->dropColumn("seatType");
             }
-            if (Schema::hasColumn("movies", "poster")) {
+            if (Schema::hasColumn("tickets", "poster")) {
                 $table->dropColumn("seatName");
             }
         });
