@@ -118,16 +118,8 @@ class TheaterController extends Controller
         try {
             $data = Theater::findOrFail($id)->update($request->all());
             $seats = Seat::store($id, $request['seats']['create']);
-            if (isset($request['seats']['delete']) || !empty($request['seats']['delete']))
-            {
-                $deleteSeats = Seat::whereIn("id", $request['seats']['delete'])->delete();
-                if (!$deleteSeats)
-                {
-                    DB::rollBack();
-                    return $this->fail("There is something wrong with delete seats");
-                }
-            }
             $updateSeats = Seat::updateSeat($id, $request['seats']['put']);
+            $deleteSeats = Seat::whereIn("id", $request['seats']['delete'])->delete();
             if (!$data || !$seats || !$updateSeats)
             {
                 DB::rollBack();
