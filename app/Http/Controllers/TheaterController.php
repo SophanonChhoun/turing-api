@@ -163,11 +163,6 @@ class TheaterController extends Controller
                 return $this->fail("Something went wrong with theater");
             }
             $seats = Seat::where('theaterId', $id)->delete();
-            if(!$seats)
-            {
-                DB::rollBack();
-                return $this->fail("Something went wrong");
-            }
             DB::commit();
             return $this->success([
                 'message' => "Theater deleted"
