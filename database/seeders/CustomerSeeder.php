@@ -23,5 +23,13 @@ class CustomerSeeder extends Seeder
             "password" => "password",
             ]
         );
+        Customer::updateOrCreate([
+            "id" => 2
+        ],[
+                "name" => "Customer walk in",
+                "email" => "customer.walk.in@gmail.com",
+                "password" => "password",
+            ]
+        );
     }
 }
