@@ -183,6 +183,8 @@ class ScreeningController extends Controller
                 "cinemaName" => $theater->cinema->name ?? '',
                 "theaterName" => $theater->name,
                 "movieName" => $screening->movie->title ?? '',
+                "row" => $theater->row,
+                "col" => $theater->col,
                 "grid" => $grid
             ]);
         }catch (Exception $exception){
