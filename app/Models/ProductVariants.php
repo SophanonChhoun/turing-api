@@ -12,8 +12,6 @@ class ProductVariants extends Model
       'price',
       'status',
       'productId',
-      'productAttributeValueId',
-      'size'
     ];
 
     protected $casts = [
@@ -22,7 +20,18 @@ class ProductVariants extends Model
 
     public function getNameAttribute()
     {
-        return $this->product->name . ' ' . $this->productAttributeValue->name . " " . $this->size;
+        $data = $this->productAttributeValues()->pluck("name");
+        $name = $this->product->name;
+        foreach ($data as $key => $productAttribute)
+        {
+            $name = $name . ' ' . $productAttribute;
+        }
+        return $name;
+    }
+
+    public function getProductCodeAttribute()
+    {
+        return $this->id .'. ' . $this->product->name;
     }
 
     public function product()
@@ -30,23 +39,13 @@ class ProductVariants extends Model
         return $this->belongsTo(Product::class, 'productId', 'id');
     }
 
-    public function productAttributeValue()
+    public function productAttributeValues()
     {
-        return $this->belongsTo(ProductAttributeValue::class, 'productAttributeValueId', 'id');
+        return $this->belongsToMany(ProductAttributeValue::class, ProductVariantHasAttributeValue::class, 'productVariantId', 'attributeValueId');
     }
 
-    public static function store($id, $productVariants)
+    public function hasAttributeValues()
     {
-        self::where("productId", $id)->delete();
-        foreach ($productVariants as $key => $productVariant)
-        {
-            $productVariant['productId'] = $id;
-            $data = self::create($productVariant);
-            if (!$data)
-            {
-                return false;
-            }
-        }
-        return true;
+        return $this->hasMany(ProductVariantHasAttributeValue::class, 'productVariantId');
     }
 }

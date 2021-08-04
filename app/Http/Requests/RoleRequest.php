@@ -18,7 +18,7 @@ class RoleRequest extends DefaultFormRequest
             'name' => 'required|unique:roles,name,'.$this->id,
             "description" => "required",
             "defaultRole" => "required",
-            "permission" => "required"
+            "permission" => "required|array"
         ];
     }
 }

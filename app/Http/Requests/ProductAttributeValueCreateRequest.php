@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductVariantRequest extends DefaultFormRequest
+class ProductAttributeValueCreateRequest extends DefaultFormRequest
 {
 
     /**
@@ -15,9 +15,8 @@ class ProductVariantRequest extends DefaultFormRequest
     public function rules()
     {
         return [
-            "price" => "required",
-            "productId" => "required",
-            "productAttributeValueIds" => "required|array",
+            "attributeValues" => "required|array",
+            "productAttributeId" => "required"
         ];
     }
 }

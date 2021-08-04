@@ -18,6 +18,8 @@ class ProductVariantListResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
+            'productCode' => $this->productCode,
+            'attributeValue' => $this->hasAttributeValues
          ];
     }
 }

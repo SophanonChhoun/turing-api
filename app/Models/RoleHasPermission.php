@@ -32,7 +32,7 @@ class RoleHasPermission extends Model
         foreach($permissions as $permission){
             RoleHasPermission::create([
                'roleId' => $id,
-               "permissionId" => $permission['permissionId'],
+               "permissionId" => $permission['id'],
                "create" => $permission['create'],
                "read" => $permission['read'],
                "delete" => $permission['delete'],
