@@ -175,7 +175,9 @@ class ScreeningController extends Controller
                     "seatType" => $seat->seatType,
                     "status" => $seat->status,
                     "booked" => $avaliable ? true : false,
-                    "price" => round(($seat->seatType->priceFactor * $screening->price), 3)
+                    "price" => round(($seat->seatType->priceFactor * $screening->price), 3),
+                    "col" => $seat->col,
+                    "row" => $seat->row
                 ];
             }
             return $this->success([
