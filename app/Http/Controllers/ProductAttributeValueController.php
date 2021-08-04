@@ -2,24 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductAttributeValueCreateRequest;
 use App\Http\Requests\ProductAttributeValueRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ProductAttributeValueResource;
 use App\Http\Resources\ListResource;
 use App\Models\ProductAttributeValue;
+use App\Models\ProductVariantHasAttributeValue;
 use Database\Seeders\ProductAttribute;
 use Illuminate\Http\Request;
 use Exception;
+use DB;
 
 class ProductAttributeValueController extends Controller
 {
-    public function store(ProductAttributeValueRequest $request)
+    public function store(ProductAttributeValueCreateRequest $request)
     {
         try {
-            $data = ProductAttributeValue::create($request->all());
-            if(!$data)
-            {
-                return $this->fail("Something went wrong");
+            foreach ($request['attributeValues'] as $key => $product){
+                $product['productAttributeId'] = $request['productAttributeId'];
+                $data = ProductAttributeValue::create($product);
+                if(!$data)
+                {
+                    return $this->fail("Something went wrong");
+                }
             }
             return $this->success([
                "message" => "Product Attribute created."
@@ -90,17 +96,21 @@ class ProductAttributeValueController extends Controller
 
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
             $data = ProductAttributeValue::find($id)->delete();
+            ProductVariantHasAttributeValue::where("attributeValueId", $id)->delete();
             if(!$data)
             {
+                DB::rollBack();
                 return $this->fail("Something went wrong");
             }
-
+            DB::commit();
             return $this->success([
                 "message" => "Product Attribute Value deleted"
             ]);
         }catch (Exception $exception){
+            DB::rollBack();
             return $this->fail($exception->getMessage());
         }
     }
