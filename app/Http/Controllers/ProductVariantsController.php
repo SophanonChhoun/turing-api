@@ -128,7 +128,7 @@ class ProductVariantsController extends Controller
     public function listAll()
     {
         try {
-            $data = ProductVariants::with('hasAttributeValues')->where("status", true)->get();
+            $data = ProductVariants::with('productAttributeValues')->where("status", true)->get();
             return $this->success(ProductVariantListResource::collection($data));
         }catch (Exception $exception) {
             return $this->fail($exception->getMessage());
