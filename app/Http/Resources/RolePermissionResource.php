@@ -15,7 +15,7 @@ class RolePermissionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'permissionId' => $this->permissionId,
+            'id' => $this->permissionId,
             'name' => $this->permission->name ?? '',
             'read' => $this->read,
             'create' => $this->create,

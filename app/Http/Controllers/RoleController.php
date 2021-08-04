@@ -63,7 +63,7 @@ class RoleController extends Controller
     {
         DB::beginTransaction();
         try {
-            $role = Role::find($id)->update($request->all());
+            Role::findOrFail($id)->update($request->all());
             RoleHasPermission::store($id, $request->permission);
             DB::commit();
             return $this->success([
