@@ -211,7 +211,16 @@ class MovieController extends Controller
         try {
             $movie = Movie::with("rating", "genres")->findOrFail($id);
             $cinemaId = Screening::where("movieId", $id)->get()->pluck('cinemaId');
-            $cinema = Cinema::with("availableScreenings")->whereIn("id", $cinemaId)->get();
+            $cinemas = Cinema::whereIn("id", $cinemaId)->get();
+            $cinemas = $cinemas->map(function ($cinema) use($id) {
+                $cinema->screenings = Screening::where("cinemaId", $cinema->id)
+                    ->where("movieId", $id)
+                    ->orderBy("date")
+                    ->orderByDesc("start_time")
+                    ->get()
+                    ->groupBy("date");
+                return $cinema;
+            });
             return $this->success([
                 "id" => $movie->id,
                 "title" => $movie->title,
@@ -221,7 +230,7 @@ class MovieController extends Controller
                 "poster" => $movie->poster,
                 "backdrop" => $movie->backdrop,
                 "trailerUrl" => $movie->trailerUrl,
-                "cinemas" => ScreeningCinemaResource::collection($cinema),
+                "cinemas" => ScreeningCinemaResource::collection($cinemas),
             ]);
         }catch (Exception $exception) {
             return $this->fail($exception->getMessage());

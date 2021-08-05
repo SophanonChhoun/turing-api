@@ -9,6 +9,8 @@ use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Theater;
 use App\Models\Ticket;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StatusRequest;
@@ -200,8 +202,7 @@ class ScreeningController extends Controller
     public function getNowShowing()
     {
         try {
-//            $movies = Movie::with('availableScreenings')->where("status", true)->get();
-            $movies = Movie::where("status", true)->get();
+            $movies = Movie::where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
             $movies = $movies->map(function ($movie){
                 $movie->screening = Screening::where("movieId", $movie->id)->orderBy("date")->orderByDesc("start_time")->get()->groupBy("date");
                 return $movie;
