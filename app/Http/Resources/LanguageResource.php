@@ -16,8 +16,7 @@ class LanguageResource extends JsonResource
     {
         return [
             "id"=>$this->id,
-            "dub" =>$this->dub,
-            "sub" => $this->sub
+            "name" => $this->name
         ];
     }
 }

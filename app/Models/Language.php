@@ -10,7 +10,6 @@ class Language extends Model
     use HasFactory;
 
     protected $fillable = [
-        'sub',
-        'dub'
+        'name',
     ];
 }

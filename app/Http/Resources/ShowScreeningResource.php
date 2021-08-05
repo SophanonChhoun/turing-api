@@ -16,8 +16,8 @@ class ShowScreeningResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'sub' => $this->language->sub ?? '',
-            'dub' => $this->language->dub ?? '',
+            'sub' => $this->subtitle,
+            'dub' => $this->dubbed ,
             'start_time' => $this->start_time,
             'price' => $this->price
         ];

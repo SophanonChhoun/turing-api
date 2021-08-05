@@ -20,8 +20,8 @@ class ScreeningResource extends JsonResource
             'date' => $this->date,
             'start_time' => $this->start_time,
             'theater_title' => $this->theater->name ?? '',
-            'language_dubbed' => $this->language->dub ?? '',
-            'language_subtitle' => $this->language->sub ?? '',
+            'language_dubbed' => $this->dub->name ?? '',
+            'language_subtitle' => $this->sub->name ?? '',
             'status' => $this->status
         ];
     }

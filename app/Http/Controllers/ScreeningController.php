@@ -20,7 +20,7 @@ class ScreeningController extends Controller
     public function index()
     {
         try {
-            $data = Screening::with("language","movie","theater")->latest()->get();
+            $data = Screening::with("sub", "dub","movie","theater")->latest()->get();
             return $this->success(ScreeningResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -40,13 +40,14 @@ class ScreeningController extends Controller
                 "movie_title" => $data->movie->title ?? '',
                 "price" => $data->price,
                 "theater" => $data->theater->name ?? '',
-                "language_sub" => $data->language->sub ?? '',
-                "language_dub" => $data->language->dub ?? '',
+                "language_sub" => $data->subtitle,
+                "language_dub" => $data->dubbed,
                 "date" => $data->date,
                 "start_time" => $data->start_time,
                 "status" => $data->status,
                 "theaterId" => $data->theaterId,
-                "languageId" => $data->languageId,
+                "subId" => $data->subId,
+                "dubId" => $data->dubId,
                 "movieId" => $data->movieId,
             ]);
         }catch (Exception $exception){
@@ -149,7 +150,7 @@ class ScreeningController extends Controller
     public function listAll()
     {
         try {
-            $data = Screening::where("status", 1)->get();
+            $data = Screening::where("status", true)->get();
             return $this->success(ScreeningResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
