@@ -9,6 +9,7 @@ use App\Http\Resources\RoleListResource;
 use App\Http\Resources\RolePermissionResource;
 use App\Models\Role;
 use App\Models\RoleHasPermission;
+use App\Models\RoleHasUser;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -81,12 +82,13 @@ class RoleController extends Controller
         DB::beginTransaction();
         try {
             $role = Role::find($id);
-            $rolePermission = RoleHasPermission::where("roleId", $id);
-            if ( !$role || !$rolePermission)
+            RoleHasPermission::where("roleId", $id)->delete();
+            RoleHasUser::where("roleId", $id)->delete();
+            if ( !$role)
             {
+                DB::rollBack();
                 return $this->fail("This role does not exist in database");
             }
-            $rolePermission->delete();
             $role->delete();
             DB::commit();
             return $this->success([
