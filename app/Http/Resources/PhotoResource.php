@@ -18,6 +18,13 @@ class PhotoResource extends JsonResource
             'id' => $this->id,
             'poster' => $this->poster,
             'backdrop' => $this->backdrop,
+            'title' => $this->title,
+            'trailerUrl' => $this->trailerUrl,
+            'synopsis' => $this->synopsis,
+            'runningTime' => $this->runningTime,
+            'directors' => ListResource::collection($this->directors),
+            'casts' => ListResource::collection($this->casts),
+            'genres' => ListResource::collection($this->genres),
          ];
     }
 }

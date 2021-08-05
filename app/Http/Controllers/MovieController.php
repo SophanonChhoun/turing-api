@@ -170,7 +170,12 @@ class MovieController extends Controller
     public function upcomingMovie()
     {
         try {
-            $upComingMovies = Movie::where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
+            $upComingMovies = Movie::with(
+                "directors",
+                "rating",
+                "casts",
+                "genres",
+            )->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
             return $this->success(PhotoResource::collection($upComingMovies));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -180,7 +185,12 @@ class MovieController extends Controller
     public function nowShowingMovie()
     {
         try {
-            $nowShowingMovies = Movie::where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->get();
+            $nowShowingMovies = Movie::with(
+                "directors",
+                "rating",
+                "casts",
+                "genres",
+            )->where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->get();
             return $this->success(PhotoResource::collection($nowShowingMovies));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

@@ -35,7 +35,7 @@ class Cinema extends Model
     }
     public function availableScreenings()
     {
-        return $this->screenings()->where('status', true)->where("date", ">=", Carbon::now()->toDateString());
+        return $this->screenings()->where('status', true)->where("date", ">=", Carbon::now()->toDateString())->orderBy("date", "DESC")->orderBy("start_time", "DESC");
     }
     public function productSale()
     {

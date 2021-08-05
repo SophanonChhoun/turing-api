@@ -48,6 +48,7 @@ class RoleController extends Controller
             $role = Role::with("rolePermission")->find($id);
 
             return $this->success([
+                "id" => $role->id,
                 "name" => $role->name,
                 "description" => $role->description,
                 "status" => $role->status,
