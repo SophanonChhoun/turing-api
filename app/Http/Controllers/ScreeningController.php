@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ScreeningCreateRequest;
 use App\Http\Resources\SeatResource;
+use App\Models\Movie;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Theater;
@@ -20,7 +21,7 @@ class ScreeningController extends Controller
     public function index()
     {
         try {
-            $data = Screening::with("sub", "dub","movie","theater")->latest()->get();
+            $data = Screening::with("sub", "dub","movie","theater", "cinema")->latest()->get();
             return $this->success(ScreeningResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -30,7 +31,7 @@ class ScreeningController extends Controller
     public function show($id)
     {
         try {
-            $data = Screening::find($id);
+            $data = Screening::with('cinema')->find($id);
             if (!$data)
             {
                 return $this->fail("data not found" ,[], "", 404);
@@ -49,6 +50,7 @@ class ScreeningController extends Controller
                 "subId" => $data->subId,
                 "dubId" => $data->dubId,
                 "movieId" => $data->movieId,
+                "cinema" => $data->cinema->name ?? '',
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -190,6 +192,21 @@ class ScreeningController extends Controller
                 "col" => $theater->col,
                 "grid" => $grid
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function getNowShowing()
+    {
+        try {
+//            $movies = Movie::with('availableScreenings')->where("status", true)->get();
+            $movies = Movie::where("status", true)->get();
+            $movies = $movies->map(function ($movie){
+                $movie->screening = Screening::where("movieId", $movie->id)->orderBy("date")->orderByDesc("start_time")->get()->groupBy("date");
+                return $movie;
+            });
+            return $this->success($movies);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

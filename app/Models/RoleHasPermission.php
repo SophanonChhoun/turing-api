@@ -17,6 +17,13 @@ class RoleHasPermission extends Model
       'delete'
     ];
 
+    protected $casts = [
+        'create' => 'boolean',
+        'read' => 'boolean',
+        'update' => 'boolean',
+        'delete' => 'boolean',
+    ];
+
     public function getNameAttribute()
     {
         return $this->permission();

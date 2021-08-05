@@ -57,12 +57,12 @@ class Screening extends Model
 
     public function cinema()
     {
-        return $this->hasOne(Cinema::class, 'id', 'cinemaId');
+        return $this->belongsTo(Cinema::class, 'cinemaId', 'id');
     }
 
     public function theater()
     {
-        return $this->hasOne(Theater::class, 'id', 'theaterId');
+        return $this->belongsTo(Theater::class, 'theaterId', 'id');
     }
 
     public function seat()

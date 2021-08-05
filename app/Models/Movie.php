@@ -70,6 +70,8 @@ class Movie extends Model
 
     public function availableScreenings()
     {
-        return $this->screenings()->where('status', true)->where("date", Carbon::now()->toDateString());
+        return $this->screenings()->where('status', true)
+            ->where("date", Carbon::now()->toDateString())
+            ->orderByDesc("date");
     }
 }
