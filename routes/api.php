@@ -277,6 +277,13 @@ Route::group(['prefix' => 'web'], function() {
         Route::get('/advertisement', [MovieController::class, 'advertisement']);
         Route::get('/{id}', [MovieController::class, 'movieDetail']);
     });
+    Route::middleware(['auth:sanctum', 'customer'])->group(function () {
+        Route::group(['prefix' => 'profile'], function (){
+            Route::get('', [CustomerController::class, 'showProfile']);
+            Route::put('', [CustomerController::class, 'updateProfile']);
+            Route::patch('', [CustomerController::class, 'updatePassword']);
+        });
+    });
 });
 
 Route::middleware(['auth:sanctum', 'customer'])->group(function () {
