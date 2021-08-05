@@ -262,13 +262,15 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     });
 });
 
-Route::group(['prefix' => 'mobile'], function(){
+Route::group(['prefix' => ''], function(){
     Route::group(['prefix' => 'movie'], function(){
         Route::get('', [MovieController::class, 'showMovieMobile']);
     });
 });
 
 Route::group(['prefix' => 'web'], function() {
+    Route::post("login", [CustomerController::class, 'login']);
+    Route::post("register", [CustomerController::class, 'signUp']);
     Route::group(['prefix' => 'movies'], function(){
         Route::get('/upcoming', [MovieController::class, 'upcomingMovie']);
         Route::get('/now-showing', [MovieController::class, 'nowShowingMovie']);

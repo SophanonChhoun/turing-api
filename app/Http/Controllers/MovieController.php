@@ -191,7 +191,7 @@ class MovieController extends Controller
     {
         try {
             return $this->success(MovieCustomerResource::collection(Movie::with("rating", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->limit(3)->get()));
-        }catch (Exception $exception) {
+        } catch (Exception $exception) {
             return $this->fail($exception->getMessage());
         }
     }
@@ -210,6 +210,7 @@ class MovieController extends Controller
                 "genres" => $movie->genres->pluck("name"),
                 "poster" => $movie->poster,
                 "backdrop" => $movie->backdrop,
+                "trailerUrl" => $movie->trailerUrl,
                 "cinemas" => ScreeningCinemaResource::collection($cinema),
             ]);
         }catch (Exception $exception) {
