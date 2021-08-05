@@ -277,6 +277,9 @@ Route::group(['prefix' => 'web'], function() {
         Route::get('/advertisement', [MovieController::class, 'advertisement']);
         Route::get('/{id}', [MovieController::class, 'movieDetail']);
     });
+    Route::group(['prefix' => 'screenings'], function(){
+        Route::get('/now-showing', [ScreeningController::class, 'getNowShowing']);
+    });
     Route::middleware(['auth:sanctum', 'customer'])->group(function () {
         Route::group(['prefix' => 'profile'], function (){
             Route::get('', [CustomerController::class, 'showProfile']);
