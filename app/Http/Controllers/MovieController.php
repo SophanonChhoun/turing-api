@@ -220,7 +220,7 @@ class MovieController extends Controller
     public function listMovie()
     {
         try {
-            $movies = Movie::with("availableScreenings.language")
+            $movies = Movie::with("availableScreenings")
                 ->where("releasedDate", '<=',Carbon::now()->toDateString())
                 ->where("status", true)->get();
             return $this->success(MovieTimeResource::collection($movies));

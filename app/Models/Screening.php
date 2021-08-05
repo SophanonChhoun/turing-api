@@ -11,13 +11,14 @@ class Screening extends Model
     use HasFactory;
     protected $fillable = [
       'movieId',
-      'languageId',
       'price',
       'theaterId',
       'date',
       'start_time',
       'status',
-      'cinemaId'
+      'cinemaId',
+      'subId',
+      'dubId'
     ];
 
     protected $casts = [
@@ -29,10 +30,24 @@ class Screening extends Model
         return $this->theater->cinemaId;
     }
 
-
-    public function language()
+    public function getSubtitleAttribute()
     {
-        return $this->hasOne(Language::class, 'id', 'languageId');
+        return $this->sub->name;
+    }
+
+    public function getDubbedAttribute()
+    {
+        return $this->dub->name;
+    }
+
+    public function sub()
+    {
+        return $this->belongsTo(Language::class, 'subId', 'id');
+    }
+
+    public function dub()
+    {
+        return $this->belongsTo(Language::class, 'dubId', 'id');
     }
 
     public function movie()

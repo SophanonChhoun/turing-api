@@ -15,8 +15,7 @@ class LanguageRequest extends DefaultFormRequest
     public function rules()
     {
         return [
-           "dub"=>"required",
-           "sub"=>"required",
+           "name" => "required",
         ];
     }
 }
