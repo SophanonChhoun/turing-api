@@ -6,10 +6,8 @@ use App\Core\MediaLib;
 use App\Http\Requests\CinemaRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\CinemaListResource;
-use App\Http\Resources\ListResource;
 use App\Models\Cinema;
-use App\Models\Theater;
-use Illuminate\Http\Request;
+use App\Models\CinemaHasUser;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -123,6 +121,7 @@ class CinemaController extends Controller
 
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
             $cinema = Cinema::find($id);
             if(!$cinema)
@@ -130,14 +129,18 @@ class CinemaController extends Controller
                 return $this->fail("Cinema not exist.");
             }
             $cinema = $cinema->delete();
+            CinemaHasUser::where("cinemaId", $id)->delete();
             if(!$cinema)
             {
+                DB::rollBack();
                 return $this->fail("Something went wrong");
             }
+            DB::commit();
             return $this->success([
                'message' => 'Cinema deleted'
             ]);
         }catch (Exception $exception){
+            DB::rollBack();
             return $this->fail($exception->getMessage());
         }
     }
