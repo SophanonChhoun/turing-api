@@ -12,6 +12,7 @@ class ProductVariants extends Model
       'price',
       'status',
       'productId',
+      'code'
     ];
 
     protected $casts = [
