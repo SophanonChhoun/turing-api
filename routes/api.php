@@ -238,7 +238,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         });
 
         Route::group(['prefix' => 'ticket-sales'], function () {
-            Route::get('/getMovies', [MovieController::class, 'listMovie']);
+            Route::get('/getMovies', [ScreeningController::class, 'getNowShowing']);
         });
 
         Route::group(['prefix' => 'tickets'], function () {
@@ -276,6 +276,9 @@ Route::group(['prefix' => 'web'], function() {
         Route::get('/now-showing', [MovieController::class, 'nowShowingMovie']);
         Route::get('/advertisement', [MovieController::class, 'advertisement']);
         Route::get('/{id}', [MovieController::class, 'movieDetail']);
+    });
+    Route::group(['prefix' => 'screenings'], function(){
+        Route::get('/now-showing', [ScreeningController::class, 'getNowShowing']);
     });
     Route::middleware(['auth:sanctum', 'customer'])->group(function () {
         Route::group(['prefix' => 'profile'], function (){

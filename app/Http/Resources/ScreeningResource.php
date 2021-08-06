@@ -16,13 +16,15 @@ class ScreeningResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'movie_title' => $this->movie->title ?? '',
+            'movie' => $this->movie->title ?? '',
+            'cinema' => $this->cinema->name ?? '',
             'date' => $this->date,
             'start_time' => $this->start_time,
             'theater_title' => $this->theater->name ?? '',
             'language_dubbed' => $this->dub->name ?? '',
             'language_subtitle' => $this->sub->name ?? '',
-            'status' => $this->status
+            'status' => $this->status,
+            'price' => $this->price,
         ];
     }
 }

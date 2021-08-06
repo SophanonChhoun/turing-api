@@ -17,7 +17,8 @@ class ScreeningCinemaResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'screening' => AvailableScreeningResource::collection($this->availableScreenings)
+            'location' => $this->location,
+            'screening' => $this->screenings
         ];
     }
 }
