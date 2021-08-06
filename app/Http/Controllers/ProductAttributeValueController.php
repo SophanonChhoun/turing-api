@@ -20,6 +20,14 @@ class ProductAttributeValueController extends Controller
     {
         try {
             foreach ($request['attributeValues'] as $key => $product){
+                $valueExist = ProductAttributeValue::where("name", $product['name'])->where("productAttributeId", $request['productAttributeId'])->get()->first();
+                if ($valueExist)
+                {
+                    DB::rollBack();
+                    return $this->fail("", [
+                        "Product attribute value name " . $product['name'] . " already exist."
+                    ], 'InvalidRequestError', 412);
+                }
                 $product['productAttributeId'] = $request['productAttributeId'];
                 $data = ProductAttributeValue::create($product);
                 if(!$data)

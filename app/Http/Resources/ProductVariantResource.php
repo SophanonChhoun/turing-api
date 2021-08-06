@@ -20,6 +20,7 @@ class ProductVariantResource extends JsonResource
             "attributeValues" => $this->productAttributeValues->pluck('name'),
             "price" => $this->price,
             "status" => $this->status,
+            "code" => $this->code,
         ];
     }
 }

@@ -18,6 +18,7 @@ class ProductVariantRequest extends DefaultFormRequest
             "price" => "required",
             "productId" => "required",
             "productAttributeValueIds" => "required|array",
+            "code" => "required|unique:product_variants,code,".$this->id
         ];
     }
 }

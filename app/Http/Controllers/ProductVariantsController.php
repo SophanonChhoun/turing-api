@@ -22,6 +22,14 @@ class ProductVariantsController extends Controller
         try {
             foreach ($request['productVariants'] as $key => $productVariant)
             {
+                $variantExist = ProductVariants::where("code", $productVariant['code'])->get()->first();
+                if ($variantExist)
+                {
+                    DB::rollBack();
+                    return $this->fail("", [
+                        "Product variant code " . $productVariant['code'] . " already exist."
+                    ], 'InvalidRequestError', 412);
+                }
                 $productVariant['productId'] = $request['productId'];
                 $data = ProductVariants::create($productVariant);
                 $productVariantAttribute = ProductVariantHasAttributeValue::store($data->id, $productVariant['productAttributeValueIds']);
@@ -65,6 +73,7 @@ class ProductVariantsController extends Controller
                "price" => $productVariant->price,
                "status" => $productVariant->status,
                "productId" => $productVariant->productId,
+               "code" => $productVariant->code,
                "productAttributeValueIds" => $productVariant->hasAttributeValues->pluck('attributeValueId'),
             ]);
         }catch (Exception $exception){
