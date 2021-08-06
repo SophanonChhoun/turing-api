@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Telegram\Bot\FileUpload\InputFile;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Exception;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class AdvertisementController extends Controller
 {
