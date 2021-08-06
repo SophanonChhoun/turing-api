@@ -22,7 +22,7 @@ class CustomerController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $user = Customer::with("media")->where('email', $request->email)->first();
+            $user = Customer::with("media")->where('email', $request->email)->where("status", true)->first();
             if(!$user || !Hash::check($request->password, $user->password)) {
                 return $this->fail('These credentials do not match our records.');
             }
