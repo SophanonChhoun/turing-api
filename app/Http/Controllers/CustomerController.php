@@ -184,7 +184,7 @@ class CustomerController extends Controller
     {
         try {
             $customers = Customer::where("status", true)->get();
-            return $this->success(ListResource::collection($customers));
+            return $this->success($customers);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

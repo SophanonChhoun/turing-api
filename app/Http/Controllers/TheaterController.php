@@ -156,6 +156,10 @@ class TheaterController extends Controller
             {
                 return $this->fail("Theater not exist.", [], "Not Found", 404);
             }
+            if (Screening::where("theaterId", $id)->get())
+            {
+                return $this->fail("Theater have screenings");
+            }
             $Theater = $Theater->delete();
             if(!$Theater)
             {

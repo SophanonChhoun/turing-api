@@ -70,6 +70,11 @@ class User extends Authenticatable
         return $this->hasMany(CinemaHasUser::class, 'userId');
     }
 
+    public function cinemas()
+    {
+        return $this->belongsToMany(Cinema::class, CinemaHasUser::class, 'userId', 'cinemaId');
+    }
+
     public static function getUserById($id)
     {
         $user = self::with('media')->find($id);

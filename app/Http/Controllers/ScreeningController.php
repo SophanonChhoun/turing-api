@@ -204,7 +204,9 @@ class ScreeningController extends Controller
         try {
             $movies = Movie::where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
             $movies = $movies->map(function ($movie){
-                $movie->screening = Screening::where("movieId", $movie->id)->orderBy("date")->orderByDesc("start_time")->get()->groupBy("date");
+                $movie->screenings = array_values(Screening::where("movieId", $movie->id)
+                    ->where("date", ">=", Carbon::now()->toDateString())
+                    ->orderBy("date")->orderByDesc("start_time")->get()->groupBy("date")->toArray());
                 return $movie;
             });
             return $this->success($movies);

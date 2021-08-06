@@ -174,7 +174,7 @@ class MovieController extends Controller
                 "directors",
                 "rating",
                 "casts",
-                "genres",
+                "genres"
             )->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
             return $this->success(PhotoResource::collection($upComingMovies));
         }catch (Exception $exception){
@@ -189,7 +189,7 @@ class MovieController extends Controller
                 "directors",
                 "rating",
                 "casts",
-                "genres",
+                "genres"
             )->where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->get();
             return $this->success(PhotoResource::collection($nowShowingMovies));
         }catch (Exception $exception){
