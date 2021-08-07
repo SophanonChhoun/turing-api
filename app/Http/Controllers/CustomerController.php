@@ -11,6 +11,7 @@ use App\Http\Requests\StatusRequest;
 use App\Http\Resources\CustomerResource;
 use App\Http\Resources\ListResource;
 use App\Models\Customer;
+use Cassandra\Custom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -37,6 +38,7 @@ class CustomerController extends Controller
                     "id" => $user->id,
                     "email" => $user->email,
                     "name" => $user->name,
+                    "phoneNumber" => $user->phoneNumber,
                     "photo" => $user->media->file_url ?? '',
                 ],
                 'token' => 'Bearer '. $token,
@@ -51,6 +53,11 @@ class CustomerController extends Controller
     public function signUp(SignUpRequest $request)
     {
         try {
+            $customerExit = Customer::where("email", $request['email'])->get()->first();
+            if ($customerExit)
+            {
+                return $this->fail("Email already exist. Please input a new one.");
+            }
             $customer = Customer::create($request->all());
             $customer = Customer::with("media")->find($customer->id);
             $token = $customer->createToken('authorization')->plainTextToken;
@@ -60,6 +67,7 @@ class CustomerController extends Controller
                     "id" => $customer->id,
                     "name" => $customer->name,
                     "email" => $customer->email,
+                    "phoneNumber" => $customer->phoneNumber,
                     "photo" => $customer->media->file_url ?? ''
                 ],
                 'token' => 'Bearer '. $token,

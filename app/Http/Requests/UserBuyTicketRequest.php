@@ -4,9 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TicketRequest extends DefaultFormRequest
+class UserBuyTicketRequest extends DefaultFormRequest
 {
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -15,7 +20,6 @@ class TicketRequest extends DefaultFormRequest
             'movieName' => 'required',
             'cinemaName' => 'required',
             'theaterName' => 'required',
-            'userId' => 'required'
         ];
     }
 }

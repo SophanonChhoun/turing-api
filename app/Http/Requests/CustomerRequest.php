@@ -11,6 +11,7 @@ class CustomerRequest extends DefaultFormRequest
         return [
             "name" => "required",
             'email' => 'required|unique:customers,email,'.auth()->user()->id,
+            'phoneNumber' => 'required|unique:customers,phoneNumber,'.auth()->user()->id,
         ];
     }
 }
