@@ -12,7 +12,8 @@ class SignUpRequest extends DefaultFormRequest
         return [
             "name" => "required",
             "password" => "required",
-            "email" => "required|unique:customers,email"
+            "email" => "required|unique:customers,email",
+            "phoneNumber" => "required|unique:customers,phoneNumber"
         ];
     }
 }

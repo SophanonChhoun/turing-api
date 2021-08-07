@@ -26,7 +26,7 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $user = User::with("roles.rolePermission.permission", "media", "cinemas", "hasCinemas")->where('email', $request->email)->where("status", true)->first();
+            $user = User::with("roles.rolePermission.permission", "media", "cinemas", "hasCinemas")->where('email', $request->email)->first();
             if(!$user || !Hash::check($request->password, $user->password)) {
                 return $this->fail('These credentials do not match our records.');
             }

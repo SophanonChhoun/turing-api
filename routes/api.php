@@ -280,13 +280,20 @@ Route::group(['prefix' => 'web'], function() {
     Route::group(['prefix' => 'screenings'], function(){
         Route::get('/now-showing', [ScreeningController::class, 'getNowShowing']);
     });
+    Route::get('grid/{id}', [ScreeningController::class, 'getGrid']);
     Route::middleware(['auth:sanctum', 'customer'])->group(function () {
+        Route::group(['prefix' => 'tickets'], function(){
+            Route::post('', [TicketController::class, 'buyTicket']);
+            Route::get('', [TicketController::class, 'customerTicket']);
+            Route::get('/{id}', [TicketController::class, 'show']);
+        });
         Route::group(['prefix' => 'profile'], function (){
             Route::get('', [CustomerController::class, 'showProfile']);
             Route::put('', [CustomerController::class, 'updateProfile']);
             Route::patch('', [CustomerController::class, 'updatePassword']);
         });
     });
+    Route::get('currency', [CurrencyController::class, 'show']);
 });
 
 Route::middleware(['auth:sanctum', 'customer'])->group(function () {

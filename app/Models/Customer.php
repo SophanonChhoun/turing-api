@@ -19,6 +19,7 @@ class Customer extends Authenticatable
       'password',
       'status',
       'media_id',
+      'phoneNumber'
     ];
     protected $hidden = [
         'password',
