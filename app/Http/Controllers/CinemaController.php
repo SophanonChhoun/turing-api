@@ -9,7 +9,9 @@ use App\Http\Resources\CinemaListResource;
 use App\Models\Cinema;
 use App\Models\CinemaHasUser;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class CinemaController extends Controller
 {
@@ -149,6 +151,28 @@ class CinemaController extends Controller
     {
         try {
             $data = Cinema::with("media")->where("status", 1)->get();
+            return $this->success(CinemaListResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function userCinema()
+    {
+        try {
+            $user = User::with("cinemas")->find(auth()->user()->id);
+            return $this->success($user->cinemas);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function restoreData()
+    {
+        try {
+            Cinema::withTrashed()->restore();
+            CinemaHasUser::withTrashed()->restore();
+            $data = Cinema::with("media")->latest()->get();
             return $this->success(CinemaListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

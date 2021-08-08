@@ -53,6 +53,17 @@ class ProductAttributeValueController extends Controller
         }
     }
 
+    public function restoreData()
+    {
+        try {
+            ProductAttributeValue::withTrashed()->restore();
+            $data = ProductAttributeValue::with("productAttribute")->latest()->get();
+            return $this->success(ProductAttributeValueResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function show($id)
     {
         try {

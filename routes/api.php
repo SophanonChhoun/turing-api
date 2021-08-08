@@ -62,6 +62,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'role'], function () {
             Route::post('', [RoleController::class, 'store']);
             Route::get('', [RoleController::class, 'index']);
+            Route::get('/restore', [RoleController::class, 'restoreData']);
             Route::get('/all', [RoleController::class, 'listAll']);
             Route::get('/{id}', [RoleController::class, 'show']);
             Route::put('/{id}', [RoleController::class, 'update']);
@@ -73,6 +74,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'cinemas'], function () {
             Route::post('', [CinemaController::class, 'store']);
             Route::get('', [CinemaController::class, 'index']);
+            Route::get('/restore', [CinemaController::class, 'restoreData']);
+            Route::get('/user', [CinemaController::class, 'userCinema']);
             Route::get('/all', [CinemaController::class, 'listAll']);
             Route::get('/{id}', [CinemaController::class, 'show']);
             Route::put('/{id}', [CinemaController::class, 'update']);
@@ -83,6 +86,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'product-attribute'], function () {
             Route::post('', [ProductAttributesController::class, 'store']);
             Route::get('', [ProductAttributesController::class, 'index']);
+            Route::get('/restore', [ProductAttributesController::class, 'restoreData']);
             Route::get('/all', [ProductAttributesController::class, 'listAll']);
             Route::get('/{id}', [ProductAttributesController::class, 'show']);
             Route::put('/{id}', [ProductAttributesController::class, 'update']);
@@ -93,6 +97,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'users'], function () {
             Route::post('', [UserController::class, 'store']);
             Route::get('', [UserController::class, 'index']);
+            Route::get('/restore', [UserController::class, 'restoreData']);
             Route::get('/{id}', [UserController::class, 'show']);
             Route::put('/{id}', [UserController::class, 'update']);
             Route::patch('/{id}', [UserController::class, 'updateStatus']);
@@ -102,6 +107,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'advertisements'], function() {
             Route::post('', [AdvertisementController::class, 'store']);
             Route::get('', [AdvertisementController::class, 'index']);
+            Route::get('/restore', [AdvertisementController::class, 'restoreData']);
             Route::put('/{id}', [AdvertisementController::class, 'update']);
             Route::get('/{id}', [AdvertisementController::class, 'show']);
             Route::delete('/{id}', [AdvertisementController::class, 'destroy']);
@@ -110,7 +116,10 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
         Route::group(['prefix' => 'customers'], function () {
             Route::get('', [CustomerController::class, 'index']);
+            Route::get('/restore', [CustomerController::class, 'restoreData']);
+            Route::post('', [CustomerController::class, 'store']);
             Route::get('/all', [CustomerController::class, 'listAll']);
+            Route::delete('/{id}', [CustomerController::class, 'destroy']);
             Route::get('/{id}', [CustomerController::class, 'show']);
             Route::patch('/{id}', [CustomerController::class, 'updateStatus']);
         });
@@ -136,6 +145,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'productAttributeValue'], function () {
             Route::get('', [ProductAttributeValueController::class, 'index']);
             Route::get('/all', [ProductAttributeValueController::class, 'listAll']);
+            Route::get('/restore', [ProductAttributeValueController::class, 'restoreData']);
             Route::post('', [ProductAttributeValueController::class, 'store']);
             Route::get('/{id}', [ProductAttributeValueController::class, 'show']);
             Route::put('/{id}', [ProductAttributeValueController::class, 'update']);
@@ -146,6 +156,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'movies'], function () {
             Route::post('', [MovieController::class, 'store']);
             Route::get('', [MovieController::class, 'index']);
+            Route::get('/restore', [MovieController::class, 'restoreData']);
             Route::get('/all', [MovieController::class, 'listAll']);
             Route::get('/{id}', [MovieController::class, 'show']);
             Route::put('/{id}', [MovieController::class, 'update']);
@@ -156,6 +167,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'productCategory'], function () {
             Route::post('', [ProductCategoryController::class, 'store']);
             Route::get('', [ProductCategoryController::class, 'index']);
+            Route::get('/restore', [ProductCategoryController::class, 'restoreData']);
             Route::get('/all', [ProductCategoryController::class, 'listAll']);
             Route::get('/{id}', [ProductCategoryController::class, 'show']);
             Route::put('/{id}', [ProductCategoryController::class, 'update']);
@@ -166,6 +178,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'products'], function () {
             Route::post('', [ProductController::class, 'store']);
             Route::get('', [ProductController::class, 'index']);
+            Route::get('/restore', [ProductController::class, 'restoreData']);
             Route::get('/all', [ProductController::class, 'listAll']);
             Route::get('/{id}', [ProductController::class, 'show']);
             Route::put('/{id}', [ProductController::class, 'update']);
@@ -176,6 +189,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'productVariants'], function () {
             Route::post('', [ProductVariantsController::class, 'store']);
             Route::get('', [ProductVariantsController::class, 'index']);
+            Route::get('/restore', [ProductVariantsController::class, 'restoreData']);
             Route::get('/all', [ProductVariantsController::class, 'listAll']);
             Route::get('/{id}', [ProductVariantsController::class, 'show']);
             Route::put('/{id}', [ProductVariantsController::class, 'update']);
@@ -200,6 +214,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'theatres'], function () {
             Route::get('', [TheaterController::class, 'index']);
             Route::get('/all', [TheaterController::class, 'listAll']);
+            Route::get('/restore', [TheaterController::class, 'restoreData']);
             Route::post('', [TheaterController::class, 'store']);
             Route::get('/{id}', [TheaterController::class, 'show']);
             Route::patch('/{id}', [TheaterController::class, 'update']);
@@ -229,6 +244,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'screenings'], function () {
             Route::post('', [ScreeningController::class, 'store']);
             Route::get('', [ScreeningController::class, 'index']);
+            Route::get('/restore', [ScreeningController::class, 'restoreData']);
             Route::put('/{id}', [ScreeningController::class, 'update']);
             Route::patch('/{id}', [ScreeningController::class, 'updateStatus']);
             Route::delete('/{id}', [ScreeningController::class, 'destroy']);

@@ -30,6 +30,17 @@ class ScreeningController extends Controller
         }
     }
 
+    public function restoreData()
+    {
+        try {
+            Screening::withTrashed()->restore();
+            $data = Screening::with("sub", "dub","movie","theater", "cinema")->latest()->get();
+            return $this->success(ScreeningResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function show($id)
     {
         try {

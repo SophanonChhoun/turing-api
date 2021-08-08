@@ -64,6 +64,18 @@ class ProductVariantsController extends Controller
         }
     }
 
+    public function restoreData()
+    {
+        try {
+            ProductVariants::withTrashed()->restore();
+            ProductVariantHasAttributeValue::withTrashed()->restore();
+            $data = ProductVariants::with("product", "productAttributeValues")->latest()->get();
+            return $this->success(ProductVariantResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function show($id)
     {
         try {
@@ -137,7 +149,7 @@ class ProductVariantsController extends Controller
     public function listAll()
     {
         try {
-            $data = ProductVariants::with('productAttributeValues')->where("status", true)->get();
+            $data = ProductVariants::with('productAttributeValues.productAttribute')->where("status", true)->get();
             return $this->success(ProductVariantListResource::collection($data));
         }catch (Exception $exception) {
             return $this->fail($exception->getMessage());

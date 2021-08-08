@@ -4,19 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Core\MediaLib;
 use App\Http\Requests\CustomerRequest;
+use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\CustomerResource;
 use App\Http\Resources\ListResource;
+use App\Mail\SendMail;
 use App\Models\Customer;
 use Cassandra\Custom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Exception;
-use DB;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -53,11 +56,6 @@ class CustomerController extends Controller
     public function signUp(SignUpRequest $request)
     {
         try {
-            $customerExit = Customer::where("email", $request['email'])->get()->first();
-            if ($customerExit)
-            {
-                return $this->fail("Email already exist. Please input a new one.");
-            }
             $customer = Customer::create($request->all());
             $customer = Customer::with("media")->find($customer->id);
             $token = $customer->createToken('authorization')->plainTextToken;
@@ -77,6 +75,52 @@ class CustomerController extends Controller
         }
     }
 
+    public function store(CustomerStoreRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $code = self::rand_string(12);
+            $request['password'] = $code;
+            Customer::create($request->all());
+            Mail::to($request['email'])->send(new SendMail($code, "password_mail"));
+            DB::commit();
+            return $this->success([
+               'message' => 'Customer created.'
+            ]);
+        }catch (Exception $exception){
+            DB::rollBack();
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            Customer::findOrFail($id);
+            return $this->success([
+                "message" => "Customer deleted successfully."
+            ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function restoreData()
+    {
+        try {
+            Customer::withTrashed()->restore();
+            $customers = Customer::with("media")->latest()->get();
+            return $this->success(CustomerResource::collection($customers));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    function rand_string( $length ) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return substr(str_shuffle($chars),0,$length);
+    }
+
     public function show($id)
     {
         try {
@@ -90,6 +134,7 @@ class CustomerController extends Controller
                "name" => $customer->name,
                "email" => $customer->email,
                "status" => $customer->status,
+               "phoneNumber" => $customer->phoneNumber,
                "photo" => $customer->media->file_url ?? ''
             ]);
         }catch (Exception $exception){
@@ -124,7 +169,6 @@ class CustomerController extends Controller
     {
         try {
             $customers = Customer::with("media")->latest()->get();
-
             return $this->success(CustomerResource::collection($customers));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
