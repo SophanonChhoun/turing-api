@@ -24,6 +24,17 @@ class ProductCategoryController extends Controller
         }
     }
 
+    public function restoreData()
+    {
+        try {
+            ProductCategory::withTrashed()->restore();
+            $data = ProductCategory::with("media")->latest()->get();
+            return $this->success(ProductCategoryResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function store(ProductCategoryRequest $request)
     {
         DB::beginTransaction();

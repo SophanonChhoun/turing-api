@@ -103,7 +103,7 @@
 
 <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
 <!-- HIDDEN PREHEADER TEXT -->
-<div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your reset code. </div>
+<div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <!-- LOGO -->
     <tr>
@@ -131,7 +131,7 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                     <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                        <p style="margin: 0;">We have sent you this email in response to your request to reset your password on Turing Cinema. After you received this email, please look below for the reset code and input in Turing website.</p>
+                        <p style="margin: 0;">We have sent you this email in response to your request to create your account on Turing Cinema. After you received this email, please look below for the password and reset your password in Turing website later.</p>
                     </td>
                 </tr>
                 <tr>
@@ -153,7 +153,7 @@
                 </tr> <!-- COPY -->
                 <tr>
                     <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                        <p style="margin: 0;">If you did not request for the reset code, please ignore, or you can contact us by this email below.</p>
+                        <p style="margin: 0;">Please do not give this code to anyone.</p>
                     </td>
                 </tr> <!-- COPY -->
                 <tr>

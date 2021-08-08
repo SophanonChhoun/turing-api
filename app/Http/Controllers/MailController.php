@@ -22,7 +22,7 @@ class MailController extends Controller
                "userId" => $user->id,
                "code" => $code
             ]);
-            $sendmail = Mail::to($request['email'])->send(new SendMail($code));
+            $sendmail = Mail::to($request['email'])->send(new SendMail($code, "customer_mail"));
             if (empty($sendmail)) {
                 return $this->success([
                     "message" => "Mail Sent Sucssfully"

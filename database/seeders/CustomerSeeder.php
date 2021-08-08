@@ -16,19 +16,21 @@ class CustomerSeeder extends Seeder
     public function run()
     {
         Customer::updateOrCreate([
-            "id" => 1
+            "id" => 2
           ],[
             "name" => "Sophanon Chhoun",
             "email" => "chhounsophanon@gmail.com",
             "password" => "password",
+            "phoneNumber" => "061794013"
             ]
         );
         Customer::updateOrCreate([
-            "id" => 2
+            "id" => 1
         ],[
-                "name" => "Customer walk in",
-                "email" => "customer.walk.in@gmail.com",
-                "password" => "password",
+            "name" => "Customer walk in",
+            "email" => "customer.walk.in@gmail.com",
+            "password" => "password",
+            "phoneNumber" => "Customer walk in",
             ]
         );
     }

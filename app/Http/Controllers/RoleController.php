@@ -43,6 +43,19 @@ class RoleController extends Controller
         }
     }
 
+    public function restoreData()
+    {
+        try {
+            Role::withTrashed()->restore();
+            RoleHasPermission::withTrashed()->restore();
+            RoleHasUser::withTrashed()->restore();
+            $roles = Role::latest()->get();
+            return $this->success(RoleListResource::collection($roles));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function show($id)
     {
         try {

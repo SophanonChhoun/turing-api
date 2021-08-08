@@ -22,9 +22,9 @@ use App\Models\MovieRating;
 use App\Models\Screening;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use DB;
 use Exception;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 
 class MovieController extends Controller
 {
@@ -68,7 +68,7 @@ class MovieController extends Controller
                 "directors",
                 "rating",
                 "casts",
-                "genres",
+                "genres"
             )->findOrFail($id);
             return $this->success([
                 "id" => $data->id,
@@ -256,6 +256,20 @@ class MovieController extends Controller
                 ->where("releasedDate", '<=',Carbon::now()->toDateString())
                 ->where("status", true)->get();
             return $this->success(MovieTimeResource::collection($movies));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function restoreData()
+    {
+        try {
+            Movie::withTrashed()->restore();
+            MovieCast::withTrashed()->restore();
+            MovieDirector::withTrashed()->restore();
+            MovieGenreHasMovie::withTrashed()->restore();
+            $data = Movie::with("rating", "genres", "directors", "casts")->latest()->get();
+            return $this->success(MovieResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
