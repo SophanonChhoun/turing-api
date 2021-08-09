@@ -21,15 +21,25 @@ class Movie extends Model
       'synopsis',
       'ratedId',
       'runningTime',
-      'poster',
+      'posterId',
       'status',
-      'backdrop',
+      'backdropId',
       'releasedDate'
     ];
 
     protected $casts = [
         'status' => 'boolean'
     ];
+
+    public function getPosterAttribute()
+    {
+        return $this->posterImage->file_url ?? '';
+    }
+
+    public function getBackdropAttribute()
+    {
+        return $this->backdropImage->file_url ?? '';
+    }
 
     public function rating()
     {
@@ -77,5 +87,15 @@ class Movie extends Model
         return $this->screenings()->where('status', true)
             ->where("date", Carbon::now()->toDateString())
             ->orderByDesc("date");
+    }
+
+    public function posterImage()
+    {
+        return $this->belongsTo(MediaFile::class, 'posterId', 'media_id');
+    }
+
+    public function backdropImage()
+    {
+        return $this->belongsTo(MediaFile::class, 'backdropId', 'media_id');
     }
 }

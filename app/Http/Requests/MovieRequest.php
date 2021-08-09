@@ -18,8 +18,6 @@ class MovieRequest extends DefaultFormRequest
             'title' => 'required',
             'trailerUrl' => 'required',
             'synopsis' => 'required',
-            'poster' => 'required',
-            'backdrop' => 'required',
             'ratedId' => 'required',
             'runningTime' => 'required',
             'releasedDate' => 'required',

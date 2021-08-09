@@ -32,6 +32,27 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
+            if (isset($request['posterImage']) && isset($request['backdropImage'])) {
+                $request['posterId'] = MediaLib::generateImageBase64Resize($request['posterImage']);
+                $request['backdropId'] = MediaLib::generateImageBase64Resize($request['backdropImage']);
+            } else {
+                if (!isset($request['posterImage']) && isset($request['backdropImage']))
+                {
+                    return $this->fail("", [
+                        'Poster field is required'
+                    ], 'InvalidRequestError', 412);
+                } else if (isset($request['posterImage']) && !isset($request['backdropImage']))
+                {
+                    return $this->fail("", [
+                        'Backdrop field is required'
+                    ], 'InvalidRequestError', 412);
+                } else {
+                    return $this->fail("", [
+                        'Poster field is required',
+                        'Backdrop field is required',
+                    ], 'InvalidRequestError', 412);
+                }
+            }
             $movie = Movie::create($request->all());
             $cast = MovieCast::store($movie->id, $request['movieCasts']);
             $directors = MovieDirector::store($movie->id, $request['movieDirectors']);
@@ -68,7 +89,9 @@ class MovieController extends Controller
                 "directors",
                 "rating",
                 "casts",
-                "genres"
+                "genres",
+                "poster",
+                "backdrop"
             )->findOrFail($id);
             return $this->success([
                 "id" => $data->id,
@@ -94,6 +117,10 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
+            if (isset($request['posterImage']) && isset($request['backdropImage'])) {
+                $request['posterId'] = MediaLib::generateImageBase64Resize($request['posterImage']);
+                $request['backdropId'] = MediaLib::generateImageBase64Resize($request['backdropId']);
+            }
             $movie = Movie::findOrFail($id)->update($request->all());
             $cast = MovieCast::store($id, $request['movieCasts']);
             $directors = MovieDirector::store($id, $request['movieDirectors']);
