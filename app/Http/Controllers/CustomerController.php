@@ -13,6 +13,7 @@ use App\Http\Resources\CustomerResource;
 use App\Http\Resources\ListResource;
 use App\Mail\SendMail;
 use App\Models\Customer;
+use Carbon\Carbon;
 use Cassandra\Custom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -105,9 +106,15 @@ class CustomerController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
+            $data = Customer::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
             Customer::withTrashed()->restore();
             $customers = Customer::with("media")->latest()->get();
             return $this->success(CustomerResource::collection($customers));

@@ -6,11 +6,12 @@ use App\Core\MediaLib;
 use App\Http\Requests\AdvertisementRequest;
 use App\Http\Resources\AdvertisementResource;
 use App\Models\Advertisement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Telegram\Bot\FileUpload\InputFile;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Exception;
-use DB;
 
 class AdvertisementController extends Controller
 {
@@ -25,10 +26,15 @@ class AdvertisementController extends Controller
     }
 
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            Advertisement::withTrashed()->restore();
+            $data = Advertisement::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
             $data = Advertisement::with("media")->latest()->get();
             return $this->success(AdvertisementResource::collection($data));
         }catch (Exception $exception){
@@ -138,20 +144,5 @@ class AdvertisementController extends Controller
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
-    }
-
-    public function test(Request $request)
-    {
-        $text = "A new contact us query\n"
-            . "<b>Email Address: </b>\n"
-            . "$request->email\n"
-            . "<b>Message: </b>\n"
-            . $request->message;
-        $photo = \App\Models\ProductCategory::with('media')->find(1)->media->file_name ?? '';
-        Telegram::sendPhoto([
-            'chat_id' => env('TELEGRAM_CHAT_ID', ''),
-            'photo' => InputFile::create(public_path('uploads/images/'. $photo)),
-        ]);
-        return 'Successful';
     }
 }
