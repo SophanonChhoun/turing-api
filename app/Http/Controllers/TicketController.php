@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserBuyTicketRequest;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Ticket;
@@ -17,7 +18,7 @@ class TicketController extends Controller
     public function index()
     {
         try {
-            $data = Ticket::with('seat')->latest()->get();
+            $data = Ticket::with('seat', 'user')->latest()->get();
             return $this->success(TicketResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -30,14 +31,19 @@ class TicketController extends Controller
         try {
             foreach ($request['seats'] as $key => $seat)
             {
+                $getSeat = Seat::with('seatType')->findOrFail($seat['id']);
+                $seat['seatName'] = $getSeat->name;
+                $seat['seatType'] = $getSeat->seatType->name ?? '';
+                $seatExit = Ticket::where("screeningId", $request['screeningId'])->where("seatId", $seat['id'])->get()->first();
+                if ($seatExit)
+                {
+                    return $this->fail("Sorry, seats" . $seat['seatName'] ." is not available");
+                }
                 $seat['screeningId'] = $request['screeningId'];
                 $seat['movieName'] = $request['movieName'];
                 $seat['cinemaName'] = $request['cinemaName'];
                 $seat['theaterName'] = $request['theaterName'];
                 $seat['userId'] = $request['userId'];
-                $getSeat = Seat::with('seatType')->findOrFail($seat['seatId']);
-                $seat['seatName'] = $getSeat->name;
-                $seat['seatType'] = $getSeat->seatType->name ?? '';
                 $data = Ticket::create($seat);
                 if (!$data)
                 {
@@ -108,4 +114,50 @@ class TicketController extends Controller
         }
     }
 
+    public function buyTicket(UserBuyTicketRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            foreach ($request['seats'] as $key => $seat)
+            {
+                $getSeat = Seat::with('seatType')->findOrFail($seat['id']);
+                $seat['seatName'] = $getSeat->name;
+                $seat['seatType'] = $getSeat->seatType->name ?? '';
+                $seatExit = Ticket::where("screeningId", $request['screeningId'])->where("seatId", $seat['id'])->get()->first();
+                if ($seatExit)
+                {
+                    return $this->fail("Sorry, seats: " . $seat['seatName'] ." is not available");
+                }
+                $seat['screeningId'] = $request['screeningId'];
+                $seat['movieName'] = $request['movieName'];
+                $seat['cinemaName'] = $request['cinemaName'];
+                $seat['theaterName'] = $request['theaterName'];
+                $seat['userId'] = auth()->user()->id;
+                $seat['seatId'] = $seat['id'];
+                $data = Ticket::create($seat);
+                if (!$data)
+                {
+                    DB::rollBack();
+                    return $this->fail("Something went wrong with buying tickets.");
+                }
+            }
+            DB::commit();
+            return $this->success([
+                'message' => 'Tickets bought successfully.'
+            ]);
+        }catch (Exception $exception){
+            DB::rollBack();
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function customerTicket()
+    {
+        try {
+            $data = Ticket::with('seat', 'user')->where("userId", auth()->user()->id)->latest()->get();
+            return $this->success(TicketResource::collection($data));
+        }catch (Exception $exception) {
+            return $this->fail($exception->getMessage());
+        }
+    }
 }

@@ -35,14 +35,23 @@ class ProductAttributesController extends Controller
 
     public function index(){
         try{
-            $data = ProductAttributes::all();
+            $data = ProductAttributes::latest()->get();
             return $this->success(ProductAttributeResource::collection($data));
         }
         catch (Exception $exception){
-            DB::rollback();
             return $this->fail($exception->getMessage());
         }
+    }
 
+    public function restoreData()
+    {
+        try {
+            ProductAttributes::withTrashed()->restore();
+            $data = ProductAttributes::latest()->get();
+            return $this->success(ProductAttributeResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
     }
 
     public function update(ProductAttributeRequest $request, $id){

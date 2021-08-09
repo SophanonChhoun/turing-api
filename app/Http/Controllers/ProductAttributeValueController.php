@@ -20,6 +20,14 @@ class ProductAttributeValueController extends Controller
     {
         try {
             foreach ($request['attributeValues'] as $key => $product){
+                $valueExist = ProductAttributeValue::where("name", $product['name'])->where("productAttributeId", $request['productAttributeId'])->get()->first();
+                if ($valueExist)
+                {
+                    DB::rollBack();
+                    return $this->fail("", [
+                        "Product attribute value name " . $product['name'] . " already exist."
+                    ], 'InvalidRequestError', 412);
+                }
                 $product['productAttributeId'] = $request['productAttributeId'];
                 $data = ProductAttributeValue::create($product);
                 if(!$data)
@@ -42,6 +50,17 @@ class ProductAttributeValueController extends Controller
             return $this->success(ProductAttributeValueResource::collection($data));
         }catch (Exception $exception){
             return $this->success($exception->getMessage());
+        }
+    }
+
+    public function restoreData()
+    {
+        try {
+            ProductAttributeValue::withTrashed()->restore();
+            $data = ProductAttributeValue::with("productAttribute")->latest()->get();
+            return $this->success(ProductAttributeValueResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
         }
     }
 

@@ -26,7 +26,7 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $user = User::with("roles.rolePermission.permission", "media", "cinemas", "hasCinemas")->where('email', $request->email)->where("status", true)->first();
+            $user = User::with("roles.rolePermission.permission", "media", "cinemas", "hasCinemas")->where('email', $request->email)->first();
             if(!$user || !Hash::check($request->password, $user->password)) {
                 return $this->fail('These credentials do not match our records.');
             }
@@ -262,6 +262,17 @@ class UserController extends Controller
             return $this->success([
                 "message" => "Password updated."
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function restoreData()
+    {
+        try {
+            User::withTrashed()->restore();
+            $users = User::with("media")->latest()->get();
+            return $this->success(UserResource::collection($users));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

@@ -54,6 +54,18 @@ class TheaterController extends Controller
         }
     }
 
+    public function restoreData()
+    {
+        try {
+            Theater::withTrashed()->restore();
+            Seat::withTrashed()->restore();
+            $data = Theater::with("cinema","seat")->latest()->get();
+            return $this->success(TheaterResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function show($id)
     {
         try {
@@ -166,7 +178,7 @@ class TheaterController extends Controller
                 DB::rollBack();
                 return $this->fail("Something went wrong with theater");
             }
-            $seats = Seat::where('theaterId', $id)->delete();
+            Seat::where('theaterId', $id)->delete();
             DB::commit();
             return $this->success([
                 'message' => "Theater deleted"

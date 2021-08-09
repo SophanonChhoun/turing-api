@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Core\MediaLib;
+use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ListResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Models\ProductVariantHasAttributeValue;
+use App\Models\ProductVariants;
 use Illuminate\Http\Request;
 use Exception;
 use DB;
@@ -24,7 +27,18 @@ class ProductController extends Controller
         }
     }
 
-    public function store(ProductRequest $request)
+    public function restoreData()
+    {
+        try {
+            Product::withTrashed()->restore();
+            $data = Product::with("media", "category")->latest()->get();
+            return $this->success(ProductResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function store(ProductCreateRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -40,7 +54,31 @@ class ProductController extends Controller
             if(!$data)
             {
                 DB::rollback();
-                return $this->fail("Something went wrong");
+                return $this->fail("Something went wrong with product");
+            }
+            foreach ($request['variants'] as $key => $productVariant)
+            {
+                $variantExist = ProductVariants::where("code", $productVariant['code'])->get()->first();
+                if ($variantExist)
+                {
+                    DB::rollBack();
+                    return $this->fail("", [
+                        "Product variant code " . $productVariant['code'] . " already exist."
+                    ], 'InvalidRequestError', 412);
+                }
+                $productVariant['productId'] = $data->id;
+                $variant = ProductVariants::create($productVariant);
+                $productVariantAttribute = ProductVariantHasAttributeValue::store($variant->id, $productVariant['productAttributeValueIds']);
+                if (!$productVariantAttribute)
+                {
+                    DB::rollBack();
+                    return $this->fail("Something went wrong with product variant attribute value.");
+                }
+                if (!$variant)
+                {
+                    DB::rollBack();
+                    return $this->fail("Something went wrong with create product variant.");
+                }
             }
             DB::commit();
             return $this->success([

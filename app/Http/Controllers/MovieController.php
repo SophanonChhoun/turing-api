@@ -22,9 +22,9 @@ use App\Models\MovieRating;
 use App\Models\Screening;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use DB;
 use Exception;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 
 class MovieController extends Controller
 {
@@ -68,7 +68,7 @@ class MovieController extends Controller
                 "directors",
                 "rating",
                 "casts",
-                "genres",
+                "genres"
             )->findOrFail($id);
             return $this->success([
                 "id" => $data->id,
@@ -156,7 +156,7 @@ class MovieController extends Controller
     public function showMovieMobile()
     {
         try {
-            $upComingMovies = Movie::with("rating", "media", "backdropImage", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
+            $upComingMovies = Movie::with("rating", "backdropImage", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
             $nowShowingMovies = Movie::where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->limit(5)->get();
             return $this->success([
                 'upComingMovies' => MovieCustomerResource::collection($upComingMovies),
@@ -200,7 +200,13 @@ class MovieController extends Controller
     public function advertisement()
     {
         try {
-            return $this->success(MovieCustomerResource::collection(Movie::with("rating", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->limit(3)->get()));
+            $movies = Movie::with(
+                "directors",
+                "rating",
+                "casts",
+                "genres"
+            )->where("status", true)->latest()->limit(3)->get();
+            return $this->success(PhotoResource::collection($movies));
         } catch (Exception $exception) {
             return $this->fail($exception->getMessage());
         }
@@ -209,16 +215,20 @@ class MovieController extends Controller
     public function movieDetail($id)
     {
         try {
-            $movie = Movie::with("rating", "genres")->findOrFail($id);
+            $movie = Movie::with("directors",
+                "rating",
+                "casts",
+                "genres")->findOrFail($id);
             $cinemaId = Screening::where("movieId", $id)->get()->pluck('cinemaId');
             $cinemas = Cinema::whereIn("id", $cinemaId)->get();
             $cinemas = $cinemas->map(function ($cinema) use($id) {
-                $cinema->screenings = Screening::where("cinemaId", $cinema->id)
+                $cinema->screenings = array_values(Screening::where("cinemaId", $cinema->id)
                     ->where("movieId", $id)
+                    ->where("date", ">=", Carbon::now()->toDateString())
                     ->orderBy("date")
-                    ->orderByDesc("start_time")
+                    ->orderBy("start_time")
                     ->get()
-                    ->groupBy("date");
+                    ->groupBy("date")->toArray());
                 return $cinema;
             });
             return $this->success([
@@ -226,7 +236,9 @@ class MovieController extends Controller
                 "title" => $movie->title,
                 "synopsis" => $movie->synopsis,
                 "rated" => $movie->rating->title ?? '',
-                "genres" => $movie->genres->pluck("name"),
+                'directors' => ListResource::collection($movie->directors),
+                'casts' => ListResource::collection($movie->casts),
+                'genres' => ListResource::collection($movie->genres),
                 "poster" => $movie->poster,
                 "backdrop" => $movie->backdrop,
                 "trailerUrl" => $movie->trailerUrl,
@@ -244,6 +256,20 @@ class MovieController extends Controller
                 ->where("releasedDate", '<=',Carbon::now()->toDateString())
                 ->where("status", true)->get();
             return $this->success(MovieTimeResource::collection($movies));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function restoreData()
+    {
+        try {
+            Movie::withTrashed()->restore();
+            MovieCast::withTrashed()->restore();
+            MovieDirector::withTrashed()->restore();
+            MovieGenreHasMovie::withTrashed()->restore();
+            $data = Movie::with("rating", "genres", "directors", "casts")->latest()->get();
+            return $this->success(MovieResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

@@ -15,7 +15,7 @@ class ProductAttributeValueRequest extends DefaultFormRequest
     public function rules()
     {
         return [
-            "name" => "required",
+            "name" => "required|unique:product_attribute_values,name,".$this->id,
             "productAttributeId" => "required"
         ];
     }

@@ -24,6 +24,18 @@ class AdvertisementController extends Controller
         }
     }
 
+
+    public function restoreData()
+    {
+        try {
+            Advertisement::withTrashed()->restore();
+            $data = Advertisement::with("media")->latest()->get();
+            return $this->success(AdvertisementResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function store(AdvertisementRequest $request)
     {
         DB::beginTransaction();

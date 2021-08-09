@@ -22,6 +22,14 @@ class ProductVariantsController extends Controller
         try {
             foreach ($request['productVariants'] as $key => $productVariant)
             {
+                $variantExist = ProductVariants::where("code", $productVariant['code'])->get()->first();
+                if ($variantExist)
+                {
+                    DB::rollBack();
+                    return $this->fail("", [
+                        "Product variant code " . $productVariant['code'] . " already exist."
+                    ], 'InvalidRequestError', 412);
+                }
                 $productVariant['productId'] = $request['productId'];
                 $data = ProductVariants::create($productVariant);
                 $productVariantAttribute = ProductVariantHasAttributeValue::store($data->id, $productVariant['productAttributeValueIds']);
@@ -56,6 +64,18 @@ class ProductVariantsController extends Controller
         }
     }
 
+    public function restoreData()
+    {
+        try {
+            ProductVariants::withTrashed()->restore();
+            ProductVariantHasAttributeValue::withTrashed()->restore();
+            $data = ProductVariants::with("product", "productAttributeValues")->latest()->get();
+            return $this->success(ProductVariantResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
     public function show($id)
     {
         try {
@@ -65,6 +85,7 @@ class ProductVariantsController extends Controller
                "price" => $productVariant->price,
                "status" => $productVariant->status,
                "productId" => $productVariant->productId,
+               "code" => $productVariant->code,
                "productAttributeValueIds" => $productVariant->hasAttributeValues->pluck('attributeValueId'),
             ]);
         }catch (Exception $exception){
@@ -128,7 +149,7 @@ class ProductVariantsController extends Controller
     public function listAll()
     {
         try {
-            $data = ProductVariants::with('productAttributeValues')->where("status", true)->get();
+            $data = ProductVariants::with('productAttributeValues.productAttribute')->where("status", true)->get();
             return $this->success(ProductVariantListResource::collection($data));
         }catch (Exception $exception) {
             return $this->fail($exception->getMessage());
