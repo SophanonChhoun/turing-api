@@ -8,6 +8,7 @@ use App\Models\TicketSale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Exception;
+use Illuminate\Support\Str;
 
 class Ticket extends Model
 {
@@ -27,6 +28,25 @@ class Ticket extends Model
     protected $casts = [
         'checked_in' => 'boolean'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($ticket) {
+            $ticket->{$ticket->getKeyName()} = (string) Str::uuid();
+        });
+    }
+
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
 
     public function screening()
     {

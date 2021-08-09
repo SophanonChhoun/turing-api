@@ -37,23 +37,24 @@ class TicketController extends Controller
                 $seatExit = Ticket::where("screeningId", $request['screeningId'])->where("seatId", $seat['id'])->get()->first();
                 if ($seatExit)
                 {
-                    return $this->fail("Sorry, seats" . $seat['seatName'] ." is not available");
+                    return $this->fail("Sorry, seats: " . $seat['seatName'] ." is not available");
                 }
                 $seat['screeningId'] = $request['screeningId'];
                 $seat['movieName'] = $request['movieName'];
                 $seat['cinemaName'] = $request['cinemaName'];
                 $seat['theaterName'] = $request['theaterName'];
                 $seat['userId'] = $request['userId'];
+                $seat['seatId'] = $seat['id'];
                 $data = Ticket::create($seat);
                 if (!$data)
                 {
                     DB::rollBack();
-                    return $this->fail("Something went wrong");
+                    return $this->fail("Something went wrong with buying tickets.");
                 }
             }
             DB::commit();
             return $this->success([
-                'message' => 'Tickets created'
+                'message' => 'Tickets bought successfully.'
             ]);
         }catch (Exception $exception){
             DB::rollback();
