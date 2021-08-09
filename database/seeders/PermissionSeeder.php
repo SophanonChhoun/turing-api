@@ -134,6 +134,12 @@ class PermissionSeeder extends Seeder
               "name" => "Advertisement",
               "category" => "Advertisement Management",
               "slug" => "advertisement"
+          ],
+          [
+              "id" => 21,
+              "name" => "Currency",
+              "category" => "Currency Management",
+              "slug" => "currency"
           ]
         ];
 

@@ -43,6 +43,7 @@ class RoleSeeder extends Seeder
           [ "roleId" => 1, "permissionId" => 18, "read" => 1, "create" => 1, "update" => 1, "delete" => 1 ],
           [ "roleId" => 1, "permissionId" => 19, "read" => 1, "create" => 1, "update" => 1, "delete" => 1 ],
           [ "roleId" => 1, "permissionId" => 20, "read" => 1, "create" => 1, "update" => 1, "delete" => 1 ],
+          [ "roleId" => 1, "permissionId" => 21, "read" => 1, "create" => 1, "update" => 1, "delete" => 1 ],
         ];
 
         DB::table("roles")->truncate();
