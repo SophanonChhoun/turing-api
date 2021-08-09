@@ -30,10 +30,15 @@ class ScreeningController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            Screening::withTrashed()->restore();
+            $data = Screening::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
             $data = Screening::with("sub", "dub","movie","theater", "cinema")->latest()->get();
             return $this->success(ScreeningResource::collection($data));
         }catch (Exception $exception){

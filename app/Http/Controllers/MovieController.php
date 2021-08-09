@@ -261,13 +261,24 @@ class MovieController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            Movie::withTrashed()->restore();
-            MovieCast::withTrashed()->restore();
-            MovieDirector::withTrashed()->restore();
-            MovieGenreHasMovie::withTrashed()->restore();
+            $movies = Movie::withTrashed();
+            $casts = MovieCast::withTrashed();
+            $directors = MovieDirector::withTrashed();
+            $genres = MovieGenreHasMovie::withTrashed();
+            if (isset($request['date']))
+            {
+                $movies = $movies->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+                $casts = $casts->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+                $directors = $directors->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+                $genres = $genres->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $movies->restore();
+            $casts->restore();
+            $directors->restore();
+            $genres->restore();
             $data = Movie::with("rating", "genres", "directors", "casts")->latest()->get();
             return $this->success(MovieResource::collection($data));
         }catch (Exception $exception){

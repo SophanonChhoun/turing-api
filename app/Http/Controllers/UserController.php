@@ -14,6 +14,7 @@ use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserResource;
 use App\Models\CinemaHasUser;
 use App\Models\RoleHasUser;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -267,10 +268,15 @@ class UserController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            User::withTrashed()->restore();
+           $data = User::withTrashed();
+           if (isset($request['date']))
+           {
+               $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+           }
+            $data->restore();
             $users = User::with("media")->latest()->get();
             return $this->success(UserResource::collection($users));
         }catch (Exception $exception){

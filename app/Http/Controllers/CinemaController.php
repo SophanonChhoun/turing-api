@@ -8,10 +8,12 @@ use App\Http\Requests\StatusRequest;
 use App\Http\Resources\CinemaListResource;
 use App\Models\Cinema;
 use App\Models\CinemaHasUser;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class CinemaController extends Controller
 {
@@ -167,11 +169,18 @@ class CinemaController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            Cinema::withTrashed()->restore();
-            CinemaHasUser::withTrashed()->restore();
+            $data = Cinema::withTrashed();
+            $user = CinemaHasUser::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+                $user = $user->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
+            $user->restore();
             $data = Cinema::with("media")->latest()->get();
             return $this->success(CinemaListResource::collection($data));
         }catch (Exception $exception){

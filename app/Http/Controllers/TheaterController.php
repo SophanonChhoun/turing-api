@@ -12,8 +12,10 @@ use App\Http\Resources\TheaterResource;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Theater;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class TheaterController extends Controller
 {
@@ -54,11 +56,18 @@ class TheaterController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            Theater::withTrashed()->restore();
-            Seat::withTrashed()->restore();
+            $data = Theater::withTrashed();
+            $seat = Seat::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+                $seat = $seat->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
+            $seat->restore();
             $data = Theater::with("cinema","seat")->latest()->get();
             return $this->success(TheaterResource::collection($data));
         }catch (Exception $exception){

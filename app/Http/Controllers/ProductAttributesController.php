@@ -7,6 +7,7 @@ use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ProductAttributeResource;
 use App\Http\Resources\ListResource;
 use App\Models\ProductAttributes;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Exception;
@@ -43,10 +44,15 @@ class ProductAttributesController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            ProductAttributes::withTrashed()->restore();
+            $data = ProductAttributes::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
             $data = ProductAttributes::latest()->get();
             return $this->success(ProductAttributeResource::collection($data));
         }catch (Exception $exception){

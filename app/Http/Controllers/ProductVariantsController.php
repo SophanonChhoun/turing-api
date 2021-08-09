@@ -10,6 +10,7 @@ use App\Http\Resources\ProductVariantListResource;
 use App\Http\Resources\ProductVariantResource;
 use App\Models\ProductVariantHasAttributeValue;
 use App\Models\ProductVariants;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 use DB;
@@ -64,11 +65,18 @@ class ProductVariantsController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            ProductVariants::withTrashed()->restore();
-            ProductVariantHasAttributeValue::withTrashed()->restore();
+            $data = ProductVariants::withTrashed();
+            $attribute = ProductVariantHasAttributeValue::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+                $attribute = $attribute->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
+            $attribute->restore();
             $data = ProductVariants::with("product", "productAttributeValues")->latest()->get();
             return $this->success(ProductVariantResource::collection($data));
         }catch (Exception $exception){
