@@ -65,7 +65,7 @@ class TicketController extends Controller
     public function show($id)
     {
         try {
-            $data = Ticket::with("user")->findOrFail($id);
+            $data = Ticket::with("user", "checkBy")->findOrFail($id);
             return $this->success([
                 'id' => $data->id,
                 'price' => $data->price,
@@ -75,7 +75,8 @@ class TicketController extends Controller
                 'theaterName' => $data->theaterName,
                 'cinemaName'=> $data->cinemaName,
                 'userName' => $data->user->name ?? '',
-                'checked_in' => $data->checked_in
+                'checked_in' => $data->checked_in,
+                'check_by' => $data->checkBy->name
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -101,7 +102,8 @@ class TicketController extends Controller
                 return $this->fail("Ticket not exist.");
             }
             $data = $data->update([
-                "checked_in" => $request->checked_in
+                "checked_in" => $request->checked_in,
+                "checked_by" => auth()->user()->id
             ]);
             if(!$data)
             {
