@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Seat;
 use App\Models\Screening;
+use App\Models\Seat;
 use App\Models\TicketSale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +23,8 @@ class Ticket extends Model
         'theaterName',
         'movieName',
         'cinemaName',
-        'userId'
+        'userId',
+        'checked_by'
     ];
     protected $casts = [
         'checked_in' => 'boolean'
@@ -61,5 +62,10 @@ class Ticket extends Model
     public function user()
     {
         return $this->belongsTo(Customer::class, 'userId', 'id');
+    }
+
+    public function checkBy()
+    {
+        return $this->belongsTo(User::class, 'checked_by', 'id');
     }
 }
