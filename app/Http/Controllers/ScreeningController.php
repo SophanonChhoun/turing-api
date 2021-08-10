@@ -92,7 +92,7 @@ class ScreeningController extends Controller
                     $theater = Theater::find($screening['theaterId']) ?? '';
                     return $this->fail("Screening start time ". $screening['start_time'] . " at " . $screening['date'] . " in theater " . $theater->name . " already exist.");
                 }
-                if ( $request['date'] >= $movie->releasedDate )
+                if ($movie->releasedDate > $screening['date'])
                 {
                     DB::rollBack();
                     return $this->fail("Screening must have date equal or greater than ".$movie->releasedDate);
@@ -127,6 +127,22 @@ class ScreeningController extends Controller
     {
         DB::beginTransaction();
         try {
+            $movie = Movie::findOrFail($request['movieId']);
+            if (!$movie)
+            {
+                return $this->fail("Sorry this movie is not exist.");
+            }
+            if (Screening::where("id", "!=", $id)->where("theaterId", $request['theaterId'])->where("date", $request['date'])->where("start_time", $request['start_time'])->get()->first())
+            {
+                DB::rollBack();
+                $theater = Theater::find($request['theaterId']) ?? '';
+                return $this->fail("Screening start time ". $request['start_time'] . " at " . $request['date'] . " in theater " . $theater->name . " already exist.");
+            }
+            if ($movie->releasedDate > $request['date'])
+            {
+                DB::rollBack();
+                return $this->fail("Screening must have date equal or greater than ".$movie->releasedDate);
+            }
             $data = Screening::find($id);
             if (!$data)
             {
