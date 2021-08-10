@@ -127,7 +127,9 @@ class ProductCategoryController extends Controller
     public function destroy($id)
     {
         try {
-            ProductCategory::findOrFail($id)->delete();
+            $category = ProductCategory::findOrFail($id);
+            MediaLib::deleteImage($category->mediaId);
+            $category->delete();
             return $this->success([
                "message" => "Product category deleted."
             ]);

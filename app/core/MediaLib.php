@@ -95,13 +95,42 @@ class MediaLib
         }
     }
 
-    public function deleteImage($id)
+    public static function deleteImage($id)
     {
         try {
             $fileName = MediaFile::find($id)->file_name;
             if (file_exists("uploads/images/" . $fileName))
             {
                 File::delete("uploads/images/" . $fileName);
+            }
+        }catch (Exception $exception) {
+            return $exception->getMessage();
+        }
+    }
+
+    public static function deleteImageResize($id)
+    {
+        try {
+            $fileName = MediaFile::find($id)->name;
+            if (file_exists("uploads/images/original/" . $fileName))
+            {
+                File::delete("uploads/images/original/" . $fileName);
+            }
+            if (file_exists("uploads/images/w154/" . $fileName))
+            {
+                File::delete("uploads/images/w154/" . $fileName);
+            }
+            if (file_exists("uploads/images/w185/" . $fileName))
+            {
+                File::delete("uploads/images/w185/" . $fileName);
+            }
+            if (file_exists("uploads/images/w300/" . $fileName))
+            {
+                File::delete("uploads/images/w300/" . $fileName);
+            }
+            if (file_exists("uploads/images/w500/" . $fileName))
+            {
+                File::delete("uploads/images/w500/" . $fileName);
             }
         }catch (Exception $exception) {
             return $exception->getMessage();
