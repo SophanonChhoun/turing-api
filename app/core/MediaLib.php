@@ -95,4 +95,8 @@ class MediaLib
         }
     }
 
+    public function deleteImage()
+    {
+
+    }
 }

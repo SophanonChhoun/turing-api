@@ -92,7 +92,7 @@ class ScreeningController extends Controller
                     $theater = Theater::find($screening['theaterId']) ?? '';
                     return $this->fail("Screening start time ". $screening['start_time'] . " at " . $screening['date'] . " in theater " . $theater->name . " already exist.");
                 }
-                if ($movie->releasedDate > $request['date'])
+                if ( $request['date'] >= $movie->releasedDate )
                 {
                     DB::rollBack();
                     return $this->fail("Screening must have date equal or greater than ".$movie->releasedDate);
