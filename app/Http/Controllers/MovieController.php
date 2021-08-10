@@ -89,9 +89,7 @@ class MovieController extends Controller
                 "directors",
                 "rating",
                 "casts",
-                "genres",
-                "poster",
-                "backdrop"
+                "genres"
             )->findOrFail($id);
             return $this->success([
                 "id" => $data->id,

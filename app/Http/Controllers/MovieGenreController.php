@@ -58,7 +58,9 @@ class MovieGenreController extends Controller
             }
             DB::commit();
 
-            return response()->json($MovieGenre, 201);
+            return response()->json([
+                "message" => "Genres created."
+            ], 201);
         }catch (Exception $exception){
             DB::rollback();
             return $this->fail($exception->getMessage());
@@ -86,8 +88,9 @@ class MovieGenreController extends Controller
             }
             DB::commit();
 
-            return $this->success($MovieGenre);
-
+            return $this->success([
+                "message" => "Genres updated."
+            ], 201);
         }catch (Exception $exception){
             DB::rollback();
             return $this->fail($exception->getMessage());
