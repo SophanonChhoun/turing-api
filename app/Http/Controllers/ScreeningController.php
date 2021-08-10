@@ -262,12 +262,12 @@ class ScreeningController extends Controller
         try {
             $movies = Movie::where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
             $movies = $movies->map(function ($movie){
-                $movie->screenings = array_values(Screening::where("movieId", $movie->id)
+                $movie->screenings = collect(Screening::where("movieId", $movie->id)
                     ->where("date", ">=", Carbon::now()->toDateString())
                     ->orderBy("date")->orderBy("start_time")->get()->groupBy("date")->toArray());
                 return $movie;
             });
-            return $this->success($movies);
+                return $this->success($movies);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

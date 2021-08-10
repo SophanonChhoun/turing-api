@@ -95,8 +95,16 @@ class MediaLib
         }
     }
 
-    public function deleteImage()
+    public function deleteImage($id)
     {
-
+        try {
+            $fileName = MediaFile::find($id)->file_name;
+            if (file_exists("uploads/images/" . $fileName))
+            {
+                File::delete("uploads/images/" . $fileName);
+            }
+        }catch (Exception $exception) {
+            return $exception->getMessage();
+        }
     }
 }
