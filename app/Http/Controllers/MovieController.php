@@ -247,7 +247,7 @@ class MovieController extends Controller
             $cinemaId = Screening::where("movieId", $id)->get()->pluck('cinemaId');
             $cinemas = Cinema::whereIn("id", $cinemaId)->get();
             $cinemas = $cinemas->map(function ($cinema) use($id) {
-                $cinema->screenings = array_values(Screening::where("cinemaId", $cinema->id)
+                $cinema->screenings = collect(Screening::where("cinemaId", $cinema->id)
                     ->where("movieId", $id)
                     ->where("date", ">=", Carbon::now()->toDateString())
                     ->orderBy("date")
