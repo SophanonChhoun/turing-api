@@ -76,7 +76,7 @@ class TicketController extends Controller
                 'cinemaName'=> $data->cinemaName,
                 'userName' => $data->user->name ?? '',
                 'checked_in' => $data->checked_in,
-                'check_by' => $data->checkBy->name
+                'check_by' => $data->checkBy->name ?? ''
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
