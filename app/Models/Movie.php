@@ -33,12 +33,12 @@ class Movie extends Model
 
     public function getPosterAttribute()
     {
-        return $this->posterImage->file_name ?? '';
+        return $this->posterImage->name ?? '';
     }
 
     public function getBackdropAttribute()
     {
-        return $this->backdropImage->file_name ?? '';
+        return $this->backdropImage->name ?? '';
     }
 
     public function rating()

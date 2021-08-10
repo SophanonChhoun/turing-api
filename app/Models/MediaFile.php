@@ -22,6 +22,9 @@ class MediaFile extends Model
         return url('/') . $value;
     }
 
+    function getNameAttribute() {
+        return substr($this->file_name, 8);
+    }
 
     public function media()
     {
