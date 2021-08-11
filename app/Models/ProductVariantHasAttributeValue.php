@@ -19,7 +19,7 @@ class ProductVariantHasAttributeValue extends Model
 
     public static function store($id, $productAttributeValues)
     {
-        ProductVariantHasAttributeValue::where("productVariantId", $id)->delete();
+        ProductVariantHasAttributeValue::where("productVariantId", $id)->forceDelete();
         foreach ($productAttributeValues as $key => $productAttributeValue)
         {
             $product['productVariantId'] = $id;

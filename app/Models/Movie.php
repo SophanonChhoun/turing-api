@@ -64,22 +64,22 @@ class Movie extends Model
 
     public function movieDirectors()
     {
-        return $this->hasMany(MovieDirector::class,"movieId",);
+        return $this->hasMany(MovieDirector::class,"movieId");
     }
 
     public function movieCasts()
     {
-        return $this->hasMany(MovieCast::class,"movieId",);
+        return $this->hasMany(MovieCast::class,"movieId");
     }
 
     public function movieGenres()
     {
-        return $this->hasMany(MovieGenreHasMovie::class,"movieId",);
+        return $this->hasMany(MovieGenreHasMovie::class,"movieId");
     }
 
     public function screenings()
     {
-        return $this->hasMany(Screening::class,"movieId",);
+        return $this->hasMany(Screening::class,"movieId");
     }
 
     public function availableScreenings()

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ScreeningCreateRequest;
+use App\Http\Resources\NowShowingResource;
 use App\Http\Resources\SeatResource;
 use App\Models\Movie;
 use App\Models\Screening;
@@ -260,14 +261,17 @@ class ScreeningController extends Controller
     public function getNowShowing()
     {
         try {
-            $movies = Movie::where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
+            $movies = Movie::with("directors",
+                "rating",
+                "casts",
+                "genres")->where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
             $movies = $movies->map(function ($movie){
                 $movie->screenings = collect(Screening::where("movieId", $movie->id)
                     ->where("date", ">=", Carbon::now()->toDateString())
                     ->orderBy("date")->orderBy("start_time")->get()->groupBy("date")->toArray());
                 return $movie;
             });
-                return $this->success($movies);
+            return $this->success(NowShowingResource::collection($movies));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
