@@ -117,7 +117,7 @@ class MovieController extends Controller
         try {
             if (isset($request['posterImage']) && isset($request['backdropImage'])) {
                 $request['posterId'] = MediaLib::generateImageBase64Resize($request['posterImage']);
-                $request['backdropId'] = MediaLib::generateImageBase64Resize($request['backdropId']);
+                $request['backdropId'] = MediaLib::generateImageBase64Resize($request['backdropImage']);
             }
             $movie = Movie::findOrFail($id)->update($request->all());
             $cast = MovieCast::store($id, $request['movieCasts']);
