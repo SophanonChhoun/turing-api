@@ -272,11 +272,14 @@ class ScreeningController extends Controller
                 "rating",
                 "casts",
                 "genres")->where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
-            $movies = $movies->map(function ($movie){
-                $movie->screenings = collect(Screening::where("movieId", $movie->id)
+            $movies = $movies->filter(function ($movie){
+                $screening = Screening::where("movieId", $movie->id)
                     ->where("date", ">=", Carbon::now()->toDateString())
-                    ->orderBy("date")->orderBy("start_time")->get()->groupBy("date")->toArray());
-                return $movie;
+                    ->orderBy("date")->orderBy("start_time")->get()->groupBy("date");
+                if ($screening->count() >= 1) {
+                    $movie->screenings = collect($screening->toArray());
+                    return $movie;
+                }
             });
             return $this->success(NowShowingResource::collection($movies));
         }catch (Exception $exception){
