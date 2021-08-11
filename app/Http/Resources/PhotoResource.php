@@ -25,6 +25,7 @@ class PhotoResource extends JsonResource
             'directors' => ListResource::collection($this->directors),
             'casts' => ListResource::collection($this->casts),
             'genres' => ListResource::collection($this->genres),
+            "rating" => $this->rating->title ?? ''
          ];
     }
 }

@@ -19,7 +19,7 @@ class MovieCast extends Model
 
     public static function store($id, $casts)
     {
-        self::where("movieId", $id)->delete();
+        self::where("movieId", $id)->forceDelete();
         foreach ($casts as $key => $cast)
         {
             $data = self::create([

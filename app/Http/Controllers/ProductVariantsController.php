@@ -142,6 +142,7 @@ class ProductVariantsController extends Controller
     {
         try {
             $data = ProductVariants::findOrFail($id)->delete();
+            ProductVariantHasAttributeValue::where("productVariantId", $id)->delete();
             if (!$data)
             {
                 return $this->fail("something went wrong");
