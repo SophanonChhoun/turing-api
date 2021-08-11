@@ -19,7 +19,7 @@ class RoleHasUser extends Model
 
     public static function store($id, $roles)
     {
-        self::where("userId", $id)->delete();
+        self::where("userId", $id)->forceDelete();
         foreach ($roles as $key => $role)
         {
             $data = self::create([

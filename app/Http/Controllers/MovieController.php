@@ -260,13 +260,15 @@ class MovieController extends Controller
                 "id" => $movie->id,
                 "title" => $movie->title,
                 "synopsis" => $movie->synopsis,
-                "rated" => $movie->rating->title ?? '',
+                "rating" => $movie->rating->title ?? '',
                 'directors' => ListResource::collection($movie->directors),
                 'casts' => ListResource::collection($movie->casts),
                 'genres' => ListResource::collection($movie->genres),
                 "poster" => $movie->poster,
                 "backdrop" => $movie->backdrop,
                 "trailerUrl" => $movie->trailerUrl,
+                "runningTime" => $movie->runningTime,
+                "releasedDate" => $movie->releasedDate,
                 "cinemas" => ScreeningCinemaResource::collection($cinemas),
             ]);
         }catch (Exception $exception) {
