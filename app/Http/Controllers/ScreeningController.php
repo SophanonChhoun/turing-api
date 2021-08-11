@@ -8,11 +8,13 @@ use App\Http\Resources\SeatResource;
 use App\Models\Movie;
 use App\Models\Screening;
 use App\Models\Seat;
+use App\Models\SeatType;
 use App\Models\Theater;
 use App\Models\Ticket;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\ScreeningRequest;
@@ -230,7 +232,10 @@ class ScreeningController extends Controller
                     $grid[$i][$j] = null;
                 }
             }
-            $seats = SeatResource::collection(Seat::with("seatType")->where("theaterId", $screening->theaterId)->get());
+            $getSeats = Seat::with("seatType")->where("theaterId", $screening->theaterId)->get();
+            $seatTypeId = $getSeats->pluck("seatTypeId");
+            $seatType = SeatType::whereIn("id", $seatTypeId)->get();
+            $seats = SeatResource::collection($getSeats);
             foreach ($seats as $key => $seat) {
                 $avaliable = Ticket::where("seatId", $seat->id)->where("screeningId", $id)->get()->first();
                 $grid[$seat->row][$seat->col] = [
@@ -244,6 +249,7 @@ class ScreeningController extends Controller
                     "row" => $seat->row
                 ];
             }
+
             return $this->success([
                 "screeningId" => $id,
                 "cinemaName" => $theater->cinema->name ?? '',
@@ -251,6 +257,7 @@ class ScreeningController extends Controller
                 "movieName" => $screening->movie->title ?? '',
                 "row" => $theater->row,
                 "col" => $theater->col,
+                "seatTypes" => $seatType,
                 "grid" => $grid
             ]);
         }catch (Exception $exception){
