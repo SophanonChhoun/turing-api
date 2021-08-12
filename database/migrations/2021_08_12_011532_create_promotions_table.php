@@ -22,6 +22,7 @@ class CreatePromotionsTable extends Migration
             $table->decimal('conditionTotal')->default(0);
             $table->boolean('hasProducts')->default(false);
             $table->boolean('hasScreenings')->default(false);
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

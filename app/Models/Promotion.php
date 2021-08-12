@@ -16,6 +16,7 @@ class Promotion extends Model
         'bill',
         'conditionTotal',
         'hasProducts',
-        'hasScreenings'
+        'hasScreenings',
+        'status'
     ];
 }
