@@ -11,7 +11,7 @@
  {
     "screeningId": "7",
     "cinemaName": "",
-    "theaterName": "Hall 3",
+    "theatreName": "Hall 3",
     "movieName": "Amarsi un po'...",
     "row": 5,
     "col": 5,
