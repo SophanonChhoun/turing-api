@@ -21,7 +21,8 @@ class TicketAdminResource extends JsonResource
             'seat' => $this->seatName,
             'cinema' => $this->cinemaName,
             'customer' => $this->user->name ?? '',
-            'checked_in' => $this->checked_in
+            'checked_in' => $this->checked_in,
+            'theatre' =>  $this->theaterName,
         ];
     }
 }
