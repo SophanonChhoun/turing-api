@@ -20,16 +20,4 @@ class RemoveIdFromTickets extends Migration
             }
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::table('tickets', function (Blueprint $table) {
-            //
-        });
-    }
 }
