@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PhotoResource extends JsonResource
+class NowShowingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,17 +15,17 @@ class PhotoResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'poster' => $this->poster,
-            'backdrop' => $this->backdrop,
-            'title' => $this->title,
-            'trailerUrl' => $this->trailerUrl,
-            'synopsis' => $this->synopsis,
-            'runningTime' => $this->runningTime,
+            "id" => $this->id,
+            "title" => $this->title,
+            "synopsis" => $this->synopsis,
+            "rating" => $this->rating->title ?? '',
             'directors' => ListResource::collection($this->directors),
             'casts' => ListResource::collection($this->casts),
             'genres' => ListResource::collection($this->genres),
-            "rating" => $this->rating->title ?? ''
-         ];
+            "poster" => $this->poster,
+            "backdrop" => $this->backdrop,
+            "trailerUrl" => $this->trailerUrl,
+            "screenings" => $this->screenings
+        ];
     }
 }

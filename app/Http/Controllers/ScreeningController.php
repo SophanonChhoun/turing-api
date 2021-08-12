@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ScreeningCreateRequest;
+use App\Http\Resources\NowShowingResource;
 use App\Http\Resources\SeatResource;
 use App\Models\Movie;
 use App\Models\Screening;
 use App\Models\Seat;
+use App\Models\SeatType;
 use App\Models\Theater;
 use App\Models\Ticket;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\ScreeningRequest;
@@ -92,13 +95,13 @@ class ScreeningController extends Controller
                     $theater = Theater::find($screening['theaterId']) ?? '';
                     return $this->fail("Screening start time ". $screening['start_time'] . " at " . $screening['date'] . " in theater " . $theater->name . " already exist.");
                 }
-                if ($movie->releasedDate > $request['date'])
+                if ($movie->releasedDate > $screening['date'])
                 {
                     DB::rollBack();
                     return $this->fail("Screening must have date equal or greater than ".$movie->releasedDate);
                 }
                 $screening['movieId'] = $request['movieId'];
-                $screening['cinemaId'] = Theater::find($screening['theaterId'])->cinemaId ?? 0;
+                $screening['cinemaId'] = Theater::findOrFail($screening['theaterId'])->cinemaId;
                 $data = Screening::create($screening);
                 if (!$data)
                 {
@@ -127,6 +130,22 @@ class ScreeningController extends Controller
     {
         DB::beginTransaction();
         try {
+            $movie = Movie::findOrFail($request['movieId']);
+            if (!$movie)
+            {
+                return $this->fail("Sorry this movie is not exist.");
+            }
+            if (Screening::where("id", "!=", $id)->where("theaterId", $request['theaterId'])->where("date", $request['date'])->where("start_time", $request['start_time'])->get()->first())
+            {
+                DB::rollBack();
+                $theater = Theater::find($request['theaterId']) ?? '';
+                return $this->fail("Screening start time ". $request['start_time'] . " at " . $request['date'] . " in theater " . $theater->name . " already exist.");
+            }
+            if ($movie->releasedDate > $request['date'])
+            {
+                DB::rollBack();
+                return $this->fail("Screening must have date equal or greater than ".$movie->releasedDate);
+            }
             $data = Screening::find($id);
             if (!$data)
             {
@@ -213,7 +232,10 @@ class ScreeningController extends Controller
                     $grid[$i][$j] = null;
                 }
             }
-            $seats = SeatResource::collection(Seat::with("seatType")->where("theaterId", $screening->theaterId)->get());
+            $getSeats = Seat::with("seatType")->where("theaterId", $screening->theaterId)->get();
+            $seatTypeId = $getSeats->pluck("seatTypeId");
+            $seatType = SeatType::whereIn("id", $seatTypeId)->get();
+            $seats = SeatResource::collection($getSeats);
             foreach ($seats as $key => $seat) {
                 $avaliable = Ticket::where("seatId", $seat->id)->where("screeningId", $id)->get()->first();
                 $grid[$seat->row][$seat->col] = [
@@ -227,6 +249,7 @@ class ScreeningController extends Controller
                     "row" => $seat->row
                 ];
             }
+
             return $this->success([
                 "screeningId" => $id,
                 "cinemaName" => $theater->cinema->name ?? '',
@@ -234,6 +257,7 @@ class ScreeningController extends Controller
                 "movieName" => $screening->movie->title ?? '',
                 "row" => $theater->row,
                 "col" => $theater->col,
+                "seatTypes" => $seatType,
                 "grid" => $grid
             ]);
         }catch (Exception $exception){
@@ -244,14 +268,20 @@ class ScreeningController extends Controller
     public function getNowShowing()
     {
         try {
-            $movies = Movie::where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
-            $movies = $movies->map(function ($movie){
-                $movie->screenings = array_values(Screening::where("movieId", $movie->id)
+            $movies = Movie::with("directors",
+                "rating",
+                "casts",
+                "genres")->where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
+            $movies = $movies->filter(function ($movie){
+                $screening = Screening::where("movieId", $movie->id)
                     ->where("date", ">=", Carbon::now()->toDateString())
-                    ->orderBy("date")->orderBy("start_time")->get()->groupBy("date")->toArray());
-                return $movie;
+                    ->orderBy("date")->orderBy("start_time")->get()->groupBy("date");
+                if ($screening->count() >= 1) {
+                    $movie->screenings = collect($screening->toArray());
+                    return $movie;
+                }
             });
-            return $this->success($movies);
+            return $this->success(NowShowingResource::collection($movies));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

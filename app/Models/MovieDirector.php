@@ -20,7 +20,7 @@ class MovieDirector extends Model
 
     public static function store($id, $directors)
     {
-        self::where("movieId", $id)->delete();
+        self::where("movieId", $id)->forceDelete();
         foreach ($directors as $key => $director)
         {
             $data = self::create([

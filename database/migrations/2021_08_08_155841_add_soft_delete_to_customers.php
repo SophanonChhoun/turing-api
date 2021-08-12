@@ -29,7 +29,10 @@ class AddSoftDeleteToCustomers extends Migration
     public function down()
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->dropColumn('deleted_at');
+            if (Schema::hasColumn('customers', 'deleted_at'))
+            {
+                $table->dropColumn('deleted_at');
+            }
         });
     }
 }

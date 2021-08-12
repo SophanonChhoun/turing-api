@@ -86,8 +86,9 @@ class MovieGenreController extends Controller
             }
             DB::commit();
 
-            return $this->success($MovieGenre);
-
+            return $this->success([
+                "message" => "Genres updated."
+            ], 201);
         }catch (Exception $exception){
             DB::rollback();
             return $this->fail($exception->getMessage());

@@ -21,15 +21,25 @@ class Movie extends Model
       'synopsis',
       'ratedId',
       'runningTime',
-      'poster',
+      'posterId',
       'status',
-      'backdrop',
+      'backdropId',
       'releasedDate'
     ];
 
     protected $casts = [
         'status' => 'boolean'
     ];
+
+    public function getPosterAttribute()
+    {
+        return $this->posterImage->name ?? '';
+    }
+
+    public function getBackdropAttribute()
+    {
+        return $this->backdropImage->name ?? '';
+    }
 
     public function rating()
     {
@@ -54,22 +64,22 @@ class Movie extends Model
 
     public function movieDirectors()
     {
-        return $this->hasMany(MovieDirector::class,"movieId",);
+        return $this->hasMany(MovieDirector::class,"movieId");
     }
 
     public function movieCasts()
     {
-        return $this->hasMany(MovieCast::class,"movieId",);
+        return $this->hasMany(MovieCast::class,"movieId");
     }
 
     public function movieGenres()
     {
-        return $this->hasMany(MovieGenreHasMovie::class,"movieId",);
+        return $this->hasMany(MovieGenreHasMovie::class,"movieId");
     }
 
     public function screenings()
     {
-        return $this->hasMany(Screening::class,"movieId",);
+        return $this->hasMany(Screening::class,"movieId");
     }
 
     public function availableScreenings()
@@ -77,5 +87,15 @@ class Movie extends Model
         return $this->screenings()->where('status', true)
             ->where("date", Carbon::now()->toDateString())
             ->orderByDesc("date");
+    }
+
+    public function posterImage()
+    {
+        return $this->belongsTo(MediaFile::class, 'posterId', 'media_id');
+    }
+
+    public function backdropImage()
+    {
+        return $this->belongsTo(MediaFile::class, 'backdropId', 'media_id');
     }
 }

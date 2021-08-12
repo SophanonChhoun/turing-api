@@ -29,7 +29,10 @@ class AddSoftDeleteToRoleHasPermissions extends Migration
     public function down()
     {
         Schema::table('role_has_permissions', function (Blueprint $table) {
-            $table->dropColumn('deleted_at');
+            if (Schema::hasColumn('role_has_permissions', 'deleted_at'))
+            {
+                $table->dropColumn('deleted_at');
+            }
         });
     }
 }

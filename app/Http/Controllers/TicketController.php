@@ -37,23 +37,24 @@ class TicketController extends Controller
                 $seatExit = Ticket::where("screeningId", $request['screeningId'])->where("seatId", $seat['id'])->get()->first();
                 if ($seatExit)
                 {
-                    return $this->fail("Sorry, seats" . $seat['seatName'] ." is not available");
+                    return $this->fail("Sorry, seats: " . $seat['seatName'] ." is not available");
                 }
                 $seat['screeningId'] = $request['screeningId'];
                 $seat['movieName'] = $request['movieName'];
                 $seat['cinemaName'] = $request['cinemaName'];
                 $seat['theaterName'] = $request['theaterName'];
                 $seat['userId'] = $request['userId'];
+                $seat['seatId'] = $seat['id'];
                 $data = Ticket::create($seat);
                 if (!$data)
                 {
                     DB::rollBack();
-                    return $this->fail("Something went wrong");
+                    return $this->fail("Something went wrong with buying tickets.");
                 }
             }
             DB::commit();
             return $this->success([
-                'message' => 'Tickets created'
+                'message' => 'Tickets bought successfully.'
             ]);
         }catch (Exception $exception){
             DB::rollback();
@@ -64,7 +65,7 @@ class TicketController extends Controller
     public function show($id)
     {
         try {
-            $data = Ticket::with("user")->findOrFail($id);
+            $data = Ticket::with("user", "checkBy")->findOrFail($id);
             return $this->success([
                 'id' => $data->id,
                 'price' => $data->price,
@@ -74,7 +75,8 @@ class TicketController extends Controller
                 'theaterName' => $data->theaterName,
                 'cinemaName'=> $data->cinemaName,
                 'userName' => $data->user->name ?? '',
-                'checked_in' => $data->checked_in
+                'checked_in' => $data->checked_in,
+                'check_by' => $data->checkBy->name ?? ''
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -100,7 +102,8 @@ class TicketController extends Controller
                 return $this->fail("Ticket not exist.");
             }
             $data = $data->update([
-                "checked_in" => $request->checked_in
+                "checked_in" => $request->checked_in,
+                "checked_by" => auth()->user()->id
             ]);
             if(!$data)
             {

@@ -32,6 +32,27 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
+            if (isset($request['posterImage']) && isset($request['backdropImage'])) {
+                $request['posterId'] = MediaLib::generateImageBase64Resize($request['posterImage']);
+                $request['backdropId'] = MediaLib::generateImageBase64Resize($request['backdropImage']);
+            } else {
+                if (!isset($request['posterImage']) && isset($request['backdropImage']))
+                {
+                    return $this->fail("", [
+                        'Poster field is required'
+                    ], 'InvalidRequestError', 412);
+                } else if (isset($request['posterImage']) && !isset($request['backdropImage']))
+                {
+                    return $this->fail("", [
+                        'Backdrop field is required'
+                    ], 'InvalidRequestError', 412);
+                } else {
+                    return $this->fail("", [
+                        'Poster field is required',
+                        'Backdrop field is required',
+                    ], 'InvalidRequestError', 412);
+                }
+            }
             $movie = Movie::create($request->all());
             $cast = MovieCast::store($movie->id, $request['movieCasts']);
             $directors = MovieDirector::store($movie->id, $request['movieDirectors']);
@@ -94,6 +115,10 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
+            if (isset($request['posterImage']) && isset($request['backdropImage'])) {
+                $request['posterId'] = MediaLib::generateImageBase64Resize($request['posterImage']);
+                $request['backdropId'] = MediaLib::generateImageBase64Resize($request['backdropImage']);
+            }
             $movie = Movie::findOrFail($id)->update($request->all());
             $cast = MovieCast::store($id, $request['movieCasts']);
             $directors = MovieDirector::store($id, $request['movieDirectors']);
@@ -222,7 +247,7 @@ class MovieController extends Controller
             $cinemaId = Screening::where("movieId", $id)->get()->pluck('cinemaId');
             $cinemas = Cinema::whereIn("id", $cinemaId)->get();
             $cinemas = $cinemas->map(function ($cinema) use($id) {
-                $cinema->screenings = array_values(Screening::where("cinemaId", $cinema->id)
+                $cinema->screenings = collect(Screening::where("cinemaId", $cinema->id)
                     ->where("movieId", $id)
                     ->where("date", ">=", Carbon::now()->toDateString())
                     ->orderBy("date")
@@ -235,13 +260,15 @@ class MovieController extends Controller
                 "id" => $movie->id,
                 "title" => $movie->title,
                 "synopsis" => $movie->synopsis,
-                "rated" => $movie->rating->title ?? '',
+                "rating" => $movie->rating->title ?? '',
                 'directors' => ListResource::collection($movie->directors),
                 'casts' => ListResource::collection($movie->casts),
                 'genres' => ListResource::collection($movie->genres),
                 "poster" => $movie->poster,
                 "backdrop" => $movie->backdrop,
                 "trailerUrl" => $movie->trailerUrl,
+                "runningTime" => $movie->runningTime,
+                "releasedDate" => $movie->releasedDate,
                 "cinemas" => ScreeningCinemaResource::collection($cinemas),
             ]);
         }catch (Exception $exception) {

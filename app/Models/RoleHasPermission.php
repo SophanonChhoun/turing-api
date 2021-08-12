@@ -39,7 +39,7 @@ class RoleHasPermission extends Model
     }
 
     public static function store($id, $permissions){
-        RoleHasPermission::where("roleId", $id)->delete();
+        RoleHasPermission::where("roleId", $id)->forceDelete();
         foreach($permissions as $permission){
             RoleHasPermission::create([
                'roleId' => $id,

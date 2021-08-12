@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSoftDeleteToAdvertisements extends Migration
+class AddIdToTickets extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class AddSoftDeleteToAdvertisements extends Migration
      */
     public function up()
     {
-        Schema::table('advertisements', function (Blueprint $table) {
-            if (!Schema::hasColumn('advertisements', 'deleted_at'))
+        Schema::table('tickets', function (Blueprint $table) {
+            if (!Schema::hasColumn('tickets', 'id'))
             {
-                $table->softDeletes();
+                $table->uuid('id')->primary();
             }
         });
     }
@@ -28,10 +28,10 @@ class AddSoftDeleteToAdvertisements extends Migration
      */
     public function down()
     {
-        Schema::table('advertisements', function (Blueprint $table) {
-            if (Schema::hasColumn('advertisements', 'deleted_at'))
+        Schema::table('tickets', function (Blueprint $table) {
+            if (Schema::hasColumn('tickets', 'id'))
             {
-                $table->dropColumn('deleted_at');
+                $table->dropColumn('id');
             }
         });
     }

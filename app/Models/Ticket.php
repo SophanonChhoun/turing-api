@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Seat;
 use App\Models\Screening;
+use App\Models\Seat;
 use App\Models\TicketSale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Exception;
+use Illuminate\Support\Str;
 
 class Ticket extends Model
 {
@@ -22,11 +23,31 @@ class Ticket extends Model
         'theaterName',
         'movieName',
         'cinemaName',
-        'userId'
+        'userId',
+        'checked_by'
     ];
     protected $casts = [
         'checked_in' => 'boolean'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($ticket) {
+            $ticket->{$ticket->getKeyName()} = (string) Str::uuid();
+        });
+    }
+
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
 
     public function screening()
     {
@@ -41,5 +62,10 @@ class Ticket extends Model
     public function user()
     {
         return $this->belongsTo(Customer::class, 'userId', 'id');
+    }
+
+    public function checkBy()
+    {
+        return $this->belongsTo(User::class, 'checked_by', 'id');
     }
 }
