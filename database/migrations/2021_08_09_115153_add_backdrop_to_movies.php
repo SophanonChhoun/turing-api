@@ -33,8 +33,14 @@ class AddBackdropToMovies extends Migration
     public function down()
     {
         Schema::table('movies', function (Blueprint $table) {
-            $table->dropColumn('posterId');
-            $table->dropColumn('backdropId');
+            if (Schema::hasColumn('movies', 'posterId'))
+            {
+                $table->dropColumn('posterId');
+            }
+            if (Schema::hasColumn('movies', 'backdropId'))
+            {
+                $table->dropColumn('backdropId');
+            }
         });
     }
 }

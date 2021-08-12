@@ -29,7 +29,10 @@ class AddSoftDeleteToProductVariantHasAttributeValues extends Migration
     public function down()
     {
         Schema::table('product_variant_has_attribute_values', function (Blueprint $table) {
-            $table->dropColumn('deleted_at');
+            if (Schema::hasColumn('product_variant_has_attribute_values', 'deleted_at'))
+            {
+                $table->dropColumn('deleted_at');
+            }
         });
     }
 }

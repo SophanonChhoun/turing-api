@@ -29,7 +29,10 @@ class AddSoftDeleteToAdvertisements extends Migration
     public function down()
     {
         Schema::table('advertisements', function (Blueprint $table) {
-            $table->dropColumn('deleted_at');
+            if (Schema::hasColumn('advertisements', 'deleted_at'))
+            {
+                $table->dropColumn('deleted_at');
+            }
         });
     }
 }
