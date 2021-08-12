@@ -19,14 +19,7 @@
     "theaterName": "Hall 3",
     "movieName": "Amarsi un po'...",
     "seats": [
-        {
-            "id": 103,
-            "price": 12
-        },
-        {
-            "id": 104,
-            "price": 12
-        }
+        1,2,3
     ]
  }
  * @apiSuccessExample  Response (example):

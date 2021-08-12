@@ -253,7 +253,7 @@ class ScreeningController extends Controller
             return $this->success([
                 "screeningId" => $id,
                 "cinemaName" => $theater->cinema->name ?? '',
-                "theaterName" => $theater->name,
+                "theatreName" => $theater->name,
                 "movieName" => $screening->movie->title ?? '',
                 "row" => $theater->row,
                 "col" => $theater->col,
