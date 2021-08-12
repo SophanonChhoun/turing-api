@@ -30,10 +30,15 @@ class ScreeningController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            Screening::withTrashed()->restore();
+            $data = Screening::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
             $data = Screening::with("sub", "dub","movie","theater", "cinema")->latest()->get();
             return $this->success(ScreeningResource::collection($data));
         }catch (Exception $exception){
@@ -74,7 +79,11 @@ class ScreeningController extends Controller
     {
         DB::beginTransaction();
         try{
-            $data = Screening::store($request['movieId'], $request['screenings']);
+            $movie = Movie::findOrFail($request['movieId']);
+            if (!$movie)
+            {
+                return $this->fail("Sorry this movie is not exist.");
+            }
             foreach ($request['screenings'] as $key => $screening)
             {
                 if (Screening::where("theaterId", $screening['theaterId'])->where("date", $screening['date'])->where("start_time", $screening['start_time'])->get()->first())
@@ -82,6 +91,11 @@ class ScreeningController extends Controller
                     DB::rollBack();
                     $theater = Theater::find($screening['theaterId']) ?? '';
                     return $this->fail("Screening start time ". $screening['start_time'] . " at " . $screening['date'] . " in theater " . $theater->name . " already exist.");
+                }
+                if ($movie->releasedDate > $request['date'])
+                {
+                    DB::rollBack();
+                    return $this->fail("Screening must have date equal or greater than ".$movie->releasedDate);
                 }
                 $screening['movieId'] = $request['movieId'];
                 $screening['cinemaId'] = Theater::find($screening['theaterId'])->cinemaId ?? 0;

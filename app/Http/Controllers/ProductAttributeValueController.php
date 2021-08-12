@@ -9,10 +9,10 @@ use App\Http\Resources\ProductAttributeValueResource;
 use App\Http\Resources\ListResource;
 use App\Models\ProductAttributeValue;
 use App\Models\ProductVariantHasAttributeValue;
-use Database\Seeders\ProductAttribute;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Exception;
 use DB;
+use Illuminate\Http\Request;
 
 class ProductAttributeValueController extends Controller
 {
@@ -53,10 +53,18 @@ class ProductAttributeValueController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            ProductAttributeValue::withTrashed()->restore();
+            $data = ProductAttributeValue::withTrashed();
+            $attribute = ProductVariantHasAttributeValue::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+                $attribute = $attribute->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
+            $attribute->restore();
             $data = ProductAttributeValue::with("productAttribute")->latest()->get();
             return $this->success(ProductAttributeValueResource::collection($data));
         }catch (Exception $exception){

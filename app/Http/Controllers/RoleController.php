@@ -10,6 +10,7 @@ use App\Http\Resources\RolePermissionResource;
 use App\Models\Role;
 use App\Models\RoleHasPermission;
 use App\Models\RoleHasUser;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -43,12 +44,21 @@ class RoleController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            Role::withTrashed()->restore();
-            RoleHasPermission::withTrashed()->restore();
-            RoleHasUser::withTrashed()->restore();
+            $data = Role::withTrashed();
+            $permission = RoleHasPermission::withTrashed();
+            $user = RoleHasUser::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+                $permission = $permission->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+                $user = $user->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
+            $permission->restore();
+            $user->restore();
             $roles = Role::latest()->get();
             return $this->success(RoleListResource::collection($roles));
         }catch (Exception $exception){

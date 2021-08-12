@@ -8,6 +8,7 @@ use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ListResource;
 use App\Http\Resources\ProductCategoryResource;
 use App\Models\ProductCategory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 use Exception;
@@ -24,10 +25,15 @@ class ProductCategoryController extends Controller
         }
     }
 
-    public function restoreData()
+    public function restoreData(Request $request)
     {
         try {
-            ProductCategory::withTrashed()->restore();
+            $data = ProductCategory::withTrashed();
+            if (isset($request['date']))
+            {
+                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
+            }
+            $data->restore();
             $data = ProductCategory::with("media")->latest()->get();
             return $this->success(ProductCategoryResource::collection($data));
         }catch (Exception $exception){
