@@ -135,7 +135,7 @@ class TicketController extends Controller
                 $seat['screeningId'] = $request['screeningId'];
                 $seat['movieName'] = $request['movieName'];
                 $seat['cinemaName'] = $request['cinemaName'];
-                $seat['theaterName'] = $request['theaterName'];
+                $seat['theaterName'] = $request['theatreName'];
                 $seat['userId'] = auth()->user()->id;
                 $seat['seatId'] = $seatId;
                 $seat['price'] = $screening->price * $getSeat->seatType->priceFactor;
