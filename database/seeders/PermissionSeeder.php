@@ -140,7 +140,13 @@ class PermissionSeeder extends Seeder
               "name" => "Currency",
               "category" => "Currency Management",
               "slug" => "currency"
-          ]
+          ],
+            [
+                "id" => 22,
+                "name" => "Promotion",
+                "category" => "Promotion Management",
+                "slug" => "promotion"
+            ]
         ];
 
         DB::table("permissions")->truncate();
