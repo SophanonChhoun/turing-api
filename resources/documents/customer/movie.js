@@ -35,7 +35,8 @@
                 "id": 1,
                 "name": "Action"
             }
-        ]
+        ],
+        "releasedDate": "2021-12-20
     }
  ]
  *
@@ -79,7 +80,8 @@
                 "id": 1,
                 "name": "Action"
             }
-        ]
+        ],
+        "releasedDate": "2021-12-20
     },
  {
         "id": 2,
@@ -107,7 +109,8 @@
                 "id": 1,
                 "name": "Action"
             }
-        ]
+        ],
+        "releasedDate": "2021-12-20
     },
  {
         "id": 3,
@@ -135,7 +138,8 @@
                 "id": 1,
                 "name": "Action"
             }
-        ]
+        ],
+        "releasedDate": "2021-12-20
     }
  ]
  *
@@ -179,7 +183,8 @@
                 "id": 1,
                 "name": "Action"
             }
-        ]
+        ],
+        "releasedDate": "2021-12-20
     },
     {
         "id": 3,
@@ -207,7 +212,8 @@
                 "id": 1,
                 "name": "Action"
             }
-        ]
+        ],
+        "releasedDate": "2021-12-20
     },
     {
         "id": 2,
@@ -235,7 +241,8 @@
                 "id": 1,
                 "name": "Action"
             }
-        ]
+        ],
+        "releasedDate": "2021-12-20
     }
  ]
  *

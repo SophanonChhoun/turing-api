@@ -115,8 +115,10 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
-            if (isset($request['posterImage']) && isset($request['backdropImage'])) {
+            if (isset($request['posterImage'])) {
                 $request['posterId'] = MediaLib::generateImageBase64Resize($request['posterImage']);
+            }
+            if (isset($request['backdropImage'])) {
                 $request['backdropId'] = MediaLib::generateImageBase64Resize($request['backdropImage']);
             }
             $movie = Movie::findOrFail($id)->update($request->all());

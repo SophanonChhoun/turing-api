@@ -159,7 +159,7 @@ class TicketController extends Controller
     public function customerTicket()
     {
         try {
-            $data = Ticket::with('seat', 'user')->where("userId", auth()->user()->id)->latest()->get();
+            $data = Ticket::with('seat', 'user', 'screening')->where("userId", auth()->user()->id)->latest()->get();
             return $this->success(TicketResource::collection($data));
         }catch (Exception $exception) {
             return $this->fail($exception->getMessage());

@@ -18,6 +18,7 @@ class MovieTimeResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "poster" => $this->poster,
+            'releasedDate' => $this->releasedDate,
             "screenings" => ShowScreeningResource::collection($this->availableScreenings)
         ];
     }

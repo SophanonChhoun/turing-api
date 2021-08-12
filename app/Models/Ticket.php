@@ -39,6 +39,16 @@ class Ticket extends Model
         });
     }
 
+    public function getMovieAttribute()
+    {
+        return $this->screening->movie ?? '';
+    }
+
+    public function getCinemaAttribute()
+    {
+        return $this->screening->cinema ?? '';
+    }
+
     public function getIncrementing()
     {
         return false;
