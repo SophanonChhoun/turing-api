@@ -121,12 +121,13 @@ class TicketController extends Controller
     {
         DB::beginTransaction();
         try {
-            foreach ($request['seats'] as $key => $seat)
+            foreach ($request['seats'] as $key => $seatId)
             {
-                $getSeat = Seat::with('seatType')->findOrFail($seat['id']);
+                $getSeat = Seat::with('seatType')->findOrFail($seatId);
                 $seat['seatName'] = $getSeat->name;
                 $seat['seatType'] = $getSeat->seatType->name ?? '';
-                $seatExit = Ticket::where("screeningId", $request['screeningId'])->where("seatId", $seat['id'])->get()->first();
+                $screening = Screening::findOrFail($request['screeningId']);
+                $seatExit = Ticket::where("screeningId", $request['screeningId'])->where("seatId", $seatId)->get()->first();
                 if ($seatExit)
                 {
                     return $this->fail("Sorry, seats: " . $seat['seatName'] ." is not available");
@@ -136,7 +137,8 @@ class TicketController extends Controller
                 $seat['cinemaName'] = $request['cinemaName'];
                 $seat['theaterName'] = $request['theaterName'];
                 $seat['userId'] = auth()->user()->id;
-                $seat['seatId'] = $seat['id'];
+                $seat['seatId'] = $seatId;
+                $seat['price'] = $screening->price * $getSeat->seatType->priceFactor;
                 $data = Ticket::create($seat);
                 if (!$data)
                 {
