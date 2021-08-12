@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserBuyTicketRequest;
+use App\Http\Resources\TicketAdminResource;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Ticket;
@@ -18,8 +19,8 @@ class TicketController extends Controller
     public function index()
     {
         try {
-            $data = Ticket::with('seat', 'user')->latest()->get();
-            return $this->success(TicketResource::collection($data));
+            $data = Ticket::with('seat', 'user', 'screening')->latest()->get();
+            return $this->success(TicketAdminResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
