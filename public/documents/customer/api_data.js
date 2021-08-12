@@ -1144,7 +1144,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example usage:",
-        "content": "{\n   \"screeningId\": \"7\",\n   \"cinemaName\": \"Turing Niptict\",\n   \"theaterName\": \"Hall 3\",\n   \"movieName\": \"Amarsi un po'...\",\n   \"seats\": [\n       1,2,3\n   ]\n}",
+        "content": "{\n   \"screeningId\": \"7\",\n   \"cinemaName\": \"Turing Niptict\",\n   \"theatreName\": \"Hall 3\",\n   \"movieName\": \"Amarsi un po'...\",\n   \"seats\": [\n       1,2,3\n   ]\n}",
         "type": "curl"
       }
     ],

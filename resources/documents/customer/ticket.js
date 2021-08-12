@@ -16,7 +16,7 @@
  {
     "screeningId": "7",
     "cinemaName": "Turing Niptict",
-    "theaterName": "Hall 3",
+    "theatreName": "Hall 3",
     "movieName": "Amarsi un po'...",
     "seats": [
         1,2,3

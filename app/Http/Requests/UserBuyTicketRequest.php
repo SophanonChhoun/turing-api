@@ -19,7 +19,7 @@ class UserBuyTicketRequest extends DefaultFormRequest
             'seats' => 'required|array',
             'movieName' => 'required',
             'cinemaName' => 'required',
-            'theaterName' => 'required',
+            'theatreName' => 'required',
         ];
     }
 }
