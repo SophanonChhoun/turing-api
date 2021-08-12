@@ -79,9 +79,6 @@ class MediaLib
             $imageW500->resize(500, null, function ($constraint) {
                 $constraint->aspectRatio();
             })->save();
-            if (!$imageW500 || !$imageW154 || !$imageW500 || !$imageW300) {
-                return "Error";
-            }
             $media = Media::create([
                 'media_type' => 'image'
             ]);
