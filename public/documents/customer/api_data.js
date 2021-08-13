@@ -64,7 +64,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000//api/web/login"
+        "url": "http://165.227.93.1:7000/api/web/login"
       }
     ],
     "header": {
@@ -225,7 +225,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000//api/web/register"
+        "url": "http://165.227.93.1:7000/api/web/register"
       }
     ],
     "header": {
@@ -285,6 +285,63 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/web/cinemas",
+    "title": "1. List cinemas",
+    "version": "1.0.0",
+    "name": "List_cinemas",
+    "group": "Cinemas",
+    "success": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n[\n   {\n       \"id\": 6,\n       \"name\": \"xssadcx\",\n       \"location\": \"cwcwec\",\n       \"status\": true,\n       \"photo\": \"http://127.0.0.1:8000/uploads/images/5ec06e8af64a65511a2a77154443540f.png\"\n   },\n   {\n       \"id\": 5,\n       \"name\": \"m m\",\n       \"location\": \"xwxwe\",\n       \"status\": true,\n       \"photo\": \"http://127.0.0.1:8000/uploads/images/ce6045b991b61167aad1a738b5b49bfd.png\"\n   },\n   {\n       \"id\": 4,\n       \"name\": \"Turing TK\",\n       \"location\": \"PP TK \",\n       \"status\": true,\n       \"photo\": \"http://127.0.0.1:8000/uploads/images/1a2283800e9ac5bfdcc25f7ebae3f380.png\"\n   },\n   {\n       \"id\": 1,\n       \"name\": \"Turing CADT\",\n       \"location\": \"CADT\",\n       \"status\": true,\n       \"photo\": \"http://127.0.0.1:8000/uploads/images/a2f3f14884bf61d0a9bea8b437d273bf.png\"\n   },\n   {\n       \"id\": 2,\n       \"name\": \"Turing Niptict\",\n       \"location\": \"Niptict\",\n       \"status\": true,\n       \"photo\": \"http://127.0.0.1:8000/uploads/images/c983b6c44b15235e2c93aca24af01f8a.png\"\n   }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./cinemas.js",
+    "groupTitle": "Cinemas",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/web/cinemas"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "/api/web/currency",
     "title": "1. Show currency",
     "version": "1.0.0",
@@ -303,7 +360,7 @@ define({ "api": [
     "groupTitle": "Currency",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000//api/web/currency"
+        "url": "http://165.227.93.1:7000/api/web/currency"
       }
     ],
     "header": {
@@ -360,7 +417,7 @@ define({ "api": [
     "groupTitle": "Grid",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000//api/web/grid/:screening_id"
+        "url": "http://165.227.93.1:7000/api/web/grid/:screening_id"
       }
     ],
     "header": {
@@ -417,7 +474,7 @@ define({ "api": [
     "groupTitle": "Movie",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000//api/web/movies/:id"
+        "url": "http://165.227.93.1:7000/api/web/movies/:id"
       }
     ],
     "header": {
@@ -488,7 +545,7 @@ define({ "api": [
     "groupTitle": "Movie",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000//api/web/movies/now-showing"
+        "url": "http://165.227.93.1:7000/api/web/movies/now-showing"
       }
     ],
     "header": {
@@ -545,7 +602,7 @@ define({ "api": [
     "groupTitle": "Movie",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000//api/web/movies/upcoming"
+        "url": "http://165.227.93.1:7000/api/web/movies/upcoming"
       }
     ],
     "header": {
@@ -602,7 +659,64 @@ define({ "api": [
     "groupTitle": "Movie",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000//api/web/movies/advertisement"
+        "url": "http://165.227.93.1:7000/api/web/movies/advertisement"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/web/products",
+    "title": "1. List products",
+    "version": "1.0.0",
+    "name": "List_products",
+    "group": "Products",
+    "success": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n[\n{\n       \"id\": 7,\n       \"name\": \"Corn\",\n       \"category\": \"Food\",\n       \"photo\": \"http://127.0.0.1:8000/uploads/images/8bbd46b404e98a1fdcf9ea0018c2e178.png\",\n       \"productVariants\": [\n           {\n               \"price\": 1,\n               \"code\": \"CS1\",\n               \"attributeValue\": [\n                   {\n                       \"id\": 10,\n                       \"name\": \"Flavor Spicy\"\n                   }\n               ]\n           }\n       ]\n   },\n{\n       \"id\": 2,\n       \"name\": \"Ice cream\",\n       \"category\": \"Food\",\n       \"photo\": \"http://127.0.0.1:8000/uploads/images/74fb578ceb4613350953c3f636f8e197.png\",\n       \"productVariants\": [\n           {\n               \"price\": 3,\n               \"code\": \"ILI\",\n               \"attributeValue\": [\n                   {\n                       \"id\": 4,\n                       \"name\": \"Size L\"\n                   },\n                   {\n                       \"id\": 7,\n                       \"name\": \"Type Ice\"\n                   }\n               ]\n           },\n           {\n               \"price\": 1,\n               \"code\": \"mmmj\",\n               \"attributeValue\": [\n                   {\n                       \"id\": 3,\n                       \"name\": \"Size M\"\n                   }\n               ]\n           }\n       ]\n   },\n{\n       \"id\": 1,\n       \"name\": \"Hot dog\",\n       \"category\": \"Food\",\n       \"photo\": \"http://127.0.0.1:8000/uploads/images/0b687a0e62cff6dfee21486aa752e693.png\",\n       \"productVariants\": [\n           {\n               \"price\": 250,\n               \"code\": \"1ass\",\n               \"attributeValue\": [\n                   {\n                       \"id\": 3,\n                       \"name\": \"Size M\"\n                   }\n               ]\n           }\n       ]\n   }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./products.js",
+    "groupTitle": "Products",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/web/products"
       }
     ],
     "header": {
@@ -659,7 +773,7 @@ define({ "api": [
     "groupTitle": "Profile",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000/api/web/profile"
+        "url": "http://165.227.93.1:7000api/web/profile"
       }
     ],
     "header": {
@@ -769,7 +883,7 @@ define({ "api": [
     "groupTitle": "Profile",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000/api/web/profile"
+        "url": "http://165.227.93.1:7000api/web/profile"
       }
     ],
     "header": {
@@ -893,7 +1007,7 @@ define({ "api": [
     "groupTitle": "Profile",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000/api/web/profile"
+        "url": "http://165.227.93.1:7000api/web/profile"
       }
     ],
     "header": {
@@ -990,7 +1104,7 @@ define({ "api": [
     "groupTitle": "Screening",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000//api/web/screenings/now-showing"
+        "url": "http://165.227.93.1:7000/api/web/screenings/now-showing"
       }
     ],
     "header": {
@@ -1161,7 +1275,7 @@ define({ "api": [
     "groupTitle": "Ticket",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000/api/web/tickets"
+        "url": "http://165.227.93.1:7000api/web/tickets"
       }
     ],
     "header": {
@@ -1258,7 +1372,7 @@ define({ "api": [
     "groupTitle": "Ticket",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000/api/web/tickets"
+        "url": "http://165.227.93.1:7000api/web/tickets"
       }
     ],
     "header": {
@@ -1336,7 +1450,7 @@ define({ "api": [
     "groupTitle": "Ticket",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8000/api/web/tickets/:id"
+        "url": "http://165.227.93.1:7000api/web/tickets/:id"
       }
     ],
     "header": {

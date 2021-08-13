@@ -187,4 +187,10 @@ class CinemaController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
+
+    public function activeCinema()
+    {
+        $data = Cinema::with("media")->where("status", true)->latest()->get();
+        return $this->success(CinemaListResource::collection($data));
+    }
 }
