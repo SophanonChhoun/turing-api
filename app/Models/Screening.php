@@ -36,12 +36,12 @@ class Screening extends Model
 
     public function getSubtitleAttribute()
     {
-        return $this->sub->name;
+        return $this->sub->name ?? '';
     }
 
     public function getDubbedAttribute()
     {
-        return $this->dub->name;
+        return $this->dub->name ?? '';
     }
 
     public function sub()

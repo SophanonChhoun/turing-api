@@ -258,6 +258,10 @@ class ScreeningController extends Controller
                 "row" => $theater->row,
                 "col" => $theater->col,
                 "seatTypes" => $seatType,
+                "startTime" => $screening->start_time,
+                "date" => $screening->date,
+                "movieSub" => $screening->subtitle,
+                "movieDub" => $screening->dubbed,
                 "grid" => $grid
             ]);
         }catch (Exception $exception){
