@@ -13,11 +13,10 @@ class DashboardController extends Controller
     public function index()
     {
         try {
-            $products = Cinema::with('productSale')->latest()->get();
-            $tickets = Cinema::with('tickets')->latest()->get();
+            $data = Cinema::with('productSale', 'tickets')->latest()->get();
             return $this->success([
-                'products' => DashboardProductResource::collection($products),
-                'tickets' => DashboardTicketResource::collection($tickets),
+                'products' => DashboardProductResource::collection($data),
+                'tickets' => DashboardTicketResource::collection($data),
             ]);
         } catch (Exception $exception) {
             return $this->fail($exception->getMessage());
