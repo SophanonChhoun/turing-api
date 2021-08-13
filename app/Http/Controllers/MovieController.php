@@ -248,7 +248,7 @@ class MovieController extends Controller
                 "genres")->findOrFail($id);
             $cinemaId = Screening::where("movieId", $id)->get()->pluck('cinemaId');
             $cinemas = Cinema::whereIn("id", $cinemaId)->get();
-            $cinemas = $cinemas->map(function ($cinema) use($id) {
+            $cinemas = $cinemas->filter(function ($cinema) use($id) {
                 $cinema->screenings = collect(Screening::where("cinemaId", $cinema->id)
                     ->where("movieId", $id)
                     ->where("date", ">=", Carbon::now()->toDateString())
@@ -256,7 +256,10 @@ class MovieController extends Controller
                     ->orderBy("start_time")
                     ->get()
                     ->groupBy("date")->toArray());
-                return $cinema;
+                if ($cinema->screenings->count() > 0)
+                {
+                    return $cinema;
+                }
             });
             return $this->success([
                 "id" => $movie->id,
