@@ -279,6 +279,7 @@ class ScreeningController extends Controller
             $movies = $movies->filter(function ($movie){
                 $screening = Screening::where("movieId", $movie->id)
                     ->where("date", ">=", Carbon::now()->toDateString())
+                    ->where("status", true)
                     ->orderBy("date")->orderBy("start_time")->get()->groupBy("date");
                 if ($screening->count() >= 1) {
                     $movie->screenings = collect($screening->toArray());
