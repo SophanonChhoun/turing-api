@@ -7,6 +7,7 @@ use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ListResource;
+use App\Http\Resources\ProductCustomerResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\ProductVariantHasAttributeValue;
@@ -169,6 +170,16 @@ class ProductController extends Controller
             $data = Product::where("status", 1)->get();
 
             return $this->success(ListResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function productActive()
+    {
+        try {
+            $data = Product::with('productVariant.productAttributeValues.productAttribute', 'media', 'category')->where("status", true)->latest()->get();
+            return $this->success(ProductCustomerResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
