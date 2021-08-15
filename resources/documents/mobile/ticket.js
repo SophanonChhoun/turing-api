@@ -1,5 +1,5 @@
 /**
- * @api {post} /api/web/tickets 1. Buy Ticket
+ * @api {post} /api/tickets 1. Buy Ticket
  * @apiVersion 1.0.0
  * @apiName Buy Ticket
  * @apiGroup Ticket
@@ -34,7 +34,7 @@
  */
 
 /**
- * @api {get} /api/web/tickets 2. List Ticket
+ * @api {get} /api/tickets 2. List Ticket
  * @apiVersion 1.0.0
  * @apiName List Ticket
  * @apiGroup Ticket
@@ -147,7 +147,7 @@
  */
 
 /**
- * @api {get} /api/web/tickets/:id 3. Show ticket
+ * @api {get} /api/tickets/:id 3. Show ticket
  * @apiVersion 1.0.0
  * @apiName Show Ticket
  * @apiGroup Ticket

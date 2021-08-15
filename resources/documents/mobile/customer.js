@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/web/profile 1. Show Customer Profile
+ * @api {get} /api/profile 1. Show Customer Profile
  * @apiVersion 1.0.0
  * @apiName Show Profile
  * @apiGroup Profile
@@ -21,7 +21,7 @@
  */
 
 /**
- * @api {put} /api/web/profile 2. Update Customer Profile
+ * @api {put} /api/profile 2. Update Customer Profile
  * @apiVersion 1.0.0
  * @apiName Update Profile
  * @apiGroup Profile
@@ -43,7 +43,7 @@
  */
 
 /**
- * @api {patch} /api/web/profile 3. Update Customer Password
+ * @api {patch} /api/profile 3. Update Customer Password
  * @apiVersion 1.0.0
  * @apiName Update Password
  * @apiGroup Profile

@@ -41,8 +41,6 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::post("admin/login", [UserController::class, 'login']);
-Route::post("login", [CustomerController::class, 'login']);
-Route::post("register", [CustomerController::class, 'signUp']);
 
 Route::post('admin/send-mail', [MailController::class, 'sendEmail']);
 Route::post("admin/verify-code", [MailController::class, "verifyCode"]);
@@ -279,9 +277,35 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 });
 
 Route::group(['prefix' => ''], function(){
-    Route::group(['prefix' => 'movie'], function(){
+    Route::post("login/google", [CustomerController::class, 'loginSocial']);
+    Route::post("login", [CustomerController::class, 'login']);
+    Route::post("register", [CustomerController::class, 'signUp']);
+    Route::group(['prefix' => 'movies'], function(){
         Route::get('', [MovieController::class, 'showMovieMobile']);
     });
+    Route::group(['prefix' => 'screenings'], function(){
+        Route::get('/now-showing', [ScreeningController::class, 'getNowShowing']);
+    });
+    Route::group(['prefix' => 'cinemas'], function(){
+        Route::get('', [CinemaController::class, 'activeCinema']);
+    });
+    Route::group(['prefix' => 'products'], function(){
+        Route::get('', [ProductController::class, 'productActive']);
+    });
+    Route::get('grid/{id}', [ScreeningController::class, 'getGrid']);
+    Route::middleware(['auth:sanctum', 'customer'])->group(function () {
+        Route::group(['prefix' => 'tickets'], function(){
+            Route::post('', [TicketController::class, 'buyTicket']);
+            Route::get('', [TicketController::class, 'customerTicket']);
+            Route::get('/{id}', [TicketController::class, 'show']);
+        });
+        Route::group(['prefix' => 'profile'], function (){
+            Route::get('', [CustomerController::class, 'showProfile']);
+            Route::put('', [CustomerController::class, 'updateProfile']);
+            Route::patch('', [CustomerController::class, 'updatePassword']);
+        });
+    });
+    Route::get('currency', [CurrencyController::class, 'show']);
 });
 
 Route::group(['prefix' => 'web'], function() {
@@ -317,12 +341,4 @@ Route::group(['prefix' => 'web'], function() {
         });
     });
     Route::get('currency', [CurrencyController::class, 'show']);
-});
-
-Route::middleware(['auth:sanctum', 'customer'])->group(function () {
-    Route::group(['prefix' => 'profile'], function (){
-       Route::get('', [CustomerController::class, 'showProfile']);
-       Route::put('', [CustomerController::class, 'updateProfile']);
-       Route::patch('', [CustomerController::class, 'updatePassword']);
-    });
 });
