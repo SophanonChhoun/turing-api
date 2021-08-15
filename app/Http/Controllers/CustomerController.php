@@ -9,10 +9,13 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Requests\TokenRequest;
 use App\Http\Resources\CustomerResource;
 use App\Http\Resources\ListResource;
 use App\Mail\SendMail;
 use App\Models\Customer;
+use App\Models\CustomerSocial;
+use App\Models\CustomerSocialAccount;
 use Carbon\Carbon;
 use Cassandra\Custom;
 use Illuminate\Http\Request;
@@ -21,6 +24,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Socialite\Facades\Socialite;
 
 class CustomerController extends Controller
 {
@@ -82,6 +86,7 @@ class CustomerController extends Controller
         try {
             $code = self::rand_string(12);
             $request['password'] = $code;
+            $request['createdType'] = "Admin Register";
             Customer::create($request->all());
             Mail::to($request['email'])->send(new SendMail($code, "password_mail"));
             DB::commit();
@@ -90,6 +95,62 @@ class CustomerController extends Controller
             ]);
         }catch (Exception $exception){
             DB::rollBack();
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function loginSocial(TokenRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = Socialite::driver('google')->userFromToken($request->token);
+            $customerSocial = CustomerSocial::where("social_type","google")->where("social_account_id",$user->id)->first();
+            if (!$customerSocial)
+            {
+                $code = self::rand_string(12);
+                $customer = Customer::firstOrCreate([
+                    "email" => $user->email
+                ],[
+                    "name" => $user->name,
+                    "status" =>  true,
+                    "password" => $code,
+                    "createdType" => "Google",
+                    "imageUrl" => $user->user['picture']
+                ]);
+                $customerSocial = CustomerSocial::create([
+                    "customer_id" => $customer->id,
+                    "social_type" => "google",
+                    "social_account_id" => $user->id,
+                ]);
+                if (!$customer)
+                {
+                    DB::rollBack();
+                    return $this->fail("There is something wrong with create customer.");
+                }
+                if (!$customerSocial)
+                {
+                    DB::rollBack();
+                    return $this->fail("There is something wrong when create customer google account");
+                }
+            }
+            $customer = Customer::with('media')->find($customerSocial->customer_id);
+            if (!$customer->status)
+            {
+                return $this->fail("Your account has been blocked.Please contact our team for more support.");
+            }
+            $token = $customer->createToken('authorization')->plainTextToken;
+            DB::commit();
+            return $this->success([
+                'user' => [
+                    "id" => $customer->id,
+                    "name" => $customer->name,
+                    "email" => $customer->email,
+                    "phoneNumber" => $customer->phoneNumber,
+                    "photo" => $customer->media ? $customer->media->file_url : ($customer->imageUrl ?? '')
+                ],
+                'token' => 'Bearer '. $token,
+            ]);
+        }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
     }
@@ -142,7 +203,7 @@ class CustomerController extends Controller
                "email" => $customer->email,
                "status" => $customer->status,
                "phoneNumber" => $customer->phoneNumber,
-               "photo" => $customer->media->file_url ?? ''
+               "photo" => $customer->media ? $customer->media->file_url : ($customer->imageUrl ?? '')
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -189,7 +250,7 @@ class CustomerController extends Controller
             return $this->success([
                "name" => $customer->name,
                "email" => $customer->email,
-               "photo" => $customer->media->file_url ?? ''
+               "photo" => $customer->media ? $customer->media->file_url : ($customer->imageUrl ?? '')
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

@@ -287,6 +287,7 @@ Route::group(['prefix' => ''], function(){
 Route::group(['prefix' => 'web'], function() {
     Route::post("login", [CustomerController::class, 'login']);
     Route::post("register", [CustomerController::class, 'signUp']);
+    Route::post("login/google", [CustomerController::class, 'loginSocial']);
     Route::group(['prefix' => 'movies'], function(){
         Route::get('/upcoming', [MovieController::class, 'upcomingMovie']);
         Route::get('/now-showing', [MovieController::class, 'nowShowingMovie']);
