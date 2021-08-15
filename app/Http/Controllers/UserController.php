@@ -188,14 +188,16 @@ class UserController extends Controller
     public function showProfile()
     {
         try {
-            $user = User::with('media')->find(auth()->user()->id);
+            $user = User::with("roles.rolePermission.permission", "media", "cinemas", "hasCinemas")->find(auth()->user()->id);
             return $this->success([
                "name" => $user->name,
                "email" => $user->email,
                "firstName" => $user->firstName,
                "lastName" => $user->lastName,
                "phoneNumber" => $user->phoneNumber,
-               "photo" => $user->media->file_url ?? ''
+               "photo" => $user->media->file_url ?? '',
+               "rolePermissions" => RoleResource::collection($user->roles),
+               "cinemas" => $user->cinemas
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
