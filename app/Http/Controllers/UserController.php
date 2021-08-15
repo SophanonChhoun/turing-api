@@ -28,6 +28,10 @@ class UserController extends Controller
     {
         try {
             $user = User::with("roles.rolePermission.permission", "media", "cinemas", "hasCinemas")->where('email', $request->email)->first();
+            if (!$user)
+            {
+                $user = User::with("roles.rolePermission.permission", "media", "cinemas", "hasCinemas")->where('name', $request->email)->first();
+            }
             if(!$user || !Hash::check($request->password, $user->password)) {
                 return $this->fail('These credentials do not match our records.');
             }
@@ -184,13 +188,14 @@ class UserController extends Controller
     public function showProfile()
     {
         try {
-            $user = User::find(auth()->user()->id);
+            $user = User::with('media')->find(auth()->user()->id);
             return $this->success([
                "name" => $user->name,
                "email" => $user->email,
                "firstName" => $user->firstName,
                "lastName" => $user->lastName,
-               "phoneNumber" => $user->phoneNumber
+               "phoneNumber" => $user->phoneNumber,
+               "photo" => $user->media->file_url ?? ''
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

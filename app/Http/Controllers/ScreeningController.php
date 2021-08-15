@@ -244,7 +244,7 @@ class ScreeningController extends Controller
                     "seatType" => $seat->seatType,
                     "status" => $seat->status,
                     "booked" => $avaliable ? true : false,
-                    "price" => round(($seat->seatType->priceFactor * $screening->price), 3),
+                    "price" => round((($seat->seatType ? $seat->seatType->priceFactor : 1) * $screening->price), 3),
                     "col" => $seat->col,
                     "row" => $seat->row
                 ];
@@ -253,11 +253,15 @@ class ScreeningController extends Controller
             return $this->success([
                 "screeningId" => $id,
                 "cinemaName" => $theater->cinema->name ?? '',
-                "theaterName" => $theater->name,
+                "theatreName" => $theater->name,
                 "movieName" => $screening->movie->title ?? '',
                 "row" => $theater->row,
                 "col" => $theater->col,
                 "seatTypes" => $seatType,
+                "startTime" => $screening->start_time,
+                "date" => $screening->date,
+                "movieSub" => $screening->subtitle,
+                "movieDub" => $screening->dubbed,
                 "grid" => $grid
             ]);
         }catch (Exception $exception){
@@ -275,6 +279,7 @@ class ScreeningController extends Controller
             $movies = $movies->filter(function ($movie){
                 $screening = Screening::where("movieId", $movie->id)
                     ->where("date", ">=", Carbon::now()->toDateString())
+                    ->where("status", true)
                     ->orderBy("date")->orderBy("start_time")->get()->groupBy("date");
                 if ($screening->count() >= 1) {
                     $movie->screenings = collect($screening->toArray());

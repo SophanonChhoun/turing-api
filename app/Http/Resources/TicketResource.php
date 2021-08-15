@@ -17,12 +17,35 @@ class TicketResource extends JsonResource
         return [
             'id' => $this->id,
             'price' => $this->price,
-            'movie' => $this->movieName,
             'seat' => $this->seatName,
-            'cinema' => $this->cinemaName,
             'customer' => $this->user->name ?? '',
             'theatre' => $this->theaterName,
-            'checked_in'=> $this->checked_in
+            'checkedIn'=> $this->checked_in,
+            'movie' => [
+                'id' => $this->movie->id ?? '',
+                'title' => $this->movie->title ?? '',
+                'trailer' => $this->movie->trailerUrl ?? '',
+                'synopsis' => $this->movie->synopsis ?? '',
+                'rating' => $this->movie->rating->title ?? '',
+                'genres' => $this->movie ? ListResource::collection($this->movie->genres) : '',
+                'directors' => $this->movie ? ListResource::collection($this->movie->directors) : '',
+                'casts' => $this->movie ? ListResource::collection($this->movie->casts) : '',
+                'releasedDate' => $this->movie->releasedDate ?? '',
+                'poster' => $this->movie->poster ?? '',
+                'backdrop' => $this->movie->backdrop ?? '',
+            ],
+            'screening' => [
+                'id' => $this->screening->id ?? '',
+                'theatre' => $this->screening->theater->name ?? '',
+                'date' => $this->screening->date ?? '',
+                'start_time' => $this->screening->start_time ?? '',
+            ],
+            'cinema' => [
+                'id' => $this->screening->theater->cinema->id ?? '',
+                'name' => $this->screening->theater->cinema->name ?? '',
+                'location' => $this->screening->theater->cinema->location ?? '',
+                'photo' => $this->screening->theater->cinema->media->file_url ?? '',
+            ],
         ];
     }
 }

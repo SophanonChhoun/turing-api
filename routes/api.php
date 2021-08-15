@@ -296,6 +296,12 @@ Route::group(['prefix' => 'web'], function() {
     Route::group(['prefix' => 'screenings'], function(){
         Route::get('/now-showing', [ScreeningController::class, 'getNowShowing']);
     });
+    Route::group(['prefix' => 'cinemas'], function(){
+        Route::get('', [CinemaController::class, 'activeCinema']);
+    });
+    Route::group(['prefix' => 'products'], function(){
+        Route::get('', [ProductController::class, 'productActive']);
+    });
     Route::get('grid/{id}', [ScreeningController::class, 'getGrid']);
     Route::middleware(['auth:sanctum', 'customer'])->group(function () {
         Route::group(['prefix' => 'tickets'], function(){

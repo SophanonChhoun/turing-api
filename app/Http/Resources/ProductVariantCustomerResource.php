@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MovieTimeResource extends JsonResource
+class ProductVariantCustomerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,9 @@ class MovieTimeResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "id" => $this->id,
-            "title" => $this->title,
-            "poster" => $this->poster,
-            'releasedDate' => $this->releasedDate,
-            "screenings" => ShowScreeningResource::collection($this->availableScreenings)
+            'price' => $this->price,
+            'code' => $this->code,
+            'attributeValue' => ProductAttributeListResource::collection($this->productAttributeValues),
         ];
     }
 }

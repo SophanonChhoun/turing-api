@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserBuyTicketRequest;
+use App\Http\Resources\TicketAdminResource;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Ticket;
@@ -18,8 +19,8 @@ class TicketController extends Controller
     public function index()
     {
         try {
-            $data = Ticket::with('seat', 'user')->latest()->get();
-            return $this->success(TicketResource::collection($data));
+            $data = Ticket::with('seat', 'user', 'screening')->latest()->get();
+            return $this->success(TicketAdminResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
@@ -121,12 +122,13 @@ class TicketController extends Controller
     {
         DB::beginTransaction();
         try {
-            foreach ($request['seats'] as $key => $seat)
+            foreach ($request['seats'] as $key => $seatId)
             {
-                $getSeat = Seat::with('seatType')->findOrFail($seat['id']);
+                $getSeat = Seat::with('seatType')->findOrFail($seatId);
                 $seat['seatName'] = $getSeat->name;
                 $seat['seatType'] = $getSeat->seatType->name ?? '';
-                $seatExit = Ticket::where("screeningId", $request['screeningId'])->where("seatId", $seat['id'])->get()->first();
+                $screening = Screening::findOrFail($request['screeningId']);
+                $seatExit = Ticket::where("screeningId", $request['screeningId'])->where("seatId", $seatId)->get()->first();
                 if ($seatExit)
                 {
                     return $this->fail("Sorry, seats: " . $seat['seatName'] ." is not available");
@@ -134,9 +136,10 @@ class TicketController extends Controller
                 $seat['screeningId'] = $request['screeningId'];
                 $seat['movieName'] = $request['movieName'];
                 $seat['cinemaName'] = $request['cinemaName'];
-                $seat['theaterName'] = $request['theaterName'];
+                $seat['theaterName'] = $request['theatreName'];
                 $seat['userId'] = auth()->user()->id;
-                $seat['seatId'] = $seat['id'];
+                $seat['seatId'] = $seatId;
+                $seat['price'] = $screening->price * $getSeat->seatType->priceFactor;
                 $data = Ticket::create($seat);
                 if (!$data)
                 {
@@ -157,7 +160,7 @@ class TicketController extends Controller
     public function customerTicket()
     {
         try {
-            $data = Ticket::with('seat', 'user')->where("userId", auth()->user()->id)->latest()->get();
+            $data = Ticket::with('seat', 'user', 'screening')->where("userId", auth()->user()->id)->latest()->get();
             return $this->success(TicketResource::collection($data));
         }catch (Exception $exception) {
             return $this->fail($exception->getMessage());
