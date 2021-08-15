@@ -21,6 +21,7 @@ class CustomerResource extends JsonResource
             "status" => $this->status,
             "phoneNumber" => $this->phoneNumber,
             "photo" => $this->media ? $this->media->file_url : ($this->imageUrl ?? ''),
+            "createdType" => $this->createdType
         ];
     }
 }
