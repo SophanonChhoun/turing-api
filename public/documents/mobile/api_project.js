@@ -1,4 +1,4 @@
-{
+define({
   "name": "Resource Planning - Turing Cinemas",
   "version": "1.0.0",
   "description": "Resource Planning - Turing Cinemas",
@@ -9,8 +9,8 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-08-15T08:19:29.467Z",
+    "time": "2021-08-15T08:19:18.185Z",
     "url": "https://apidocjs.com",
     "version": "0.29.0"
   }
-}
+});

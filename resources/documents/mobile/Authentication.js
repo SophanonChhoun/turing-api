@@ -47,7 +47,7 @@
  */
 
 /**
- * @api {post} /api/web/register 1. Register
+ * @api {post} /api/register 1. Register
  * @apiVersion 1.0.0
  * @apiName Register
  * @apiGroup Authentication
@@ -88,7 +88,7 @@
  */
 
 /**
- * @api {post} /api/web/login 2. Login
+ * @api {post} /api/login 2. Login
  * @apiVersion 1.0.0
  * @apiName Login
  * @apiGroup Authentication
@@ -127,7 +127,7 @@
  */
 
 /**
- * @api {post} /api/web/login/google 3. Login Google
+ * @api {post} /api/login/google 3. Login Google
  * @apiVersion 1.0.0
  * @apiName Login Google
  * @apiGroup Authentication

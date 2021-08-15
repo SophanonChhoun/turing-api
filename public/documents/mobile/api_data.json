@@ -1,7 +1,7 @@
 [
   {
     "type": "post",
-    "url": "/api/web/login",
+    "url": "/api/login",
     "title": "2. Login",
     "version": "1.0.0",
     "name": "Login",
@@ -64,7 +64,7 @@
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/login"
+        "url": "http://165.227.93.1:7000/api/login"
       }
     ],
     "header": {
@@ -148,7 +148,7 @@
   },
   {
     "type": "post",
-    "url": "/api/web/login/google",
+    "url": "/api/login/google",
     "title": "3. Login Google",
     "version": "1.0.0",
     "name": "Login_Google",
@@ -204,7 +204,7 @@
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/login/google"
+        "url": "http://165.227.93.1:7000/api/login/google"
       }
     ],
     "header": {
@@ -288,7 +288,7 @@
   },
   {
     "type": "post",
-    "url": "/api/web/register",
+    "url": "/api/register",
     "title": "1. Register",
     "version": "1.0.0",
     "name": "Register",
@@ -365,7 +365,7 @@
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/register"
+        "url": "http://165.227.93.1:7000/api/register"
       }
     ],
     "header": {
@@ -425,7 +425,7 @@
   },
   {
     "type": "get",
-    "url": "/api/web/cinemas",
+    "url": "/api/cinemas",
     "title": "1. List cinemas",
     "version": "1.0.0",
     "name": "List_cinemas",
@@ -443,7 +443,7 @@
     "groupTitle": "Cinemas",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/cinemas"
+        "url": "http://165.227.93.1:7000/api/cinemas"
       }
     ],
     "header": {
@@ -482,7 +482,7 @@
   },
   {
     "type": "get",
-    "url": "/api/web/currency",
+    "url": "/api/currency",
     "title": "1. Show currency",
     "version": "1.0.0",
     "name": "Show_Currency",
@@ -500,7 +500,7 @@
     "groupTitle": "Currency",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/currency"
+        "url": "http://165.227.93.1:7000/api/currency"
       }
     ],
     "header": {
@@ -539,7 +539,7 @@
   },
   {
     "type": "get",
-    "url": "/api/web/grid/:screening_id",
+    "url": "/api/grid/:screening_id",
     "title": "1. List Grid",
     "version": "1.0.0",
     "name": "List_Grid",
@@ -557,7 +557,7 @@
     "groupTitle": "Grid",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/grid/:screening_id"
+        "url": "http://165.227.93.1:7000/api/grid/:screening_id"
       }
     ],
     "header": {
@@ -596,16 +596,16 @@
   },
   {
     "type": "get",
-    "url": "/api/web/movies/:id",
-    "title": "4. Movies Detail",
+    "url": "/api/movies",
+    "title": "1. List Home Screen Movies",
     "version": "1.0.0",
-    "name": "List_Movie_Detail",
+    "name": "List_Home_Screen_Movies",
     "group": "Movie",
     "success": {
       "examples": [
         {
           "title": "Response (example):",
-          "content": "HTTP/1.1 200 Success Request\n{\n   \"id\": 4,\n   \"title\": \"Amarsi un po'...\",\n   \"synopsis\": \"In an accident the young mechanic Marco Coccia meets Cristiana. The two fall in love with one another. Cristiana confesses only later that she is a genuine princess. For Marco it is not a problem, but for Cristiana's parents it is a very big problem. The two must separate. When one evening Cristiana calls Marco and lets him know about her forthcoming wedding, Marco with the car races toward Paris and has an accident...\",\n   \"rating\": \"R\",\n   \"directors\": [\n       {\n           \"id\": 1,\n           \"name\": \"Neath Mony\"\n       }\n   ],\n   \"casts\": [\n       {\n           \"id\": 1,\n           \"name\": \"Neath Mony\"\n       }\n   ],\n   \"genres\": [\n       {\n           \"id\": 1,\n           \"name\": \"Romance\"\n       }\n   ],\n   \"poster\": \"\",\n   \"backdrop\": \"\",\n   \"trailerUrl\": \"VanCRj8eI9o\",\n   \"runningTime\": 93,\n   \"releasedDate\": \"2021-08-26\",\n   \"cinemas\": [\n       {\n           \"id\": 2,\n           \"name\": \"Turing Niptict\",\n           \"location\": \"Niptict\",\n           \"screening\": []\n       }\n   ]\n}",
+          "content": "HTTP/1.1 200 Success Request\n{\n   \"upComingMovies\": [\n       {\n           \"id\": 6,\n           \"title\": \"Luca\",\n           \"synopsis\": \"Luca and his best friend Alberto experience an unforgettable summer on the Italian Riviera. But all the fun is threatened by a deeply-held secret: they are sea monsters from another world just below the water’s surface.\",\n           \"poster\": \"/899f4521b6696ccbd27c4c5745fd4cf3.png\",\n           \"rated\": \"R\",\n           \"genres\": [\n               \"Romance\"\n           ]\n       }\n   ],\n   \"nowShowingMovies\": [\n       {\n           \"id\": 1,\n           \"title\": \"Luca\",\n           \"synopsis\": \"Luca and his best friend Alberto experience an unforgettable summer on the Italian Riviera. But all the fun is threatened by a deeply-held secret: they are sea monsters from another world just below the water’s surface.\",\n           \"poster\": \"/0d618f1247426e147c0bcea07c920412.png\",\n           \"rated\": \"R\",\n           \"genres\": [\n               \"Romance\",\n               \"Romance\"\n           ]\n       },\n       {\n           \"id\": 3,\n           \"title\": \"Lukaku\",\n           \"synopsis\": \"Luca and his best friend Alberto experience an unforgettable summer on the Italian Riviera. But all the fun is threatened by a deeply-held secret: they are sea monsters from another world just below the water’s surface.\",\n           \"poster\": \"/9ea74e626d95907565bd9b770efea257.png\",\n           \"rated\": \"R\",\n           \"genres\": [\n               \"Romance\"\n           ]\n       },\n       {\n           \"id\": 4,\n           \"title\": \"Amarsi un po'...\",\n           \"synopsis\": \"In an accident the young mechanic Marco Coccia meets Cristiana. The two fall in love with one another. Cristiana confesses only later that she is a genuine princess. For Marco it is not a problem, but for Cristiana's parents it is a very big problem. The two must separate. When one evening Cristiana calls Marco and lets him know about her forthcoming wedding, Marco with the car races toward Paris and has an accident...\",\n           \"poster\": \"/2128f05e206c139de322345264de68a1.png\",\n           \"rated\": \"R\",\n           \"genres\": [\n               \"Romance\"\n           ]\n       },\n       {\n           \"id\": 5,\n           \"title\": \"Lucasssxsxs\",\n           \"synopsis\": \"Luca and his best friend Alberto experience an unforgettable summer on the Italian Riviera. But all the fun is threatened by a deeply-held secret: they are sea monsters from another world just below the water’s surface.\",\n           \"poster\": \"/c0960f8e50b73308ae874c1d7c49b8ad.png\",\n           \"rated\": \"R\",\n           \"genres\": [\n               \"Romance\",\n               \"Romance\"\n           ]\n       }\n   ]\n}",
           "type": "json"
         }
       ]
@@ -614,78 +614,7 @@
     "groupTitle": "Movie",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/movies/:id"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "Accept",
-            "description": "<p><code>application/json</code></p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "4xx": [
-          {
-            "group": "4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NotFound",
-            "description": "<p>resource is not found</p>"
-          }
-        ],
-        "5xx": [
-          {
-            "group": "5xx",
-            "type": "500",
-            "optional": false,
-            "field": "InternalSeverError",
-            "description": "<p>internal server error</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "404 (NotFound):",
-          "content": "HTTP/1.1 404 Not Found\n{\n   \"type\": \"ConstraintViolationError\"\n   \"message\": \"The :attribute is not found.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "500 (InternalSeverError):",
-          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "get",
-    "url": "/api/web/movies/now-showing",
-    "title": "2. List Now Showing Movies",
-    "version": "1.0.0",
-    "name": "List_Now_showing_movies",
-    "group": "Movie",
-    "success": {
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 200 Success Request\n[\n{\n       \"id\": 1,\n       \"poster\": \"/n5Re2ywnpqwAXTin8W5j3lqSwc7.jpg\",\n       \"backdrop\": \"/o2SeAw8ARPB1D8oudCRJcxW3w60.jpg\",\n       \"title\": \"Wrong Turn 2: Dead End\",\n       \"trailerUrl\": \"VanCRj8eI9o\",\n       \"rating\": \"R\",\n       \"synopsis\": \"Retired military commander Colonel Dale Murphy hosts the simulated post-apocalyptic reality show where participants are challenged to survive a remote West Virginia wasteland. But the show turns into a nightmarish showdown when each realizes they are being hunted by an inbred family of cannibals determined to make them all dinner!\",\n       \"runningTime\": 96,\n       \"directors\": [\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Action\"\n           }\n       ],\n       \"releasedDate\": \"2021-12-20\n   },\n{\n       \"id\": 2,\n       \"poster\": \"/maqsygPJvhESIOQGclUAEEWxNC.jpg\",\n       \"backdrop\": \"/9Ef8abhHjuqyCNlhscEohNXsLJj.jpg\",\n       \"title\": \"Tod@s Caen\",\n       \"trailerUrl\": \"SeCXaQuFAn0\",\n       \"rating\": \"R\",\n       \"synopsis\": \"A pair of seducers try to prove who has the best techniques while trying not to fall in love with each other.\",\n       \"runningTime\": 120,\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Action\"\n           }\n       ],\n       \"releasedDate\": \"2021-12-20\n   },\n{\n       \"id\": 3,\n       \"poster\": \"/k9lhZ0PhY78nzwG034rNpsLXlpW.jpg\",\n       \"backdrop\": \"/3Ywbn6XkpBBemuoThyUwr0opLmG.jpg\",\n       \"title\": \"L'ennemi public n°1\",\n       \"trailerUrl\": \"XgYzDUhoah0\",\n       \"rating\": \"R\",\n       \"synopsis\": \"The story of Jacques Mesrine, France's public enemy No. 1 during the 1970s. After nearly two decades of legendary criminal feats -- from multiple bank robberies and to prison breaks -- Mesrine was gunned down by the French police in Paris.\",\n       \"runningTime\": 133,\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Action\"\n           }\n       ],\n       \"releasedDate\": \"2021-12-20\n   }\n]",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "./movie.js",
-    "groupTitle": "Movie",
-    "sampleRequest": [
-      {
-        "url": "http://165.227.93.1:7000/api/web/movies/now-showing"
+        "url": "http://165.227.93.1:7000/api/movies"
       }
     ],
     "header": {
@@ -724,121 +653,7 @@
   },
   {
     "type": "get",
-    "url": "/api/web/movies/upcoming",
-    "title": "1. List Upcoming movies",
-    "version": "1.0.0",
-    "name": "List_Upcoming_movies",
-    "group": "Movie",
-    "success": {
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 200 Success Request\n[\n   {\n       \"id\": 4,\n       \"poster\": \"/wHYq4CXe2oSlF3BlxFeFgb8XUW9.jpg\",\n       \"backdrop\": \"/1UPzHDjUT40abGPPr4wKxdrX0ar.jpg\",\n       \"title\": \"Amarsi un po'...\",\n       \"trailerUrl\": \"VanCRj8eI9o\",\n       \"synopsis\": \"In an accident the young mechanic Marco Coccia meets Cristiana. The two fall in love with one another. Cristiana confesses only later that she is a genuine princess. For Marco it is not a problem, but for Cristiana's parents it is a very big problem. The two must separate. When one evening Cristiana calls Marco and lets him know about her forthcoming wedding, Marco with the car races toward Paris and has an accident...\",\n       \"runningTime\": 93,\n       \"rating\": \"R\",\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Action\"\n           }\n       ],\n       \"releasedDate\": \"2021-12-20\n   }\n]",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "./movie.js",
-    "groupTitle": "Movie",
-    "sampleRequest": [
-      {
-        "url": "http://165.227.93.1:7000/api/web/movies/upcoming"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "Accept",
-            "description": "<p><code>application/json</code></p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "5xx": [
-          {
-            "group": "5xx",
-            "type": "500",
-            "optional": false,
-            "field": "InternalSeverError",
-            "description": "<p>internal server error</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "500 (InternalSeverError):",
-          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "get",
-    "url": "/api/web/movies/advertisement",
-    "title": "3. List advertisement movie",
-    "version": "1.0.0",
-    "name": "List_advertisement_movie",
-    "group": "Movie",
-    "success": {
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 200 Success Request\n[\n{\n       \"id\": 4,\n       \"poster\": \"/wHYq4CXe2oSlF3BlxFeFgb8XUW9.jpg\",\n       \"backdrop\": \"/1UPzHDjUT40abGPPr4wKxdrX0ar.jpg\",\n       \"title\": \"Amarsi un po'...\",\n       \"trailerUrl\": \"VanCRj8eI9o\",\n       \"rating\": \"R\",\n       \"synopsis\": \"In an accident the young mechanic Marco Coccia meets Cristiana. The two fall in love with one another. Cristiana confesses only later that she is a genuine princess. For Marco it is not a problem, but for Cristiana's parents it is a very big problem. The two must separate. When one evening Cristiana calls Marco and lets him know about her forthcoming wedding, Marco with the car races toward Paris and has an accident...\",\n       \"runningTime\": 93,\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Action\"\n           }\n       ],\n       \"releasedDate\": \"2021-12-20\n   },\n   {\n       \"id\": 3,\n       \"poster\": \"/k9lhZ0PhY78nzwG034rNpsLXlpW.jpg\",\n       \"backdrop\": \"/3Ywbn6XkpBBemuoThyUwr0opLmG.jpg\",\n       \"title\": \"L'ennemi public n°1\",\n       \"trailerUrl\": \"XgYzDUhoah0\",\n       \"rating\": \"R\",\n       \"synopsis\": \"The story of Jacques Mesrine, France's public enemy No. 1 during the 1970s. After nearly two decades of legendary criminal feats -- from multiple bank robberies and to prison breaks -- Mesrine was gunned down by the French police in Paris.\",\n       \"runningTime\": 133,\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Action\"\n           }\n       ],\n       \"releasedDate\": \"2021-12-20\n   },\n   {\n       \"id\": 2,\n       \"poster\": \"/maqsygPJvhESIOQGclUAEEWxNC.jpg\",\n       \"backdrop\": \"/9Ef8abhHjuqyCNlhscEohNXsLJj.jpg\",\n       \"title\": \"Tod@s Caen\",\n       \"rating\": \"R\",\n       \"trailerUrl\": \"SeCXaQuFAn0\",\n       \"synopsis\": \"A pair of seducers try to prove who has the best techniques while trying not to fall in love with each other.\",\n       \"runningTime\": 120,\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Action\"\n           }\n       ],\n       \"releasedDate\": \"2021-12-20\n   }\n]",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "./movie.js",
-    "groupTitle": "Movie",
-    "sampleRequest": [
-      {
-        "url": "http://165.227.93.1:7000/api/web/movies/advertisement"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "Accept",
-            "description": "<p><code>application/json</code></p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "5xx": [
-          {
-            "group": "5xx",
-            "type": "500",
-            "optional": false,
-            "field": "InternalSeverError",
-            "description": "<p>internal server error</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "500 (InternalSeverError):",
-          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "get",
-    "url": "/api/web/products",
+    "url": "/api/products",
     "title": "1. List products",
     "version": "1.0.0",
     "name": "List_products",
@@ -856,7 +671,7 @@
     "groupTitle": "Products",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/products"
+        "url": "http://165.227.93.1:7000/api/products"
       }
     ],
     "header": {
@@ -895,7 +710,7 @@
   },
   {
     "type": "get",
-    "url": "/api/web/profile",
+    "url": "/api/profile",
     "title": "1. Show Customer Profile",
     "version": "1.0.0",
     "name": "Show_Profile",
@@ -913,7 +728,7 @@
     "groupTitle": "Profile",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/profile"
+        "url": "http://165.227.93.1:7000/api/profile"
       }
     ],
     "header": {
@@ -985,7 +800,7 @@
   },
   {
     "type": "patch",
-    "url": "/api/web/profile",
+    "url": "/api/profile",
     "title": "3. Update Customer Password",
     "version": "1.0.0",
     "name": "Update_Password",
@@ -1023,7 +838,7 @@
     "groupTitle": "Profile",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/profile"
+        "url": "http://165.227.93.1:7000/api/profile"
       }
     ],
     "header": {
@@ -1102,7 +917,7 @@
   },
   {
     "type": "put",
-    "url": "/api/web/profile",
+    "url": "/api/profile",
     "title": "2. Update Customer Profile",
     "version": "1.0.0",
     "name": "Update_Profile",
@@ -1147,7 +962,7 @@
     "groupTitle": "Profile",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/profile"
+        "url": "http://165.227.93.1:7000/api/profile"
       }
     ],
     "header": {
@@ -1226,7 +1041,7 @@
   },
   {
     "type": "get",
-    "url": "/api/web/screenings/now-showing",
+    "url": "/api/screenings/now-showing",
     "title": "1. List Now Showing Screenings",
     "version": "1.0.0",
     "name": "List_Now_Showing_Screenings",
@@ -1235,7 +1050,7 @@
       "examples": [
         {
           "title": "Response (example):",
-          "content": "HTTP/1.1 200 Success Request\n[\n{\n       \"id\": 2,\n       \"title\": \"Tod@s Caen\",\n       \"synopsis\": \"A pair of seducers try to prove who has the best techniques while trying not to fall in love with each other.\",\n       \"rating\": \"R\",\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Romance\"\n           }\n       ],\n       \"poster\": \"\",\n       \"backdrop\": \"\",\n       \"trailerUrl\": \"SeCXaQuFAn0\",\n       \"screenings\": []\n   },\n{\n       \"id\": 3,\n       \"title\": \"L'ennemi public n°1\",\n       \"synopsis\": \"The story of Jacques Mesrine, France's public enemy No. 1 during the 1970s. After nearly two decades of legendary criminal feats -- from multiple bank robberies and to prison breaks -- Mesrine was gunned down by the French police in Paris.\",\n       \"rating\": \"R\",\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Romance\"\n           }\n       ],\n       \"poster\": \"\",\n       \"backdrop\": \"\",\n       \"trailerUrl\": \"XgYzDUhoah0\",\n       \"screenings\": []\n   },\n{\n       \"id\": 5,\n       \"title\": \"Luca\",\n       \"synopsis\": \"Luca and his best friend Alberto experience an unforgettable summer on the Italian Riviera. But all the fun is threatened by a deeply-held secret: they are sea monsters from another world just below the water’s surface.\",\n       \"rating\": \"R\",\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Romance\"\n           },\n           {\n               \"id\": 1,\n               \"name\": \"Romance\"\n           }\n       ],\n       \"poster\": \"/b38c026db46a7437b38829b292b6db98.png\",\n       \"backdrop\": \"/89d183a7f7aba4cbd205e434b50b7b47.png\",\n       \"trailerUrl\": \"https://www.youtube.com/watch?v=mYfJxlgR2jw\",\n       \"screenings\": {\n           \"2021-08-11\": [\n               {\n                   \"id\": 14,\n                   \"movieId\": 5,\n                   \"price\": 1,\n                   \"theaterId\": 2,\n                   \"date\": \"2021-08-11\",\n                   \"start_time\": \"15:59:00\",\n                   \"status\": true,\n                   \"created_at\": \"2021-08-10T08:59:59.000000Z\",\n                   \"updated_at\": \"2021-08-11T03:33:51.000000Z\",\n                   \"cinemaId\": 2,\n                   \"subId\": 1,\n                   \"dubId\": 2,\n                   \"deleted_at\": null\n               }\n           ]\n       }\n   }\n]",
+          "content": "HTTP/1.1 200 Success Request\n[\n   {\n       \"id\": 5,\n       \"title\": \"Luca\",\n       \"synopsis\": \"Luca and his best friend Alberto experience an unforgettable summer on the Italian Riviera. But all the fun is threatened by a deeply-held secret: they are sea monsters from another world just below the water’s surface.\",\n       \"rating\": \"R\",\n       \"directors\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"casts\": [\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 1,\n               \"name\": \"Neath Mony\"\n           },\n           {\n               \"id\": 2,\n               \"name\": \"Neath Mony\"\n           }\n       ],\n       \"genres\": [\n           {\n               \"id\": 1,\n               \"name\": \"Romance\"\n           },\n           {\n               \"id\": 1,\n               \"name\": \"Romance\"\n           }\n       ],\n       \"poster\": \"/b38c026db46a7437b38829b292b6db98.png\",\n       \"backdrop\": \"/89d183a7f7aba4cbd205e434b50b7b47.png\",\n       \"trailerUrl\": \"https://www.youtube.com/watch?v=mYfJxlgR2jw\",\n       \"screenings\": {\n           \"2021-08-11\": [\n               {\n                   \"id\": 14,\n                   \"movieId\": 5,\n                   \"price\": 1,\n                   \"theaterId\": 2,\n                   \"date\": \"2021-08-11\",\n                   \"start_time\": \"15:59:00\",\n                   \"status\": true,\n                   \"created_at\": \"2021-08-10T08:59:59.000000Z\",\n                   \"updated_at\": \"2021-08-11T03:33:51.000000Z\",\n                   \"cinemaId\": 2,\n                   \"subId\": 1,\n                   \"dubId\": 2,\n                   \"deleted_at\": null\n               }\n           ]\n       }\n   }\n]",
           "type": "json"
         }
       ]
@@ -1244,7 +1059,7 @@
     "groupTitle": "Screening",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/screenings/now-showing"
+        "url": "http://165.227.93.1:7000/api/screenings/now-showing"
       }
     ],
     "header": {
@@ -1349,7 +1164,7 @@
   },
   {
     "type": "post",
-    "url": "/api/web/tickets",
+    "url": "/api/tickets",
     "title": "1. Buy Ticket",
     "version": "1.0.0",
     "name": "Buy_Ticket",
@@ -1415,7 +1230,7 @@
     "groupTitle": "Ticket",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/tickets"
+        "url": "http://165.227.93.1:7000/api/tickets"
       }
     ],
     "header": {
@@ -1494,7 +1309,7 @@
   },
   {
     "type": "get",
-    "url": "/api/web/tickets",
+    "url": "/api/tickets",
     "title": "2. List Ticket",
     "version": "1.0.0",
     "name": "List_Ticket",
@@ -1512,7 +1327,7 @@
     "groupTitle": "Ticket",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/tickets"
+        "url": "http://165.227.93.1:7000/api/tickets"
       }
     ],
     "header": {
@@ -1572,7 +1387,7 @@
   },
   {
     "type": "get",
-    "url": "/api/web/tickets/:id",
+    "url": "/api/tickets/:id",
     "title": "3. Show ticket",
     "version": "1.0.0",
     "name": "Show_Ticket",
@@ -1590,7 +1405,7 @@
     "groupTitle": "Ticket",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000/api/web/tickets/:id"
+        "url": "http://165.227.93.1:7000/api/tickets/:id"
       }
     ],
     "header": {
