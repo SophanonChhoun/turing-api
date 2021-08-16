@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Resources;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 // Schema::create('promotion_contents', function (Blueprint $table) {
 //     $table->id();
@@ -27,24 +26,26 @@ use Illuminate\Database\Eloquent\Model;
 //         $table->boolean('status')->default(false);
 //         $table->timestamps();
 //     });
-// }
-class Promotion extends Model
+class PromotionResource extends JsonResource
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'title',
-        'coupon',
-        'percentage',
-        'bill',
-        'conditionTotal',
-        'hasProducts',
-        'hasScreenings',
-        'status'
-    ];
-
-
-    public function PromotionContent(){
-        return $this->hasMany(promotionContent::class,"promotionId");
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            "id" => $this->id,
+            "title" => $this->title,
+            "coupon" => $this->coupon,
+            "bill" => $this->bill,
+            "conditionTotal"=> $this->conditionTotal,
+            "status" => $this->status,
+            "hasProducts" => $this->hasProducts,
+            "hasScreening" => $this->hasScreening,
+            "promotion_contents"=> $this->promotion_contents
+        ];
     }
 }

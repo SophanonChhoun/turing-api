@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PromotionController;
 use App\Models\SeatType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -253,6 +254,10 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/{id}', [ScreeningController::class, 'show']);
         });
 
+        Route::group(['prefix' => 'promotion'], function () {
+            Route::get('', [PromotionController::class, 'index']);
+        });
+
         Route::group(['prefix' => 'ticket-sales'], function () {
             Route::get('/getMovies', [ScreeningController::class, 'getNowShowing']);
         });
@@ -275,6 +280,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/show', [CurrencyController::class, 'show']);
             Route::put('/{id}', [CurrencyController::class, 'update']);
         });
+
     });
 });
 

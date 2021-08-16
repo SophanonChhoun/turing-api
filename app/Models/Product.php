@@ -16,7 +16,7 @@ class Product extends Model
         'name',
         'categoryId',
         'mediaId',
-        'status'
+    'status'
     ];
 
     protected $casts = [
