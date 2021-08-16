@@ -29,6 +29,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MovieDBController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -154,6 +155,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::group(['prefix' => 'movies'], function () {
             Route::post('', [MovieController::class, 'store']);
             Route::get('', [MovieController::class, 'index']);
+            Route::get('/search', [MovieDBController::class, 'searchTmdb']);
+            Route::get('/external-details/{id}', [MovieDBController::class, 'lookUp']);
             Route::get('/restore', [MovieController::class, 'restoreData']);
             Route::get('/all', [MovieController::class, 'listAll']);
             Route::get('/{id}', [MovieController::class, 'show']);
