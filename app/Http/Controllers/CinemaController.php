@@ -169,25 +169,6 @@ class CinemaController extends Controller
         }
     }
 
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = Cinema::withTrashed();
-            $user = CinemaHasUser::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $user = $user->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $user->restore();
-            $data = Cinema::with("media")->latest()->get();
-            return $this->success(CinemaListResource::collection($data));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     public function activeCinema()
     {
         $data = Cinema::with("media")->where("status", true)->latest()->get();

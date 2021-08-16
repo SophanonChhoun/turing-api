@@ -12,9 +12,6 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasFactory, HasApiTokens;
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
     protected $table = 'users';
 
     protected $fillable = [

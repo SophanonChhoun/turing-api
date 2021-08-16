@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 use Exception;
 class ProductAttributesController extends Controller
 {
-
     public function store(ProductAttributeCreateRequest $request ){
         DB::beginTransaction();
         try {
@@ -58,22 +57,6 @@ class ProductAttributesController extends Controller
             return $this->success(ProductAttributeResource::collection($data));
         }
         catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = ProductAttributes::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $data = ProductAttributes::latest()->get();
-            return $this->success(ProductAttributeResource::collection($data));
-        }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
     }

@@ -274,20 +274,4 @@ class UserController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
-
-    public function restoreData(Request $request)
-    {
-        try {
-           $data = User::withTrashed();
-           if (isset($request['date']))
-           {
-               $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-           }
-            $data->restore();
-            $users = User::with("media")->latest()->get();
-            return $this->success(UserResource::collection($users));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
 }

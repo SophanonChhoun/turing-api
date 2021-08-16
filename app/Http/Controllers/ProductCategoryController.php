@@ -25,22 +25,6 @@ class ProductCategoryController extends Controller
         }
     }
 
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = ProductCategory::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $data = ProductCategory::with("media")->latest()->get();
-            return $this->success(ProductCategoryResource::collection($data));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     public function store(ProductCategoryRequest $request)
     {
         DB::beginTransaction();

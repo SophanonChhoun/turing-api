@@ -10,9 +10,6 @@ class ProductCategory extends Model
 {
     use HasFactory;
     protected $table = "product_categories";
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
     protected $fillable = [
       'name',
       'description',
