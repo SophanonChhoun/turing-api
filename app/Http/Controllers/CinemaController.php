@@ -132,6 +132,7 @@ class CinemaController extends Controller
             {
                 return $this->fail("Cinema not exist.");
             }
+            MediaLib::deleteImage($cinema->mediaId);
             $cinema = $cinema->delete();
             CinemaHasUser::where("cinemaId", $id)->delete();
             if(!$cinema)
