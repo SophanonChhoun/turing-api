@@ -9,9 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ProductVariantHasAttributeValue extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
     protected $fillable = [
         'productVariantId',
         'attributeValueId'

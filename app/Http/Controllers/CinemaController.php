@@ -132,6 +132,7 @@ class CinemaController extends Controller
             {
                 return $this->fail("Cinema not exist.");
             }
+            MediaLib::deleteImage($cinema->mediaId);
             $cinema = $cinema->delete();
             CinemaHasUser::where("cinemaId", $id)->delete();
             if(!$cinema)
@@ -164,25 +165,6 @@ class CinemaController extends Controller
         try {
             $user = User::with("cinemas")->find(auth()->user()->id);
             return $this->success($user->cinemas);
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = Cinema::withTrashed();
-            $user = CinemaHasUser::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $user = $user->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $user->restore();
-            $data = Cinema::with("media")->latest()->get();
-            return $this->success(CinemaListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

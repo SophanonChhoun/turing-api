@@ -29,22 +29,6 @@ class ProductController extends Controller
         }
     }
 
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = Product::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $data = Product::with("media", "category")->latest()->get();
-            return $this->success(ProductResource::collection($data));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     public function store(ProductCreateRequest $request)
     {
         DB::beginTransaction();
@@ -155,7 +139,9 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
-            Product::findOrFail($id)->delete();
+            $data = Product::findOrFail($id);
+            MediaLib::deleteImage($data->mediaId);
+            $data->delete();
             return $this->success([
                 "message" => "Product deleted."
             ]);

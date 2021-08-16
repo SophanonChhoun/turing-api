@@ -10,9 +10,6 @@ class MovieDirector extends Model
 {
     use HasFactory;
     protected $table = "movie_directors";
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
     protected $fillable = [
         "movieId",
         "directorId"

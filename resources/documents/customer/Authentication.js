@@ -125,3 +125,40 @@
  * @apiUse ErrorValidation
  * @apiUse ServerServerError
  */
+
+/**
+ * @api {post} /api/web/login/google 3. Login Google
+ * @apiVersion 1.0.0
+ * @apiName Login Google
+ * @apiGroup Authentication
+ *
+ * @apiUse PostHeaderWithoutAuth
+ *
+ * @apiParam {String} token         Account Token
+ *
+ * @apiExample {curl} Example usage:
+ {
+    "token": "ya29.a0ARrdaM8FStqs8Dhyru2OPJG7AOYSUhF_ehYN0G4SPytlpBysFZMSBAhO8OQ12Qvk5VYwayXKa3ZZ6EIwYnbfTKfPOM36aZhh6x6TK-nDcFTUDYppKHOe9RJQ0EQ5g_Xyumq-eUV8Z1he6tuoSezH3_p9ccyn"
+ }
+ *
+ * @apiUse DefaultResponse
+ * @apiSuccess (200) {String}       data.token       auth token to authorize access private api for each customer
+ * @apiSuccess (200) {object}       data.user               customer profile
+ *
+ * @apiSuccessExample  Response (example):
+ HTTP/1.1 200 Success Request
+ {
+    "user": {
+        "id": 1,
+        "email": "chhounsophanon@gmail.com",
+        "name": "Sophanon Chhoun",
+        "photo": "http://127.0.0.1:8000/uploads/images/19abf508db2a1a4ee1798047c5a94dad.png"
+    },
+    "token": "Bearer 17|Au0STUWD3IBneUx4Awug3S2MUgzUraOOF8uSY7QW"
+ }
+ *
+ * @apiUse IncorrectUsernamePassword
+ * @apiUse Block
+ * @apiUse ErrorValidation
+ * @apiUse ServerServerError
+ */

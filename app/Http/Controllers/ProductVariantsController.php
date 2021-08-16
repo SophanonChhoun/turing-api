@@ -65,25 +65,6 @@ class ProductVariantsController extends Controller
         }
     }
 
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = ProductVariants::withTrashed();
-            $attribute = ProductVariantHasAttributeValue::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $attribute = $attribute->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $attribute->restore();
-            $data = ProductVariants::with("product", "productAttributeValues")->latest()->get();
-            return $this->success(ProductVariantResource::collection($data));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     public function show($id)
     {
         try {

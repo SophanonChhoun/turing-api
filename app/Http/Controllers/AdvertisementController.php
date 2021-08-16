@@ -25,23 +25,6 @@ class AdvertisementController extends Controller
         }
     }
 
-
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = Advertisement::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $data = Advertisement::with("media")->latest()->get();
-            return $this->success(AdvertisementResource::collection($data));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     public function store(AdvertisementRequest $request)
     {
         DB::beginTransaction();
@@ -112,7 +95,9 @@ class AdvertisementController extends Controller
     public function destroy($id)
     {
         try {
-            Advertisement::findOrFail($id)->delete();
+            $data = Advertisement::findOrFail($id);
+            MediaLib::deleteImage($data->mediaId);
+            $data->delete();
             return $this->success([
                 "message" => "Advertisement deleted."
             ]);

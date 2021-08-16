@@ -44,28 +44,6 @@ class RoleController extends Controller
         }
     }
 
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = Role::withTrashed();
-            $permission = RoleHasPermission::withTrashed();
-            $user = RoleHasUser::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $permission = $permission->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $user = $user->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $permission->restore();
-            $user->restore();
-            $roles = Role::latest()->get();
-            return $this->success(RoleListResource::collection($roles));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     public function show($id)
     {
         try {

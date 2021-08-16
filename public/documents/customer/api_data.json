@@ -148,6 +148,146 @@
   },
   {
     "type": "post",
+    "url": "/api/web/login/google",
+    "title": "3. Login Google",
+    "version": "1.0.0",
+    "name": "Login_Google",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Account Token</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "{\n   \"token\": \"ya29.a0ARrdaM8FStqs8Dhyru2OPJG7AOYSUhF_ehYN0G4SPytlpBysFZMSBAhO8OQ12Qvk5VYwayXKa3ZZ6EIwYnbfTKfPOM36aZhh6x6TK-nDcFTUDYppKHOe9RJQ0EQ5g_Xyumq-eUV8Z1he6tuoSezH3_p9ccyn\"\n}",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "data.token",
+            "description": "<p>auth token to authorize access private api for each customer</p>"
+          },
+          {
+            "group": "200",
+            "type": "object",
+            "optional": false,
+            "field": "data.user",
+            "description": "<p>customer profile</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n{\n   \"user\": {\n       \"id\": 1,\n       \"email\": \"chhounsophanon@gmail.com\",\n       \"name\": \"Sophanon Chhoun\",\n       \"photo\": \"http://127.0.0.1:8000/uploads/images/19abf508db2a1a4ee1798047c5a94dad.png\"\n   },\n   \"token\": \"Bearer 17|Au0STUWD3IBneUx4Awug3S2MUgzUraOOF8uSY7QW\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Authentication.js",
+    "groupTitle": "Authentication",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/web/login/google"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p><code>application/x-www-form-urlencoded</code></p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "4xx": [
+          {
+            "group": "4xx",
+            "type": "400",
+            "optional": false,
+            "field": "IncorrectUsernamePassword",
+            "description": "<p>Username or Password is incorrect.</p>"
+          },
+          {
+            "group": "4xx",
+            "type": "401",
+            "optional": false,
+            "field": "User",
+            "description": "<p>status false.</p>"
+          },
+          {
+            "group": "4xx",
+            "type": "412",
+            "optional": false,
+            "field": "ErrorValidation",
+            "description": "<p>validation of required, format, min, max, ....</p>"
+          }
+        ],
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "400 (IncorrectUsernamePassword):",
+          "content": "HTTP/1.1 400 Bad Request\n{\n   \"type\": \"ConstraintViolationError\",\n   \"message\": \"These credentials do not match our records.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "401 (Block):",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n   \"type\": \"ConstraintViolationError\"\n   \"message\": \"Your account has been blocked.Please contact our team for more support.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "412 (ErrorValidation):",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n   \"type\": \"InvalidRequestError\"\n   \"messages\": {\n       \"field\": [\n           \"validation message\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
     "url": "/api/web/register",
     "title": "1. Register",
     "version": "1.0.0",
@@ -755,7 +895,7 @@
   },
   {
     "type": "get",
-    "url": "api/web/profile",
+    "url": "/api/web/profile",
     "title": "1. Show Customer Profile",
     "version": "1.0.0",
     "name": "Show_Profile",
@@ -773,7 +913,7 @@
     "groupTitle": "Profile",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000api/web/profile"
+        "url": "http://165.227.93.1:7000/api/web/profile"
       }
     ],
     "header": {
@@ -845,7 +985,7 @@
   },
   {
     "type": "patch",
-    "url": "api/web/profile",
+    "url": "/api/web/profile",
     "title": "3. Update Customer Password",
     "version": "1.0.0",
     "name": "Update_Password",
@@ -883,7 +1023,7 @@
     "groupTitle": "Profile",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000api/web/profile"
+        "url": "http://165.227.93.1:7000/api/web/profile"
       }
     ],
     "header": {
@@ -962,7 +1102,7 @@
   },
   {
     "type": "put",
-    "url": "api/web/profile",
+    "url": "/api/web/profile",
     "title": "2. Update Customer Profile",
     "version": "1.0.0",
     "name": "Update_Profile",
@@ -1007,7 +1147,7 @@
     "groupTitle": "Profile",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000api/web/profile"
+        "url": "http://165.227.93.1:7000/api/web/profile"
       }
     ],
     "header": {
@@ -1209,7 +1349,7 @@
   },
   {
     "type": "post",
-    "url": "api/web/tickets",
+    "url": "/api/web/tickets",
     "title": "1. Buy Ticket",
     "version": "1.0.0",
     "name": "Buy_Ticket",
@@ -1275,7 +1415,7 @@
     "groupTitle": "Ticket",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000api/web/tickets"
+        "url": "http://165.227.93.1:7000/api/web/tickets"
       }
     ],
     "header": {
@@ -1354,7 +1494,7 @@
   },
   {
     "type": "get",
-    "url": "api/web/tickets",
+    "url": "/api/web/tickets",
     "title": "2. List Ticket",
     "version": "1.0.0",
     "name": "List_Ticket",
@@ -1372,7 +1512,7 @@
     "groupTitle": "Ticket",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000api/web/tickets"
+        "url": "http://165.227.93.1:7000/api/web/tickets"
       }
     ],
     "header": {
@@ -1432,7 +1572,7 @@
   },
   {
     "type": "get",
-    "url": "api/web/tickets/:id",
+    "url": "/api/web/tickets/:id",
     "title": "3. Show ticket",
     "version": "1.0.0",
     "name": "Show_Ticket",
@@ -1450,7 +1590,7 @@
     "groupTitle": "Ticket",
     "sampleRequest": [
       {
-        "url": "http://165.227.93.1:7000api/web/tickets/:id"
+        "url": "http://165.227.93.1:7000/api/web/tickets/:id"
       }
     ],
     "header": {

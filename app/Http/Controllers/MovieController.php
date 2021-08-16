@@ -156,7 +156,10 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
-            Movie::findOrFail($id)->delete();
+            $data = Movie::findOrFail($id);
+            MediaLib::deleteImageResize($data->backdropId);
+            MediaLib::deleteImageResize($data->posterId);
+            $data->delete();
             MovieCast::where("movieId", $id)->delete();
             MovieDirector::where("movieId", $id)->delete();
             MovieGenreHasMovie::where("movieId", $id)->delete();
@@ -288,31 +291,6 @@ class MovieController extends Controller
                 ->where("releasedDate", '<=',Carbon::now()->toDateString())
                 ->where("status", true)->get();
             return $this->success(MovieTimeResource::collection($movies));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
-    public function restoreData(Request $request)
-    {
-        try {
-            $movies = Movie::withTrashed();
-            $casts = MovieCast::withTrashed();
-            $directors = MovieDirector::withTrashed();
-            $genres = MovieGenreHasMovie::withTrashed();
-            if (isset($request['date']))
-            {
-                $movies = $movies->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $casts = $casts->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $directors = $directors->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $genres = $genres->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $movies->restore();
-            $casts->restore();
-            $directors->restore();
-            $genres->restore();
-            $data = Movie::with("rating", "genres", "directors", "casts")->latest()->get();
-            return $this->success(MovieResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

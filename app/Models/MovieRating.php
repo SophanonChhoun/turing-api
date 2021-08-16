@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class MovieRating extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-    protected $dates = ['deleted_at'];
     public $fillable = [
       'title',
       'description',
