@@ -56,25 +56,6 @@ class TheaterController extends Controller
         }
     }
 
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = Theater::withTrashed();
-            $seat = Seat::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $seat = $seat->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $seat->restore();
-            $data = Theater::with("cinema","seat")->latest()->get();
-            return $this->success(TheaterResource::collection($data));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     public function show($id)
     {
         try {

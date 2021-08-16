@@ -10,6 +10,7 @@ use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\TokenRequest;
+use App\Http\Resources\CustomerListResource;
 use App\Http\Resources\CustomerResource;
 use App\Http\Resources\ListResource;
 use App\Mail\SendMail;
@@ -167,23 +168,6 @@ class CustomerController extends Controller
         }
     }
 
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = Customer::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            Customer::withTrashed()->restore();
-            $customers = Customer::with("media")->latest()->get();
-            return $this->success(CustomerResource::collection($customers));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     function rand_string( $length ) {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         return substr(str_shuffle($chars),0,$length);
@@ -304,7 +288,7 @@ class CustomerController extends Controller
     {
         try {
             $customers = Customer::where("status", true)->get();
-            return $this->success($customers);
+            return $this->success(CustomerListResource::collection($customers));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

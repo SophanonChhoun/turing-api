@@ -13,9 +13,6 @@ class Customer extends Authenticatable
 {
     const REFERENCE_SLUG = 'customer';
     use HasFactory, HasApiTokens;
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
     protected $fillable = [
       'name',
       'email',

@@ -10,9 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Cinema extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
     protected $fillable = [
         'id',
         'name',

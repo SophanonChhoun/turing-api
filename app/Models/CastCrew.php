@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CastCrew extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-    protected $dates = ['deleted_at'];
     protected $fillable = [
         'firstName',
         'lastName',

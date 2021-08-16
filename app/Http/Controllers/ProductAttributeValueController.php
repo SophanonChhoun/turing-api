@@ -53,25 +53,6 @@ class ProductAttributeValueController extends Controller
         }
     }
 
-    public function restoreData(Request $request)
-    {
-        try {
-            $data = ProductAttributeValue::withTrashed();
-            $attribute = ProductVariantHasAttributeValue::withTrashed();
-            if (isset($request['date']))
-            {
-                $data = $data->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-                $attribute = $attribute->where("deleted_at", ">=", Carbon::parse($request['date'])->toDateString());
-            }
-            $data->restore();
-            $attribute->restore();
-            $data = ProductAttributeValue::with("productAttribute")->latest()->get();
-            return $this->success(ProductAttributeValueResource::collection($data));
-        }catch (Exception $exception){
-            return $this->fail($exception->getMessage());
-        }
-    }
-
     public function show($id)
     {
         try {

@@ -9,9 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class MovieGenre extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
     protected $table = 'movie_genres';
     protected $fillable = [
       'name',
