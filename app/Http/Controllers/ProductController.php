@@ -139,7 +139,9 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
-            Product::findOrFail($id)->delete();
+            $data = Product::findOrFail($id);
+            MediaLib::deleteImage($data->mediaId);
+            $data->delete();
             return $this->success([
                 "message" => "Product deleted."
             ]);

@@ -156,7 +156,10 @@ class MovieController extends Controller
     {
         DB::beginTransaction();
         try {
-            Movie::findOrFail($id)->delete();
+            $data = Movie::findOrFail($id);
+            MediaLib::deleteImageResize($data->backdropId);
+            MediaLib::deleteImageResize($data->posterId);
+            $data->delete();
             MovieCast::where("movieId", $id)->delete();
             MovieDirector::where("movieId", $id)->delete();
             MovieGenreHasMovie::where("movieId", $id)->delete();

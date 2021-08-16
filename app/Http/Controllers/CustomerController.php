@@ -159,7 +159,9 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         try {
-            Customer::findOrFail($id);
+            $data = Customer::findOrFail($id);
+            MediaLib::deleteImage($data->media_id);
+            $data->delete();
             return $this->success([
                 "message" => "Customer deleted successfully."
             ]);

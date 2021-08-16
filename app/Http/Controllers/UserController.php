@@ -172,6 +172,7 @@ class UserController extends Controller
             {
                 return $this->fail('User not found', [], "Not Found", 404);
             }
+            MediaLib::deleteImage($user->media_id);
             $user = $user->delete();
             if (!$user)
             {

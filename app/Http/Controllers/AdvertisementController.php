@@ -95,7 +95,9 @@ class AdvertisementController extends Controller
     public function destroy($id)
     {
         try {
-            Advertisement::findOrFail($id)->delete();
+            $data = Advertisement::findOrFail($id);
+            MediaLib::deleteImage($data->mediaId);
+            $data->delete();
             return $this->success([
                 "message" => "Advertisement deleted."
             ]);
