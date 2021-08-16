@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductAttributeCreateRequest;
 use App\Http\Requests\ProductAttributeRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ProductAttributeResource;
 use App\Http\Resources\ListResource;
 use App\Models\ProductAttributes;
+use App\Models\ProductAttributeValue;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -14,7 +16,7 @@ use Exception;
 class ProductAttributesController extends Controller
 {
 
-    public function store(ProductAttributeRequest $request ){
+    public function store(ProductAttributeCreateRequest $request ){
         DB::beginTransaction();
         try {
             $data = ProductAttributes::create($request->all());
@@ -22,6 +24,22 @@ class ProductAttributesController extends Controller
             {
                 DB::rollback();
                 return $this->fail('There is something wrong. data store not success');
+            }
+            foreach ($request['attributeValues'] as $key => $product){
+                $valueExist = ProductAttributeValue::where("name", $product['name'])->where("productAttributeId", $data->id)->get()->first();
+                if ($valueExist)
+                {
+                    DB::rollBack();
+                    return $this->fail("", [
+                        "Product attribute value name " . $product['name'] . " already exist."
+                    ], 'InvalidRequestError', 412);
+                }
+                $product['productAttributeId'] = $data->id;
+                $productAttributeValue = ProductAttributeValue::create($product);
+                if(!$productAttributeValue)
+                {
+                    return $this->fail("Something went wrong with insert attribute value.");
+                }
             }
             DB::commit();
             return $this->success([
