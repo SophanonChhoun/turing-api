@@ -30,6 +30,7 @@ class TicketController extends Controller
     {
         DB::beginTransaction();
         try {
+            $tickets = array();
             foreach ($request['seats'] as $key => $seat)
             {
                 $getSeat = Seat::with('seatType')->findOrFail($seat['id']);
@@ -47,6 +48,10 @@ class TicketController extends Controller
                 $seat['userId'] = $request['userId'];
                 $seat['seatId'] = $seat['id'];
                 $data = Ticket::create($seat);
+                $screening = Screening::findOrFail($request['screeningId']);
+                $data->start_time = $screening->start_time;
+                $data->date = $screening->date;
+                array_push($tickets, $data);
                 if (!$data)
                 {
                     DB::rollBack();
@@ -54,9 +59,7 @@ class TicketController extends Controller
                 }
             }
             DB::commit();
-            return $this->success([
-                'message' => 'Tickets bought successfully.'
-            ]);
+            return $this->success($tickets);
         }catch (Exception $exception){
             DB::rollback();
             return $this->fail($exception->getMessage());

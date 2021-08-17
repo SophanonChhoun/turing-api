@@ -89,7 +89,7 @@ class CustomerController extends Controller
             $request['password'] = $code;
             $request['createdType'] = "Admin Register";
             Customer::create($request->all());
-            Mail::to($request['email'])->send(new SendMail($code, "password_mail"));
+            Mail::to($request['email'])->send(new SendMail($code, "password_mail", "Password Account"));
             DB::commit();
             return $this->success([
                'message' => 'Customer created.'

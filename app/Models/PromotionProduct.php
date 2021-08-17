@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Exception;
 
 class PromotionProduct extends Model
 {
@@ -13,15 +14,23 @@ class PromotionProduct extends Model
       'promotionId'
     ];
 
-    public static function store($id,$promotion_products)
+    public static function store($id, $products)
     {
-        PromotionProduct::where("promotionId",$id)->forcedelet();
-        foreach($promotion_products as $promotion_product){
-            PromotionProduct::create([
-                'productId' => $promotion_product['productId'],
-                'promotionId' => $promotion_product['promotionId']
-            ]);
-
+        try {
+            self::where("promotionId", $id)->delete();
+            foreach ($products as $key => $productId)
+            {
+                $product['promotionId'] = $id;
+                $product['productId'] = $productId;
+                $data = self::create($product);
+                if (!$data)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }catch (Exception $exception){
+            return false;
         }
     }
 }
