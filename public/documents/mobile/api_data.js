@@ -424,6 +424,354 @@ define({ "api": [
     }
   },
   {
+    "type": "put",
+    "url": "/api/reset-password",
+    "title": "6. Reset Password",
+    "version": "1.0.0",
+    "name": "Reset_Password",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "{\n   \"userId\": 7,\n   \"password\": \"password\"\n}",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "data.token",
+            "description": "<p>auth token to authorize access private api for each customer</p>"
+          },
+          {
+            "group": "200",
+            "type": "object",
+            "optional": false,
+            "field": "data.user",
+            "description": "<p>customer profile</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n{\n   \"message\": \"Password reset successfully.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Authentication.js",
+    "groupTitle": "Authentication",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/reset-password"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p><code>application/x-www-form-urlencoded</code></p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "4xx": [
+          {
+            "group": "4xx",
+            "type": "412",
+            "optional": false,
+            "field": "ErrorValidation",
+            "description": "<p>validation of required, format, min, max, ....</p>"
+          }
+        ],
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "412 (ErrorValidation):",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n   \"type\": \"InvalidRequestError\"\n   \"messages\": {\n       \"field\": [\n           \"validation message\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/send-mail",
+    "title": "4. Send Mail for reset code",
+    "version": "1.0.0",
+    "name": "Send_Mail_For_Reset_Code",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "{\n   \"email\": \"chhounsophanon6@gmail.com\",\n}",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "data.token",
+            "description": "<p>auth token to authorize access private api for each customer</p>"
+          },
+          {
+            "group": "200",
+            "type": "object",
+            "optional": false,
+            "field": "data.user",
+            "description": "<p>customer profile</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n{\n   \"email\": \"sothyrith.hy@student.niptict.edu.kh\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Authentication.js",
+    "groupTitle": "Authentication",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/send-mail"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p><code>application/x-www-form-urlencoded</code></p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "4xx": [
+          {
+            "group": "4xx",
+            "type": "412",
+            "optional": false,
+            "field": "ErrorValidation",
+            "description": "<p>validation of required, format, min, max, ....</p>"
+          }
+        ],
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "412 (ErrorValidation):",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n   \"type\": \"InvalidRequestError\"\n   \"messages\": {\n       \"field\": [\n           \"validation message\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/verify-code",
+    "title": "5. Verify Code",
+    "version": "1.0.0",
+    "name": "Verify_Code",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Code</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "{\n    \"code\": \"1B7C4zMi\"\n}",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "data.token",
+            "description": "<p>auth token to authorize access private api for each customer</p>"
+          },
+          {
+            "group": "200",
+            "type": "object",
+            "optional": false,
+            "field": "data.user",
+            "description": "<p>customer profile</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n{\n   \"userId\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Authentication.js",
+    "groupTitle": "Authentication",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/verify-code"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p><code>application/x-www-form-urlencoded</code></p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "4xx": [
+          {
+            "group": "4xx",
+            "type": "412",
+            "optional": false,
+            "field": "ErrorValidation",
+            "description": "<p>validation of required, format, min, max, ....</p>"
+          }
+        ],
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "412 (ErrorValidation):",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n   \"type\": \"InvalidRequestError\"\n   \"messages\": {\n       \"field\": [\n           \"validation message\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "get",
     "url": "/api/cinemas",
     "title": "1. List cinemas",
