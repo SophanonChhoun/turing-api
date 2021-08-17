@@ -162,3 +162,91 @@
  * @apiUse ErrorValidation
  * @apiUse ServerServerError
  */
+
+/**
+ * @api {post} /api/send-mail 4. Send Mail for reset code
+ * @apiVersion 1.0.0
+ * @apiName Send Mail For Reset Code
+ * @apiGroup Authentication
+ *
+ * @apiUse PostHeaderWithoutAuth
+ *
+ * @apiParam {String} email                 Email
+ *
+ * @apiExample {curl} Example usage:
+ {
+    "email": "chhounsophanon6@gmail.com",
+ }
+ *
+ * @apiUse DefaultResponse
+ * @apiSuccess (200) {String}       data.token       auth token to authorize access private api for each customer
+ * @apiSuccess (200) {object}       data.user        customer profile
+ * @apiSuccessExample  Response (example):
+ HTTP/1.1 200 Success Request
+ {
+    "email": "sothyrith.hy@student.niptict.edu.kh"
+ }
+ *
+ * @apiUse ErrorValidation
+ * @apiUse ServerServerError
+ *
+ */
+
+/**
+ * @api {post} /api/verify-code 5. Verify Code
+ * @apiVersion 1.0.0
+ * @apiName Verify Code
+ * @apiGroup Authentication
+ *
+ * @apiUse PostHeaderWithoutAuth
+ *
+ * @apiParam {String} code                 Code
+ *
+ * @apiExample {curl} Example usage:
+ {
+     "code": "1B7C4zMi"
+ }
+ *
+ * @apiUse DefaultResponse
+ * @apiSuccess (200) {String}       data.token       auth token to authorize access private api for each customer
+ * @apiSuccess (200) {object}       data.user        customer profile
+ * @apiSuccessExample  Response (example):
+ HTTP/1.1 200 Success Request
+ {
+    "userId": 1
+ }
+ *
+ * @apiUse ErrorValidation
+ * @apiUse ServerServerError
+ *
+ */
+
+/**
+ * @api {put} /api/reset-password 6. Reset Password
+ * @apiVersion 1.0.0
+ * @apiName Reset Password
+ * @apiGroup Authentication
+ *
+ * @apiUse PostHeaderWithoutAuth
+ *
+ * @apiParam {String} email                 Email
+ *
+ * @apiExample {curl} Example usage:
+ {
+    "userId": 7,
+    "password": "password"
+ }
+ *
+ * @apiUse DefaultResponse
+ * @apiSuccess (200) {String}       data.token       auth token to authorize access private api for each customer
+ * @apiSuccess (200) {object}       data.user        customer profile
+ * @apiSuccessExample  Response (example):
+ HTTP/1.1 200 Success Request
+ {
+    "message": "Password reset successfully."
+ }
+ *
+ * @apiUse ErrorValidation
+ * @apiUse ServerServerError
+ *
+ */

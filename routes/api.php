@@ -270,6 +270,9 @@ Route::group(['prefix' => ''], function(){
     Route::post("login/google", [CustomerController::class, 'loginSocial']);
     Route::post("login", [CustomerController::class, 'login']);
     Route::post("register", [CustomerController::class, 'signUp']);
+    Route::post('send-mail', [MailController::class, 'sendEmailCustomer']);
+    Route::post("verify-code", [MailController::class, "verifyCodeCustomer"]);
+    Route::put("reset-password", [MailController::class, "updatePasswordCustomer"]);
     Route::group(['prefix' => 'movies'], function(){
         Route::get('', [MovieController::class, 'showMovieMobile']);
     });
