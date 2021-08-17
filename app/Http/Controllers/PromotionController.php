@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PromotionRequest;
+use App\Http\Resources\PromotionProductResource;
+use App\Http\Resources\PromotionScreeningResource;
 use App\Models\Promotion;
 use App\Models\PromotionContent;
 use App\Models\PromotionProduct;
@@ -12,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class PromotionController extends Controller
 {
-    public function store(Request $request)
+    public function store(PromotionRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -44,6 +47,26 @@ class PromotionController extends Controller
             return $this->success([
                 'message' => "Promotion created successfully"
             ]);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listPromotionProducts()
+    {
+        try {
+            $data = Promotion::with('productIds')->where("hasProducts", true)->where("status", true)->get();
+            return $this->success(PromotionProductResource::collection($data));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function listPromotionScreenings()
+    {
+        try {
+            $data = Promotion::with('screeningIds')->where("hasScreenings", true)->where("status", true)->get();
+            return $this->success(PromotionScreeningResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
