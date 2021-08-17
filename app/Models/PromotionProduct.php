@@ -12,4 +12,16 @@ class PromotionProduct extends Model
       'productId',
       'promotionId'
     ];
+
+    public static function store($id,$promotion_products)
+    {
+        PromotionProduct::where("promotionId",$id)->forcedelet();
+        foreach($promotion_products as $promotion_product){
+            PromotionProduct::create([
+                'productId' => $promotion_product['productId'],
+                'promotionId' => $promotion_product['promotionId']
+            ]);
+
+        }
+    }
 }

@@ -31,3 +31,5 @@ class CreatePromotionScreeningsTable extends Migration
         Schema::dropIfExists('promotion_screenings');
     }
 }
+
+

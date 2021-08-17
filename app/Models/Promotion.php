@@ -47,4 +47,10 @@ class Promotion extends Model
     public function PromotionContent(){
         return $this->hasMany(promotionContent::class,"promotionId");
     }
+    public function PromotionProduct(){
+        return $this->hasMany(PromotionProduct::class,"promotionId");
+    }
+    public function PromotionScreening(){
+        return $this->hasMany(PromotionScreening::class,"promotionId");
+    }
 }

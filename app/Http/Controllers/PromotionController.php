@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PromotionRequest;
 use App\Http\Resources\PromotionResource;
 use App\Models\Promotion;
 use App\Models\PromotionContent;
@@ -19,7 +20,18 @@ class PromotionController extends Controller
         }
     }
 
-    public function store(){
-
+    public function store(PromotionRequest $request){
+        DB::beginTransaction();
+        try {
+            $promotion = Promotion::create($request->all());
+            PromotionContent::store($promotion->id, $request->promotion_contents);
+            DB::commit();
+            return $this->success([
+                "message" => "Role created"
+            ]);
+        }catch (Exception $exception){
+            DB::rollBack();
+            return $this->fail($exception->getMessage());
+        }
     }
 }
