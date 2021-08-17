@@ -30,6 +30,7 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MovieDBController;
+use App\Http\Controllers\PromotionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -176,7 +177,15 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::patch('/{id}', [ProductController::class, 'updateStatus']);
             Route::delete('/{id}', [ProductController::class, 'destroy']);
         });
-
+        Route::group(['prefix' => 'promotions'], function () {
+            Route::post('', [PromotionController::class, 'store']);
+            Route::get('', [PromotionController::class, 'index']);
+            Route::get('/all', [PromotionController::class, 'listAll']);
+            Route::get('/{id}', [PromotionController::class, 'show']);
+            Route::put('/{id}', [PromotionController::class, 'update']);
+            Route::patch('/{id}', [PromotionController::class, 'updateStatus']);
+            Route::delete('/{id}', [PromotionController::class, 'destroy']);
+        });
         Route::group(['prefix' => 'productVariants'], function () {
             Route::post('', [ProductVariantsController::class, 'store']);
             Route::get('', [ProductVariantsController::class, 'index']);
