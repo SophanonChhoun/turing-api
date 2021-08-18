@@ -15,6 +15,30 @@
     "movieName": "Amarsi un po'...",
     "row": 5,
     "col": 5,
+    "seatTypes": [
+        {
+            "id": 2,
+            "name": "VIP",
+            "priceFactor": 3,
+            "status": true,
+            "created_at": "2021-08-11T16:51:42.000000Z",
+            "updated_at": "2021-08-17T14:59:38.000000Z",
+            "color": "#F39C19"
+        },
+        {
+            "id": 5,
+            "name": "Premium",
+            "priceFactor": 5,
+            "status": true,
+            "created_at": "2021-08-13T06:59:45.000000Z",
+            "updated_at": "2021-08-17T14:59:20.000000Z",
+            "color": "#3398DB"
+        }
+    ],
+    "startTime": "18:00:00",
+    "date": "2021-08-13",
+    "movieSub": "Khmer/Cambodian",
+    "movieDub": "English",
     "grid": [
         [
             {
