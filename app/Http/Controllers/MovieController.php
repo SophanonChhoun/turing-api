@@ -254,7 +254,7 @@ class MovieController extends Controller
             $cinemas = Cinema::whereIn("id", $cinemaId)->get();
             $cinemas = $cinemas->filter(function ($cinema) use($id) {
                 $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
-                $cinema->screenings = collect(Screening::where("theaterId", $theaterIds)
+                $cinema->screenings = collect(Screening::whereIn("theaterId", $theaterIds)
                     ->where("movieId", $id)
                     ->where("date", ">=", Carbon::now()->toDateString())
                     ->where("status", true)
