@@ -6,6 +6,7 @@ use App\Http\Requests\ScreeningCreateRequest;
 use App\Http\Resources\NowShowingAdminResource;
 use App\Http\Resources\NowShowingResource;
 use App\Http\Resources\SeatResource;
+use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\Screening;
 use App\Models\Seat;
@@ -260,13 +261,24 @@ class ScreeningController extends Controller
                 "rating",
                 "casts",
                 "genres")->where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
-            $movies = $movies->filter(function ($movie){
-                $screening = Screening::where("movieId", $movie->id)
-                    ->where("date", ">=", Carbon::now()->toDateString())
-                    ->where("status", true)
-                    ->orderBy("date")->orderBy("start_time")->get()->groupBy("date");
-                if ($screening->count() >= 1) {
-                    $movie->screenings = collect($screening->toArray());
+            $cinemas = Cinema::where("status", true)->get();
+            $movies = $movies->filter(function ($movie) use ($cinemas){
+                $cinemas = $cinemas->filter(function($cinema) {
+                    $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
+                    $cinema->screenings = collect(Screening::whereIn("theaterId", $theaterIds)
+                        ->where("date", ">=", Carbon::now()->toDateString())
+                        ->where("status", true)
+                        ->orderBy("date")
+                        ->orderBy("start_time")
+                        ->get()
+                        ->groupBy("date")->toArray());
+                    if ($cinema->screenings->count() > 0)
+                    {
+                        return $cinema;
+                    }
+                });
+                if ($cinemas->count() >= 1) {
+                    $movie->cinemas = $cinemas;
                     return $movie;
                 }
             });

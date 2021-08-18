@@ -25,7 +25,7 @@ class NowShowingResource extends JsonResource
             "poster" => $this->poster,
             "backdrop" => $this->backdrop,
             "trailerUrl" => $this->trailerUrl,
-            "screenings" => $this->screenings
+            "cinemas" => CinemaShowingResource::collection($this->cinemas)
         ];
     }
 }

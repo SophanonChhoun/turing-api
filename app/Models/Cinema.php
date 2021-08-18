@@ -22,6 +22,11 @@ class Cinema extends Model
         'status' => 'boolean'
     ];
 
+    public function getPhotoAttribute()
+    {
+        return $this->media->file_url ?? '';
+    }
+
     public function media()
     {
         return $this->hasOne(MediaFile::class,"media_id","mediaId");

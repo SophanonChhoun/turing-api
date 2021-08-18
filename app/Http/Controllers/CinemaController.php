@@ -158,7 +158,7 @@ class CinemaController extends Controller
     public function listAll()
     {
         try {
-            $data = Cinema::with("media")->where("status", 1)->get();
+            $data = Cinema::with("media")->whereIn("id", auth()->user()->cinemaIds)->where("status", 1)->get();
             return $this->success(CinemaListResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
