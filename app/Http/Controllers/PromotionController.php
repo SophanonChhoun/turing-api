@@ -65,9 +65,22 @@ class PromotionController extends Controller
     public function listPromotionScreenings($id)
     {
         try {
-            $promotionScreening = PromotionScreening::where("screeningId", $id)->get();
-            $promotionIds = $promotionScreening->pluck("promotionId");
-            $promotions = Promotion::whereIn("id", $promotionIds)->where("status", true)->get();
+            $promotions = Promotion::where("hasProducts", true)->where("status", true)->get();
+            $promotions = $promotions->filter(function($promotion) use($id) {
+               if ($promotion->hasScreenings)
+               {
+                   $allScreenings = PromotionScreening::where("promotionId", $promotion->id)->get()->first();
+                   if (!$allScreenings)
+                   {
+                       return $promotion;
+                   }
+                   $screenings = PromotionScreening::where("screeningId", $id)->get()->first();
+                   if ($screenings)
+                   {
+                       return $screenings;
+                   }
+               }
+            });
             return $this->success($promotions);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
