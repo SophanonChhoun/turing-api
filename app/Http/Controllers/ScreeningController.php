@@ -289,6 +289,7 @@ class ScreeningController extends Controller
                 $theaters = Theater::whereIn("id", $theaterIds)->get();
                 $theaters = $theaters->filter(function($theater) use($movie){
                     $screening = Screening::where("movieId", $movie->id)
+                        ->where("theaterId", $theater->id)
                         ->where("date", ">=", Carbon::now()->toDateString())
                         ->where("status", true)
                         ->orderBy("date")->orderBy("start_time")->get()->groupBy("date");
