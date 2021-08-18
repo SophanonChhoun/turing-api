@@ -18,7 +18,7 @@ class PromotionContentResource extends JsonResource
             'promotionId' => $this->promotionId,
             'id' => $this->id,
             'description' => $this->description,
-            'mediaId' => $this->mediaId,
+            'photo' => $this->photo,
         ];
     }
 }

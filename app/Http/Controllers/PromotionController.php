@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PromotionRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Resources\PromotionContentResource;
 use App\Http\Resources\PromotionResource;
 use App\Http\Resources\PromotionProductResource;
 use App\Http\Resources\PromotionScreeningResource;
+use App\Models\Media;
 use App\Models\Promotion;
 use App\Models\PromotionContent;
 use App\Models\PromotionProduct;
@@ -19,18 +21,9 @@ class PromotionController extends Controller
 {
     public function index(){
         try {
-            $promotion = Promotion::with("promotionContent")->latest()->get();
-// return $this->success(PromotionResource::collection($promotion));
-            return $this->success([
-                "id" => $promotion->id,
-                "title" => $promotion->title,
-                "coupon" => $promotion->coupon,
-                "percentage" => $promotion->percentage,
-                "conditionsTotal" => $promotion->conditionsTotal,
-                "hasScreenings" => $promotion->hasScreenings,
-                "hasProducts" => $promotion->hasProducts,
-                "contents" => $promotion->promotionContent,
-            ]);
+            $promotion = Promotion::with("contents")->latest()->get();
+            return $this->success(PromotionResource::collection($promotion));
+
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
@@ -74,11 +67,24 @@ class PromotionController extends Controller
 
     public function show ($id){
         try {
-            $promotion = Promotion::with("PromotionContent", "PromotionProduct", "PromotionScreening")->findOrFail($id);
+            $promotion = Promotion::with("contents", "products", "screenings","productIds","screeningIds")->findOrFail($id);
             if (!$promotion) {
                 return $this->fail("ID:$id not found");
             }
-            return $this->success(PromotionResource::collection($promotion));
+            return $this->success([
+                'id' => $promotion->id,
+                'title' => $promotion->title,
+                'coupon' => $promotion->coupon,
+                'percentage' => $promotion->percentage,
+                'bill' => $promotion->bill,
+                'conditionTotal' => $promotion->conditionaTotal,
+                'hasProducts' => $promotion->hasProducts,
+                'hasScreenings' => $promotion->hasScreenings,
+                'status' => $promotion->status,
+                'contents' => PromotionContentResource::collection($promotion->contents),
+                'products' => $promotion->products,
+                'screenings' => $promotion->screenings,
+            ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
@@ -110,9 +116,9 @@ class PromotionController extends Controller
         DB::beginTransaction();
         try{
             Promotion::findOrFail($id)->update($request->all());
-            PromotionContent::store($id,$request->promotionContent);
-            PromotionScreening::store($id,$request->promotionScreening);
-            PromotionProduct::store($id,$request->promotionProduct);
+            PromotionContent::store($id,$request->contents);
+            PromotionScreening::store($id,$request->screenings);
+            PromotionProduct::store($id,$request->products);
             DB::commit();
             return $this->success(["message"=>"Promotion ID:$id updated"]);
         }catch (Exception $exception){
@@ -125,6 +131,7 @@ class PromotionController extends Controller
         try{
             $promotion = Promotion::find($id);
             PromotionContent::where("promotionId",$id)->delete();
+            MediaId::where("promotionId",$id)->delete();
             if(!$promotion){
                 DB::rollBack();
                 return $this->fail("This promotion ID:$id not found");
