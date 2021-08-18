@@ -22,6 +22,7 @@ use App\Http\Requests\StatusRequest;
 use App\Http\Requests\ScreeningRequest;
 use App\Http\Resources\ScreeningResource;
 use Exception;
+use Ramsey\Collection\Collection;
 
 class ScreeningController extends Controller
 {
@@ -257,31 +258,35 @@ class ScreeningController extends Controller
     public function getNowShowing()
     {
         try {
-            $movies = Movie::with("directors",
-                "rating",
-                "casts",
-                "genres")->where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
             $cinemas = Cinema::where("status", true)->get();
-            $movies = $movies->filter(function ($movie) use ($cinemas){
-                $cinemas = $cinemas->filter(function($cinema) {
-                    $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
-                    $cinema->screenings = collect(Screening::whereIn("theaterId", $theaterIds)
+            $cinemas = $cinemas->filter(function ($cinema) {
+                $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
+                $movies = Movie::with("directors",
+                    "rating",
+                    "casts",
+                    "genres")
+                    ->where("status", true)
+                    ->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
+                $cinema->movies = $movies->filter(function ($movie) use ($theaterIds) {
+                    $movie->screenings =  Screening::whereIn("theaterId", $theaterIds)
                         ->where("date", ">=", Carbon::now()->toDateString())
+                        ->where("movieId", $movie->id)
                         ->where("status", true)
                         ->orderBy("date")
                         ->orderBy("start_time")
                         ->get()
-                        ->groupBy("date")->toArray());
-                    if ($cinema->screenings->count() > 0)
+                        ->groupBy("date");
+                    if (count($movie->screenings) > 0)
                     {
-                        return $cinema;
+                        return $movie;
                     }
-                });
-                if ($cinemas->count() >= 1) {
-                    $movie->cinemas = $cinemas;
-                    return $movie;
+                })->values();
+                if (count($cinema->movies) >= 1)
+                {
+                    return $cinema;
                 }
             });
+            return $this->success($cinemas);
             return $this->success(NowShowingResource::collection($movies));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
