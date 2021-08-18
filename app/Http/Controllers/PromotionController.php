@@ -131,7 +131,6 @@ class PromotionController extends Controller
         try{
             $promotion = Promotion::find($id);
             PromotionContent::where("promotionId",$id)->delete();
-            MediaId::where("promotionId",$id)->delete();
             if(!$promotion){
                 DB::rollBack();
                 return $this->fail("This promotion ID:$id not found");
