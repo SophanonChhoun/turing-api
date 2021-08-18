@@ -25,14 +25,14 @@ class PromotionRequest extends DefaultFormRequest
     {
         return [
             'title' => 'required',
-            "coupon" => "required|unique:promotion,coupon".$this->id,
+            "coupon" => 'required|unique:promotions,coupon,'.$this->id,
             "percentage" => "",
             "bill" => "",
             "conditionTotal" => "",
-            "status" => "required",
+            "status" => "",
             "products"=> "required|array",
             "screenings"=>"required|array",
-            "promotion_contents"=>"required|array"
+            "contents"=>"required|array"
         ];
     }
 }

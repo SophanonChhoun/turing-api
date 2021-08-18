@@ -33,6 +33,7 @@ class Promotion extends Model
     use HasFactory;
 
     protected $fillable = [
+
         'title',
         'coupon',
         'percentage',
@@ -44,13 +45,13 @@ class Promotion extends Model
     ];
 
 
-    public function PromotionContent(){
+    public function promotionContent(){
         return $this->hasMany(promotionContent::class,"promotionId");
     }
-    public function PromotionProduct(){
+    public function promotionProduct(){
         return $this->hasMany(PromotionProduct::class,"promotionId");
     }
-    public function PromotionScreening(){
+    public function promotionScreening(){
         return $this->hasMany(PromotionScreening::class,"promotionId");
     }
 }

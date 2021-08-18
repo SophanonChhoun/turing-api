@@ -44,10 +44,7 @@ class PromotionResource extends JsonResource
             "conditionTotal"=> $this->conditionTotal,
             "status" => $this->status,
             "hasProducts" => $this->hasProducts,
-            "hasScreening" => $this->hasScreening,
-            "contents"=> $this->promotion_contents,
-            "products"=>$this->products,
-            "screenings"=>$this->screenings
+            "hasScreenings" => $this->hasScreenings,
         ];
     }
 }

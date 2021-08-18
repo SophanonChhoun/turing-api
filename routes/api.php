@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\PromotionController;
 use App\Models\SeatType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -249,10 +248,6 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/all', [ScreeningController::class, 'listAll']);
             Route::get('/grid/{id}', [ScreeningController::class, 'getGrid']);
             Route::get('/{id}', [ScreeningController::class, 'show']);
-        });
-
-        Route::group(['prefix' => 'promotion'], function () {
-            Route::get('', [PromotionController::class, 'index']);
         });
 
         Route::group(['prefix' => 'ticket-sales'], function () {
