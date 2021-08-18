@@ -253,7 +253,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         });
 
         Route::group(['prefix' => 'ticket-sales'], function () {
-            Route::get('/getMovies', [ScreeningController::class, 'getNowShowing']);
+            Route::get('/getMovies', [ScreeningController::class, 'getNowShowingAdmin']);
         });
 
         Route::group(['prefix' => 'tickets'], function () {
