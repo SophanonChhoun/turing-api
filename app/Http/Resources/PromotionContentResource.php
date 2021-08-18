@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PermissionResource extends JsonResource
+class PromotionContentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +15,10 @@ class PermissionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "create" => false,
-            "read" => false,
-            "update" => false,
-            "delete" => false,
+            'promotionId' => $this->promotionId,
+            'id' => $this->id,
+            'description' => $this->description,
+            'photo' => $this->photo,
         ];
     }
 }

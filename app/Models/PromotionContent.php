@@ -16,7 +16,6 @@ class PromotionContent extends Model
         'description',
         'promotionId'
     ];
-
     public function getPhotoAttribute()
     {
         return $this->media->file_url ?? '';
@@ -26,7 +25,6 @@ class PromotionContent extends Model
     {
         return $this->hasOne(MediaFile::class,"media_id","mediaId");
     }
-
 
     public static function store($id, $contents)
     {

@@ -15,7 +15,7 @@ class PromotionRequest extends DefaultFormRequest
     {
         return [
             'title' => 'required',
-            'coupon' => 'required',
+            'coupon' => 'required|unique:promotions,coupon,'.$this->id,
             'conditionTotal' => 'required',
             'hasProducts' => 'required',
             'hasScreenings' => 'required',

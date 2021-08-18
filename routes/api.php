@@ -274,6 +274,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/show', [CurrencyController::class, 'show']);
             Route::put('/{id}', [CurrencyController::class, 'update']);
         });
+
     });
 });
 

@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Promotion extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+
         'title',
         'coupon',
         'percentage',
@@ -25,7 +25,6 @@ class Promotion extends Model
         'hasProducts' => 'boolean',
         'hasScreenings' => 'boolean'
     ];
-
 
     public function productIds()
     {

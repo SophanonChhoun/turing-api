@@ -14,7 +14,6 @@ class PromotionScreening extends Model
         'promotionId',
         'screeningId'
     ];
-
     public static function store($id, $screenings)
     {
         try {
