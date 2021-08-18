@@ -19,6 +19,7 @@ class ProductSaleResource extends JsonResource
             "userName" => $this->user->name ?? '',
             "cinema" => $this->cinema->name ?? '',
             "user" => $this->user,
+            "userId" => $this->user,
             "total" => $this->total,
             "currency" => $this->currency
         ];
