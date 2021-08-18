@@ -249,7 +249,7 @@ class MovieController extends Controller
                 "rating",
                 "casts",
                 "genres")->findOrFail($id);
-            $cinemaId = Screening::where("movieId", $id)->get()->pluck('cinemaId');
+            $cinemaId = Screening::with('theater')->where("movieId", $id)->get()->pluck('theater.id');
             $cinemas = Cinema::whereIn("id", $cinemaId)->get();
             $cinemas = $cinemas->filter(function ($cinema) use($id) {
                 $cinema->screenings = collect(Screening::where("cinemaId", $cinema->id)
