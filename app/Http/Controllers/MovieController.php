@@ -20,6 +20,7 @@ use App\Models\MovieGenre;
 use App\Models\MovieGenreHasMovie;
 use App\Models\MovieRating;
 use App\Models\Screening;
+use App\Models\Theater;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
@@ -252,7 +253,8 @@ class MovieController extends Controller
             $cinemaId = Screening::with('theater')->where("movieId", $id)->get()->pluck('theater.cinemaId');
             $cinemas = Cinema::whereIn("id", $cinemaId)->get();
             $cinemas = $cinemas->filter(function ($cinema) use($id) {
-                $cinema->screenings = collect(Screening::where("cinemaId", $cinema->id)
+                $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
+                $cinema->screenings = collect(Screening::where("theaterId", $theaterIds)
                     ->where("movieId", $id)
                     ->where("date", ">=", Carbon::now()->toDateString())
                     ->where("status", true)
