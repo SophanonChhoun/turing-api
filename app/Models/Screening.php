@@ -17,7 +17,6 @@ class Screening extends Model
       'date',
       'start_time',
       'status',
-      'cinemaId',
       'subId',
       'dubId'
     ];

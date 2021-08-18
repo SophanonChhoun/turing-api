@@ -85,7 +85,6 @@ class ScreeningController extends Controller
                     return $this->fail("Screening must have date equal or greater than ".$movie->releasedDate);
                 }
                 $screening['movieId'] = $request['movieId'];
-                $screening['cinemaId'] = Theater::findOrFail($screening['theaterId'])->cinemaId;
                 $data = Screening::create($screening);
                 if (!$data)
                 {
