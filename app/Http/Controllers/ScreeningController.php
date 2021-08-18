@@ -285,7 +285,7 @@ class ScreeningController extends Controller
                 {
                     return $cinema;
                 }
-            });
+            })->values();
             return $this->success($cinemas);
             return $this->success(NowShowingResource::collection($movies));
         }catch (Exception $exception){
