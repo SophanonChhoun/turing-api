@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-
 use App\Http\Requests\PromotionRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\PromotionResource;
-=======
-use App\Http\Requests\PromotionRequest;
 use App\Http\Resources\PromotionProductResource;
 use App\Http\Resources\PromotionScreeningResource;
->>>>>>> 4af4d557f799ba2c2f305be26b688eb37c3a2dcf
 use App\Models\Promotion;
 use App\Models\PromotionContent;
 use App\Models\PromotionProduct;
