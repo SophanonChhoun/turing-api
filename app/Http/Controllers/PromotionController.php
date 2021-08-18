@@ -84,8 +84,7 @@ class PromotionController extends Controller
         }
     }
 
-    public function listPromotionProducts()
-    {
+    public function listPromotionProducts(){
         try {
             $data = Promotion::with('productIds')->where("hasProducts", true)->where("status", true)->get();
             return $this->success(PromotionProductResource::collection($data));
@@ -93,6 +92,7 @@ class PromotionController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
+
     public function updateStatus($id,StatusRequest $request){
         try{
             Promotion::find($id)->update([
