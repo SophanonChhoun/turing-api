@@ -4,30 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-// Schema::create('promotion_contents', function (Blueprint $table) {
-//     $table->id();
-//     $table->bigInteger('promotionId');
-//     $table->text('description')->nullable();
-//     $table->bigInteger('mediaId')->nullable();
-//     $table->timestamps();
-// });
-
-// public function up()
-// {
-//     Schema::create('promotions', function (Blueprint $table) {
-//         $table->id();
-//         $table->string('title');
-//         $table->string('coupon');
-//         $table->decimal('percentage')->nullable();
-//         $table->decimal('bill')->nullable();
-//         $table->decimal('conditionTotal')->default(0);
-//         $table->boolean('hasProducts')->default(false);
-//         $table->boolean('hasScreenings')->default(false);
-//         $table->boolean('status')->default(false);
-//         $table->timestamps();
-//     });
-// }
 class Promotion extends Model
 {
     use HasFactory;
@@ -44,14 +20,34 @@ class Promotion extends Model
         'status'
     ];
 
+    protected $casts = [
+        'status' => 'boolean',
+        'hasProducts' => 'boolean',
+        'hasScreenings' => 'boolean'
+    ];
 
-    public function promotionContent(){
-        return $this->hasMany(promotionContent::class,"promotionId");
+    public function productIds()
+    {
+        return $this->hasMany(PromotionProduct::class, 'promotionId');
     }
-    public function promotionProduct(){
-        return $this->hasMany(PromotionProduct::class,"promotionId");
+
+    public function screeningIds()
+    {
+        return $this->hasMany(PromotionScreening::class, 'promotionId');
     }
-    public function promotionScreening(){
-        return $this->hasMany(PromotionScreening::class,"promotionId");
+
+    public function contents()
+    {
+        return $this->hasMany(PromotionContent::class, 'promotionId');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(ProductVariants::class, PromotionProduct::class, 'promotionId', 'productId');
+    }
+
+    public function screenings()
+    {
+        return $this->belongsToMany(Screening::class, PromotionScreening::class, 'promotionId', 'screeningId');
     }
 }
