@@ -74,11 +74,15 @@ class PromotionController extends Controller
 
     public function show ($id){
         try {
-            $promotion = Promotion::with("PromotionContent","PromotionProduct","PromotionScreening")->findOrFail($id);
-            if(!$promotion){
+            $promotion = Promotion::with("PromotionContent", "PromotionProduct", "PromotionScreening")->findOrFail($id);
+            if (!$promotion) {
                 return $this->fail("ID:$id not found");
             }
             return $this->success(PromotionResource::collection($promotion));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
 
     public function listPromotionProducts()
     {
@@ -133,6 +137,7 @@ class PromotionController extends Controller
             return $this->fail($exception->getMessage());
 
         }
+    }
 
     public function listPromotionScreenings($id)
     {
