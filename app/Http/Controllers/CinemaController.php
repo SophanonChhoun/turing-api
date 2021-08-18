@@ -8,6 +8,7 @@ use App\Http\Requests\StatusRequest;
 use App\Http\Resources\CinemaListResource;
 use App\Models\Cinema;
 use App\Models\CinemaHasUser;
+use App\Models\Theater;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -131,6 +132,10 @@ class CinemaController extends Controller
             if(!$cinema)
             {
                 return $this->fail("Cinema not exist.");
+            }
+            if (Theater::where("cinemaId", $id)->get()->first())
+            {
+                return $this->fail("Cinema has theatre(s).");
             }
             MediaLib::deleteImage($cinema->mediaId);
             $cinema = $cinema->delete();
