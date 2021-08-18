@@ -181,7 +181,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::post('', [PromotionController::class, 'store']);
             Route::get('', [PromotionController::class, 'index']);
             Route::get('/products', [PromotionController::class, 'listPromotionProducts']);
-            Route::get('/screenings', [PromotionController::class, 'listPromotionScreenings']);
+            Route::get('/screenings/{id}', [PromotionController::class, 'listPromotionScreenings']);
             Route::get('/all', [PromotionController::class, 'listAll']);
             Route::get('/{id}', [PromotionController::class, 'show']);
             Route::put('/{id}', [PromotionController::class, 'update']);

@@ -62,11 +62,13 @@ class PromotionController extends Controller
         }
     }
 
-    public function listPromotionScreenings()
+    public function listPromotionScreenings($id)
     {
         try {
-            $data = Promotion::with('screeningIds')->where("hasScreenings", true)->where("status", true)->get();
-            return $this->success(PromotionScreeningResource::collection($data));
+            $promotionScreening = PromotionScreening::where("screeningId", $id)->get();
+            $promotionIds = $promotionScreening->pluck("promotionId");
+            $promotions = Promotion::whereIn("id", $promotionIds)->where("status", true)->get();
+            return $this->success($promotions);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
