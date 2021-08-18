@@ -48,4 +48,16 @@ class PromotionContent extends Model
             return false;
         }
     }
+
+    public static function deleteImage($promotionId)
+    {
+        $promotions = self::where("promotionId", $promotionId)->get();
+        foreach ($promotions as $key => $promotion)
+        {
+            if ($promotion['mediaId'])
+            {
+                MediaLib::deleteImage($promotion['mediaId']);
+            }
+        }
+    }
 }

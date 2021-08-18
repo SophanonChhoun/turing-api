@@ -61,6 +61,7 @@ class PromotionController extends Controller
                 'message' => "Promotion created successfully"
             ]);
         }catch (Exception $exception){
+            DB::rollBack();
             return $this->fail($exception->getMessage());
         }
     }
@@ -130,6 +131,7 @@ class PromotionController extends Controller
         DB::beginTransaction();
         try{
             $promotion = Promotion::find($id);
+            PromotionContent::deleteImage($id);
             PromotionContent::where("promotionId",$id)->delete();
             if(!$promotion){
                 DB::rollBack();
