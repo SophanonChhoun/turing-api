@@ -258,7 +258,7 @@ class ScreeningController extends Controller
     public function getNowShowing()
     {
         try {
-            $cinemas = Cinema::where("status", true)->get();
+            $cinemas = Cinema::with('media')->where("status", true)->get();
             $cinemas = $cinemas->filter(function ($cinema) {
                 $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
                 $movies = Movie::with("directors",
@@ -286,8 +286,7 @@ class ScreeningController extends Controller
                     return $cinema;
                 }
             })->values();
-            return $this->success($cinemas);
-            return $this->success(NowShowingResource::collection($movies));
+            return $this->success(NowShowingResource::collection($cinemas));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

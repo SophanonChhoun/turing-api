@@ -16,16 +16,10 @@ class NowShowingResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "title" => $this->title,
-            "synopsis" => $this->synopsis,
-            "rating" => $this->rating->title ?? '',
-            'directors' => ListResource::collection($this->directors),
-            'casts' => ListResource::collection($this->casts),
-            'genres' => ListResource::collection($this->genres),
-            "poster" => $this->poster,
-            "backdrop" => $this->backdrop,
-            "trailerUrl" => $this->trailerUrl,
-            "cinemas" => CinemaShowingResource::collection($this->cinemas)
+            "name" => $this->name,
+            "location" => $this->location,
+            "photo" => $this->media->file_url ?? '',
+            "movies" => MovieShowingResource::collection($this->movies)
         ];
     }
 }
