@@ -59,7 +59,7 @@ class TheaterController extends Controller
     public function show($id)
     {
         try {
-            $Theater = Theater::find($id);
+            $Theater = Theater::with('cinema')->find($id);
             if (!$Theater) {
                 return $this->fail("Theater ID:$id not found");
             }
@@ -84,6 +84,7 @@ class TheaterController extends Controller
                 "col" => $Theater->col,
                 "status" => $Theater->status,
                 "cinemaId" => $Theater->cinemaId,
+                "cinema" => $Theater->cinema,
                 "seats" => $grid
             ]);
         }catch (Exception $exception){
