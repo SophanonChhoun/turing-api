@@ -17,10 +17,10 @@ class TheaterResource extends JsonResource
         return [
             "id"=>$this->id,
             "name"=>$this->name,
-            "row"=>$this->row,
-            "col"=>$this->col,
+            "rows"=>$this->row,
+            "cols"=>$this->col,
             "status"=>$this->status,
-            "cinemaId"=>$this->cinemaId,
+            "cinema"=>$this->cinema,
         ];
     }
 }
