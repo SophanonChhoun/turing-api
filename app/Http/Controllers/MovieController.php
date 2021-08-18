@@ -255,6 +255,7 @@ class MovieController extends Controller
                 $cinema->screenings = collect(Screening::where("cinemaId", $cinema->id)
                     ->where("movieId", $id)
                     ->where("date", ">=", Carbon::now()->toDateString())
+                    ->where("statue", true)
                     ->orderBy("date")
                     ->orderBy("start_time")
                     ->get()
