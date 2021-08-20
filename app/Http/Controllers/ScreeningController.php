@@ -291,15 +291,21 @@ class ScreeningController extends Controller
         }
     }
 
-    public function getNowShowingAdmin()
+    public function getNowShowingAdmin(Request $request)
     {
         try {
             $movies = Movie::with("directors",
                 "rating",
                 "casts",
                 "genres")->where("status", true)->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
-            $theaterIds = Screening::where("date", ">=", Carbon::now()->toDateString())
-                ->where("status", true)->get()->pluck("theaterId");
+            $theaterIds = Screening::with('theater')->where("date", ">=", Carbon::now()->toDateString())
+                ->where("status", true);
+            if (isset($request['cinemaId']))
+            {
+                $theatersByCinema = Theater::where("cinemaId", $request['cinemaId'])->get()->pluck("id");
+                $theaterIds = $theaterIds->whereIn('theaterId', $theatersByCinema);
+            }
+            $theaterIds = $theaterIds->get()->pluck("theaterId");
             $movies = $movies->filter(function ($movie) use($theaterIds){
                 $theaters = Theater::whereIn("id", $theaterIds)->get();
                 $theaters = $theaters->filter(function($theater) use($movie){
