@@ -1,6 +1,6 @@
 /**
 
-/**
+ /**
  * @apiDefine AuthHeader
  *
  * @apiHeader {string} Auth             Access token from user login.
@@ -33,5 +33,20 @@
  * @apiDefine GetHeader
  *
  * @apiHeader {string} Auth             Access token from user login.
+ * @apiHeader {string} Accept           `application/json`
+ */
+
+/**
+ * @apiDefine PutHeader
+ *
+ * @apiHeader {string} Auth             Access token from user login.
+ * @apiHeader {string} Content-Type     `application/x-www-form-urlencoded`
+ * @apiHeader {string} Accept           `application/json`
+ */
+
+/**
+ * @apiDefine DeleteHeader
+ *
+ * @apiHeader {string} Authorization     Access token from user login.
  * @apiHeader {string} Accept           `application/json`
  */

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use App\Models\SeatType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -346,6 +347,11 @@ Route::group(['prefix' => 'web'], function() {
             Route::get('', [CustomerController::class, 'showProfile']);
             Route::put('', [CustomerController::class, 'updateProfile']);
             Route::patch('', [CustomerController::class, 'updatePassword']);
+        });
+        Route::group(['prefix' => 'payments'], function(){
+            Route::post('', [PaymentController::class, 'store']);
+            Route::get('', [PaymentController::class, 'index']);
+            Route::delete('/{id}', [PaymentController::class, 'destroy']);
         });
     });
     Route::get('currency', [CurrencyController::class, 'show']);

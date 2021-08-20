@@ -235,7 +235,6 @@ class ScreeningController extends Controller
                     "row" => $seat->row
                 ];
             }
-
             return $this->success([
                 "screeningId" => $id,
                 "cinemaName" => $theater->cinema->name ?? '',

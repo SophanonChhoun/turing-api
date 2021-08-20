@@ -1000,6 +1000,307 @@
     }
   },
   {
+    "type": "post",
+    "url": "/api/payments",
+    "title": "1. Create Card",
+    "version": "1.0.0",
+    "name": "Create_Card",
+    "group": "Payment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "screeningId",
+            "description": "<p>Screening Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "cinemaName",
+            "description": "<p>Cinema Name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "theaterName",
+            "description": "<p>Theater Name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "movieName",
+            "description": "<p>Movie Name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "array",
+            "optional": false,
+            "field": "seats",
+            "description": "<p>Seats</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": " {\n    \"number\": \"4242424242424242\",\n    \"exp_month\": 8,\n    \"exp_year\": 2022,\n    \"cvc\": 314\n}",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n[\n{\n       \"id\": 1,\n       \"last4\": 4242,\n       \"brand\": \"Visa\",\n       \"country\": \"US\",\n       \"exp_month\": 8,\n       \"exp_year\": 2022\n   },\n{\n       \"id\": 2,\n       \"last4\": 4242,\n       \"brand\": \"Visa\",\n       \"country\": \"US\",\n       \"exp_month\": 8,\n       \"exp_year\": 2022\n   },\n{\n       \"id\": 3,\n       \"last4\": 4242,\n       \"brand\": \"Visa\",\n       \"country\": \"US\",\n       \"exp_month\": 8,\n       \"exp_year\": 2022\n   }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./payment.js",
+    "groupTitle": "Payment",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/payments"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Access token from user login.</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p><code>application/x-www-form-urlencoded</code></p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "4xx": [
+          {
+            "group": "4xx",
+            "type": "404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>resource is not found</p>"
+          },
+          {
+            "group": "4xx",
+            "type": "401",
+            "optional": false,
+            "field": "AuthorizationInvalid",
+            "description": "<p>authorization token is missing, expire, or invalid.</p>"
+          }
+        ],
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "404 (NotFound):",
+          "content": "HTTP/1.1 404 Not Found\n{\n   \"type\": \"ConstraintViolationError\"\n   \"message\": \"The :attribute is not found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "401 (AuthorizationInvalid):",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n   \"type\": \"ConstraintViolationError\"\n   \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/api/payments/:id",
+    "title": "3. Delete Payment Card",
+    "version": "1.0.0",
+    "name": "Delete_Payment_Card",
+    "group": "Payment",
+    "success": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n{\n   \"messages\": \"Payment card already deleted.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./payment.js",
+    "groupTitle": "Payment",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/payments/:id"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Access token from user login.</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ],
+        "4xx": [
+          {
+            "group": "4xx",
+            "type": "401",
+            "optional": false,
+            "field": "AuthorizationInvalid",
+            "description": "<p>authorization token is missing, expire, or invalid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "401 (AuthorizationInvalid):",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n   \"type\": \"ConstraintViolationError\"\n   \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/payments",
+    "title": "2. List Payment",
+    "version": "1.0.0",
+    "name": "List_Payment",
+    "group": "Payment",
+    "success": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n[\n{\n       \"id\": 1,\n       \"last4\": 4242,\n       \"brand\": \"Visa\",\n       \"country\": \"US\",\n       \"exp_month\": 8,\n       \"exp_year\": 2022\n   },\n{\n       \"id\": 2,\n       \"last4\": 4242,\n       \"brand\": \"Visa\",\n       \"country\": \"US\",\n       \"exp_month\": 8,\n       \"exp_year\": 2022\n   },\n{\n       \"id\": 3,\n       \"last4\": 4242,\n       \"brand\": \"Visa\",\n       \"country\": \"US\",\n       \"exp_month\": 8,\n       \"exp_year\": 2022\n   }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./payment.js",
+    "groupTitle": "Payment",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/payments"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Auth",
+            "description": "<p>Access token from user login.</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ],
+        "4xx": [
+          {
+            "group": "4xx",
+            "type": "401",
+            "optional": false,
+            "field": "AuthorizationInvalid",
+            "description": "<p>authorization token is missing, expire, or invalid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "401 (AuthorizationInvalid):",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n   \"type\": \"ConstraintViolationError\"\n   \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "get",
     "url": "/api/products",
     "title": "1. List products",
@@ -1561,7 +1862,7 @@
     "examples": [
       {
         "title": "Example usage:",
-        "content": "{\n   \"screeningId\": \"7\",\n   \"cinemaName\": \"Turing Niptict\",\n   \"theatreName\": \"Hall 3\",\n   \"movieName\": \"Amarsi un po'...\",\n   \"seats\": [\n       1,2,3\n   ]\n}",
+        "content": "{\n   \"screeningId\": \"7\",\n   \"cinemaName\": \"Turing Niptict\",\n   \"theatreName\": \"Hall 3\",\n   \"movieName\": \"Amarsi un po'...\",\n   \"seats\": [\n       1,2,3\n   ],\n   \"paymentId\": 1\n}",
         "type": "curl"
       }
     ],

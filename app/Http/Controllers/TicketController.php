@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserBuyTicketRequest;
 use App\Http\Resources\TicketAdminResource;
+use App\Models\Payment;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Ticket;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StatusRequest;
 use App\Http\Requests\TicketRequest;
 use App\Http\Resources\TicketResource;
 use Exception;
+use Stripe\Charge;
+use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class TicketController extends Controller
 {
@@ -128,12 +134,27 @@ class TicketController extends Controller
     {
         DB::beginTransaction();
         try {
+            $payment = Payment::find($request['paymentId']);
+            if (!$payment)
+            {
+                return $this->fail("This payment card id is not exist.");
+            }
+            $stripe = new StripeClient(env('STRIPE_SECRET'));
+            $token = $stripe->tokens->create([
+                'card' => [
+                    'number' => Crypt::decrypt($payment->number),
+                    'exp_month' => $payment->exp_month,
+                    'exp_year' => $payment->exp_year,
+                    'cvc' => Crypt::decrypt($payment->cvc),
+                ],
+            ]);
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            $screening = Screening::findOrFail($request['screeningId']);
             foreach ($request['seats'] as $key => $seatId)
             {
                 $getSeat = Seat::with('seatType')->findOrFail($seatId);
                 $seat['seatName'] = $getSeat->name;
                 $seat['seatType'] = $getSeat->seatType->name ?? '';
-                $screening = Screening::findOrFail($request['screeningId']);
                 $seatExit = Ticket::where("screeningId", $request['screeningId'])->where("seatId", $seatId)->get()->first();
                 if ($seatExit)
                 {
@@ -146,6 +167,7 @@ class TicketController extends Controller
                 $seat['userId'] = auth()->user()->id;
                 $seat['seatId'] = $seatId;
                 $seat['price'] = $screening->price * $getSeat->seatType->priceFactor;
+                $price[$key] = $seat['price'];
                 $data = Ticket::create($seat);
                 if (!$data)
                 {
@@ -153,6 +175,20 @@ class TicketController extends Controller
                     return $this->fail("Something went wrong with buying tickets.");
                 }
             }
+            $token = $stripe->tokens->create([
+                'card' => [
+                    'number' => Crypt::decrypt($payment->number),
+                    'exp_month' => $payment->exp_month,
+                    'exp_year' => $payment->exp_year,
+                    'cvc' => Crypt::decrypt($payment->cvc),
+                ],
+            ]);
+            Charge::create ([
+                "amount" => array_sum($price) * 100,
+                "currency" => "usd",
+                "source" => $token,
+                "description" => "Payment for movie " . $request['movieName'] . " on " . Carbon::createFromFormat('Y-m-d', $screening->date)->format('d/m/Y')
+            ]);
             DB::commit();
             return $this->success([
                 'message' => 'Tickets bought successfully.'

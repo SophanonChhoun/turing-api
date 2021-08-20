@@ -20,7 +20,8 @@
     "movieName": "Amarsi un po'...",
     "seats": [
         1,2,3
-    ]
+    ],
+    "paymentId": 1
  }
  * @apiSuccessExample  Response (example):
  HTTP/1.1 200 Success Request
