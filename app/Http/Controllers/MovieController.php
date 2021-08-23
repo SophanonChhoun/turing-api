@@ -189,9 +189,13 @@ class MovieController extends Controller
         try {
             $upComingMovies = Movie::with("rating", "backdropImage", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
             $nowShowingMovies = Movie::where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->limit(5)->get();
+            $movies = Movie::with(
+                "rating", "backdropImage", "genres"
+            )->where("status", true)->latest()->limit(3)->get();
             return $this->success([
                 'upComingMovies' => MovieCustomerResource::collection($upComingMovies),
-                'nowShowingMovies' => MovieCustomerResource::collection($nowShowingMovies)
+                'nowShowingMovies' => MovieCustomerResource::collection($nowShowingMovies),
+                "advertisements" => MovieCustomerResource::collection($movies)
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
