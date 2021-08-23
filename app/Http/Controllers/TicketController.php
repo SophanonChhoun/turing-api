@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserBuyTicketRequest;
+use App\Http\Resources\MobileTicketResource;
 use App\Http\Resources\TicketAdminResource;
 use App\Models\Payment;
 use App\Models\Screening;

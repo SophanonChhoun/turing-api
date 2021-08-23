@@ -193,9 +193,9 @@ class MovieController extends Controller
                 "rating", "backdropImage", "genres"
             )->where("status", true)->latest()->limit(3)->get();
             return $this->success([
-                'upComingMovies' => MovieCustomerResource::collection($upComingMovies),
-                'nowShowingMovies' => MovieCustomerResource::collection($nowShowingMovies),
-                "advertisements" => MovieCustomerResource::collection($movies)
+                'upComingMovies' => PhotoResource::collection($upComingMovies),
+                'nowShowingMovies' => PhotoResource::collection($nowShowingMovies),
+                "advertisements" => PhotoResource::collection($movies)
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
