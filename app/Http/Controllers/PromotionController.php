@@ -150,7 +150,7 @@ class PromotionController extends Controller
     public function listPromotionScreenings($id)
     {
         try {
-            $promotions = Promotion::where("hasProducts", true)->where("status", true)->get();
+            $promotions = Promotion::where("hasScreenings", true)->where("status", true)->get();
             $promotions = $promotions->filter(function($promotion) use($id) {
                if ($promotion->hasScreenings)
                {
