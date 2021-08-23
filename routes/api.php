@@ -302,7 +302,7 @@ Route::group(['prefix' => ''], function(){
     Route::middleware(['auth:sanctum', 'customer'])->group(function () {
         Route::group(['prefix' => 'tickets'], function(){
             Route::post('', [TicketController::class, 'buyTicket']);
-            Route::get('', [TicketController::class, 'customerTicket']);
+            Route::get('', [TicketController::class, 'mobileTicket']);
             Route::get('/{id}', [TicketController::class, 'show']);
         });
         Route::group(['prefix' => 'profile'], function (){

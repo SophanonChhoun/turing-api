@@ -209,4 +209,14 @@ class TicketController extends Controller
             return $this->fail($exception->getMessage());
         }
     }
+
+    public function mobileTicket()
+    {
+        try {
+            $data = Ticket::with('seat', 'user', 'screening')->where("userId", auth()->user()->id)->latest()->get();
+            return $this->success(MobileTicketResource::collection($data));
+        }catch (Exception $exception) {
+            return $this->fail($exception->getMessage());
+        }
+    }
 }
