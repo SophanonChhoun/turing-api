@@ -58,7 +58,7 @@ class ProductVariantsController extends Controller
     public function index()
     {
         try {
-            $data = ProductVariants::with("product", "productAttributeValues")->latest()->get();
+            $data = ProductVariants::with("product", "productAttributeValues.productAttribute")->latest()->get();
             return $this->success(ProductVariantResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

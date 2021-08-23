@@ -19,6 +19,11 @@ class ProductAttributeValue extends Model
         'status' => 'boolean'
     ];
 
+    public function getNameValuesAttribute()
+    {
+        return $this->productAttribute ? $this->productAttribute->name . ' ' . $this->name : $this->name;
+    }
+
     public function productAttribute()
     {
         return $this->belongsTo(ProductAttributes::class, 'productAttributeId', 'id');

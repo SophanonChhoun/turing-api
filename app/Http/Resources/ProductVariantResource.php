@@ -17,7 +17,7 @@ class ProductVariantResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->product->name ?? '',
-            "attributeValues" => $this->productAttributeValues->pluck('name'),
+            "attributeValues" => $this->productAttributeValues->pluck("nameValues"),
             "price" => $this->price,
             "status" => $this->status,
             "code" => $this->code,
