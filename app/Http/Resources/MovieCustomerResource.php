@@ -19,6 +19,7 @@ class MovieCustomerResource extends JsonResource
             'title' => $this->title,
             'synopsis' => $this->synopsis,
             'poster' => $this->poster,
+            'backdrop' => $this->backdrop,
             "rated" => $this->rating->title ?? '',
             "genres" => $this->genres->pluck('name')
         ];
