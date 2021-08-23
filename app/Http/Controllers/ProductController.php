@@ -175,7 +175,7 @@ class ProductController extends Controller
     public function productVariants()
     {
         try {
-            $data = Product::with('productVariant.productAttributeValues')->where("status", true)->get();
+            $data = Product::with('productVariant.productAttributeValues', 'media')->where("status", true)->get();
             return $this->success(ProductListVariantResource::collection($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

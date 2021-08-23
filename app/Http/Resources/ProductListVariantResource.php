@@ -17,6 +17,7 @@ class ProductListVariantResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'photo' => $this->media->file_url ?? '',
             'variants' => ProductVariantCustomerResource::collection($this->productVariant)
         ];
     }
