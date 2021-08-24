@@ -8,6 +8,7 @@ use App\Mail\SendMail;
 use App\Models\Customer;
 use App\Models\CustomerResetCode;
 use App\Models\ResetCode;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Exception;
@@ -58,6 +59,12 @@ class MailController extends Controller
     public function verifyCode(Request $request)
     {
         try {
+            $dateNow = Carbon::parse(Carbon::now())
+                ->addSeconds(10)
+                ->format('Y-m-d H:i:s');
+            ResetCode::where("created_at", '<=', $dateNow)->update([
+                'status' => true
+            ]);
             $data = ResetCode::where("code", $request['code'])->where("status", false)->get()->first();
             if (!$data)
             {
@@ -77,6 +84,12 @@ class MailController extends Controller
     public function verifyCodeCustomer(Request $request)
     {
         try {
+            $dateNow = Carbon::parse(Carbon::now())
+                ->addSeconds(10)
+                ->format('Y-m-d H:i:s');
+            CustomerResetCode::where("created_at", '<=', $dateNow)->update([
+                'status' => true
+            ]);
             $data = CustomerResetCode::where("code", $request['code'])->where("status", false)->get()->first();
             if (!$data)
             {
