@@ -153,6 +153,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
             Route::get('/search', [MovieDBController::class, 'searchTmdb']);
             Route::get('/external-details/{id}', [MovieDBController::class, 'lookUp']);
             Route::get('/all', [MovieController::class, 'listAll']);
+            Route::get('/promotions', [MovieController::class, 'listMovie']);
             Route::get('/{id}', [MovieController::class, 'show']);
             Route::put('/{id}', [MovieController::class, 'update']);
             Route::patch('/{id}', [MovieController::class, 'updateStatus']);

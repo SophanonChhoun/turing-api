@@ -38,7 +38,7 @@ class MobileTicketResource extends JsonResource
             'screening' => [
                 'id' => $this->screening->id ?? '',
                 'theatre' => $this->screening->theater->name ?? '',
-                'date' => Carbon::parse($this->screening->date)->format('d-m-Y'),
+                'date' => Carbon::parse($this->screening->date)->format('d-m-Y') ?? '',
                 'start_time' => date('g:ia', strtotime($this->screening->start_time)) ?? '',
             ],
             'cinema' => [

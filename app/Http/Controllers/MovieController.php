@@ -12,6 +12,7 @@ use App\Http\Resources\MovieResource;
 use App\Http\Resources\MovieTimeResource;
 use App\Http\Resources\PhotoResource;
 use App\Http\Resources\ScreeningCinemaResource;
+use App\Http\Resources\ScreeningPromotionResource;
 use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\MovieCast;
@@ -294,9 +295,20 @@ class MovieController extends Controller
     public function listMovie()
     {
         try {
-            $movies = Movie::with("availableScreenings")
-                ->where("releasedDate", '<=',Carbon::now()->toDateString())
-                ->where("status", true)->get();
+            $movies = Movie::where("status", true)->get();
+            $movies = $movies->filter(function($movie){
+                $movie->screenings = Screening::with('cinema')->where("movieId", $movie->id)
+                    ->where("date", ">=", Carbon::now()->toDateString())
+                    ->where("status", true)
+                    ->orderBy("date")
+                    ->orderBy("start_time")
+                    ->get();
+                if ($movie->screenings->count() > 0)
+                {
+                    $movie->screenings = ScreeningPromotionResource::collection($movie->screenings);
+                    return $movie;
+                }
+            })->values();
             return $this->success(MovieTimeResource::collection($movies));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

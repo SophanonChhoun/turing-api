@@ -19,7 +19,7 @@ class MovieTimeResource extends JsonResource
             "title" => $this->title,
             "poster" => $this->poster,
             'releasedDate' => $this->releasedDate,
-            "screenings" => ShowScreeningResource::collection($this->availableScreenings)
+            "screenings" => $this->screenings,
         ];
     }
 }
