@@ -144,16 +144,11 @@ class TicketController extends Controller
             {
                 return $this->fail("This payment card id is not exist.");
             }
-            $stripe = new StripeClient(env('STRIPE_SECRET'));
-            $token = $stripe->tokens->create([
-                'card' => [
-                    'number' => Crypt::decrypt($payment->number),
-                    'exp_month' => $payment->exp_month,
-                    'exp_year' => $payment->exp_year,
-                    'cvc' => Crypt::decrypt($payment->cvc),
-                ],
-            ]);
-            Stripe::setApiKey(env('STRIPE_SECRET'));
+            if (isset($request['paymentId']))
+            {
+                $stripe = new StripeClient(env('STRIPE_SECRET'));
+                Stripe::setApiKey(env('STRIPE_SECRET'));
+            }
             $screening = Screening::findOrFail($request['screeningId']);
             foreach ($request['seats'] as $key => $seatId)
             {
@@ -180,20 +175,23 @@ class TicketController extends Controller
                     return $this->fail("Something went wrong with buying tickets.");
                 }
             }
-            $token = $stripe->tokens->create([
-                'card' => [
-                    'number' => Crypt::decrypt($payment->number),
-                    'exp_month' => $payment->exp_month,
-                    'exp_year' => $payment->exp_year,
-                    'cvc' => Crypt::decrypt($payment->cvc),
-                ],
-            ]);
-            Charge::create ([
-                "amount" => array_sum($price) * 100,
-                "currency" => "usd",
-                "source" => $token,
-                "description" => "Payment for movie " . $request['movieName'] . " on " . Carbon::createFromFormat('Y-m-d', $screening->date)->format('d/m/Y')
-            ]);
+            if (isset($request['paymentId']))
+            {
+                $token = $stripe->tokens->create([
+                    'card' => [
+                        'number' => Crypt::decrypt($payment->number),
+                        'exp_month' => $payment->exp_month,
+                        'exp_year' => $payment->exp_year,
+                        'cvc' => Crypt::decrypt($payment->cvc),
+                    ],
+                ]);
+                Charge::create ([
+                    "amount" => array_sum($price) * 100,
+                    "currency" => "usd",
+                    "source" => $token,
+                    "description" => "Payment for movie " . $request['movieName'] . " on " . Carbon::createFromFormat('Y-m-d', $screening->date)->format('d/m/Y')
+                ]);
+            }
             DB::commit();
             return $this->success([
                 'message' => 'Tickets bought successfully.'

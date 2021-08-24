@@ -20,7 +20,6 @@ class UserBuyTicketRequest extends DefaultFormRequest
             'movieName' => 'required',
             'cinemaName' => 'required',
             'theatreName' => 'required',
-            'paymentId' => 'required'
         ];
     }
 }
