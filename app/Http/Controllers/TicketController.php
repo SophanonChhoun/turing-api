@@ -115,6 +115,10 @@ class TicketController extends Controller
             {
                 return $this->fail("Ticket not exist.");
             }
+            if ($data->checked_in)
+            {
+                return $this->fail("Ticket already checked in.");
+            }
             $data = $data->update([
                 "checked_in" => $request->checked_in,
                 "checked_by" => auth()->user()->id
