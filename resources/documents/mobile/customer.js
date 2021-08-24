@@ -51,7 +51,7 @@
  * @apiUse PostHeader
  *
  * @apiParam {string} oldPassword     Customer current password
- * @apiParam {string} newPassword     Customer new password
+ * @apiParam {string} password     Customer new password
  * @apiSuccessExample  Response (example):
  HTTP/1.1 200 Success Request
  {

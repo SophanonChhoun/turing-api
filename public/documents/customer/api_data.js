@@ -1653,7 +1653,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "newPassword",
+            "field": "password",
             "description": "<p>Customer new password</p>"
           }
         ]
