@@ -139,13 +139,13 @@ class TicketController extends Controller
     {
         DB::beginTransaction();
         try {
-            $payment = Payment::find($request['paymentId']);
-            if (!$payment)
-            {
-                return $this->fail("This payment card id is not exist.");
-            }
             if (isset($request['paymentId']))
             {
+                $payment = Payment::find($request['paymentId']);
+                if (!$payment)
+                {
+                    return $this->fail("This payment card id is not exist.");
+                }
                 $stripe = new StripeClient(env('STRIPE_SECRET'));
                 Stripe::setApiKey(env('STRIPE_SECRET'));
             }
