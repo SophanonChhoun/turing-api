@@ -4,15 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PromotionRequest;
 use App\Http\Requests\StatusRequest;
+use App\Http\Resources\MovieTimeResource;
+use App\Http\Resources\ProductListVariantResource;
 use App\Http\Resources\PromotionContentResource;
 use App\Http\Resources\PromotionResource;
 use App\Http\Resources\PromotionProductResource;
 use App\Http\Resources\PromotionScreeningResource;
+use App\Http\Resources\ScreeningPromotionResource;
 use App\Models\Media;
+use App\Models\Movie;
+use App\Models\Product;
+use App\Models\ProductVariants;
 use App\Models\Promotion;
 use App\Models\PromotionContent;
 use App\Models\PromotionProduct;
 use App\Models\PromotionScreening;
+use App\Models\Screening;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +88,34 @@ class PromotionController extends Controller
             if (!$promotion) {
                 return $this->fail("ID:$id not found");
             }
+            $promotionProductIds = PromotionProduct::where("promotionId", $id)->get()->pluck("productId");
+            $productIds = ProductVariants::whereIn("id", $promotionProductIds)->get()->pluck("productId");
+            $products = Product::with('media')->whereIn('id', $productIds)->get();
+            $products = $products->map(function($product) use($promotionProductIds){
+                $product->variants = ProductVariants::with("productAttributeValues")
+                    ->where("productId", $product->id)
+                    ->whereIn("id", $promotionProductIds)->get();
+                if (count($product->variants) > 0)
+                {
+                    return $product;
+                }
+            });
+            $promotionScreeningIds = PromotionScreening::where("promotionId", $id)->get()->pluck("screeningId");
+            $movieIds = Screening::whereIn("id", $promotionScreeningIds)->get()->pluck("movieId");
+            $movies = Movie::whereIn("id", $movieIds)->get();
+            $movies = $movies->map(function($movie) use($promotionScreeningIds){
+                $movie->screenings = Screening::with('cinema')
+                    ->where("movieId", $movie->id)
+                    ->whereIn("id", $promotionScreeningIds)
+                    ->orderBy("date")
+                    ->orderBy("start_time")
+                    ->get();
+                if (count($movie->screenings) > 0)
+                {
+                    $movie->screenings = ScreeningPromotionResource::collection($movie->screenings);
+                    return $movie;
+                }
+            });
             return $this->success([
                 'id' => $promotion->id,
                 'title' => $promotion->title,
@@ -91,8 +127,8 @@ class PromotionController extends Controller
                 'hasScreenings' => $promotion->hasScreenings,
                 'status' => $promotion->status,
                 'contents' => PromotionContentResource::collection($promotion->contents),
-                'products' => $promotion->products,
-                'screenings' => $promotion->screenings,
+                'products' => ProductListVariantResource::collection($products),
+                'screenings' => MovieTimeResource::collection($movies),
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
