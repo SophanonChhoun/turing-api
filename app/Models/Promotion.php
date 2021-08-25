@@ -9,7 +9,6 @@ class Promotion extends Model
     use HasFactory;
 
     protected $fillable = [
-
         'title',
         'coupon',
         'percentage',

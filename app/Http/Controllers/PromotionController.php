@@ -32,6 +32,14 @@ class PromotionController extends Controller
     {
         DB::beginTransaction();
         try {
+            if (!$request['hasProducts'] && !$request['hasScreenings'])
+            {
+                return $this->fail('This promotion need to be for products, screenings or both');
+            }
+            if (($request['percentage'] == 0) && ($request['bill'] == 0))
+            {
+                return $this->fail('This promotion need to have a promotion amount');
+            }
             $data = Promotion::create($request->all());
             $contents = PromotionContent::store($data->id, $request['contents']);
             $products = PromotionProduct::store($data->id, $request['products']);
@@ -116,6 +124,14 @@ class PromotionController extends Controller
     public function update($id,PromotionRequest $request){
         DB::beginTransaction();
         try{
+            if (!$request['hasProducts'] && !$request['hasScreenings'])
+            {
+                return $this->fail('This promotion need to be for products, screenings or both');
+            }
+            if (($request['percentage'] == 0) && ($request['bill'] == 0))
+            {
+                return $this->fail('This promotion need to have a promotion amount');
+            }
             Promotion::findOrFail($id)->update($request->all());
             PromotionContent::store($id,$request->contents);
             PromotionScreening::store($id,$request->screenings);
