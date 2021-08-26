@@ -48,6 +48,10 @@ class PromotionController extends Controller
             {
                 return $this->fail('This promotion need to have a promotion amount');
             }
+            if (($request['percentage'] > 0) && ($request['bill'] > 0))
+            {
+                return $this->fail('You can only put bill or percentage.');
+            }
             $data = Promotion::create($request->all());
             $contents = PromotionContent::store($data->id, $request['contents']);
             $products = PromotionProduct::store($data->id, $request['products']);
@@ -122,7 +126,7 @@ class PromotionController extends Controller
                 'coupon' => $promotion->coupon,
                 'percentage' => $promotion->percentage,
                 'bill' => $promotion->bill,
-                'conditionTotal' => $promotion->conditionaTotal,
+                'conditionTotal' => $promotion->conditionTotal,
                 'hasProducts' => $promotion->hasProducts,
                 'hasScreenings' => $promotion->hasScreenings,
                 'status' => $promotion->status,
