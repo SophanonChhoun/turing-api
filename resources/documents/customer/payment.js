@@ -21,32 +21,14 @@
 }
  * @apiSuccessExample  Response (example):
  HTTP/1.1 200 Success Request
- [
-    {
-        "id": 1,
-        "last4": 4242,
-        "brand": "Visa",
-        "country": "US",
-        "exp_month": 8,
-        "exp_year": 2022
-    },
-    {
-        "id": 2,
-        "last4": 4242,
-        "brand": "Visa",
-        "country": "US",
-        "exp_month": 8,
-        "exp_year": 2022
-    },
-    {
-        "id": 3,
-        "last4": 4242,
-        "brand": "Visa",
-        "country": "US",
-        "exp_month": 8,
-        "exp_year": 2022
-    }
- ]
+ {
+    "id": 4,
+    "last4": "4242",
+    "brand": "Visa",
+    "country": "US",
+    "exp_month": 8,
+    "exp_year": 2022
+ }
  *
  * @apiUse NotFound
  * @apiUse ServerServerError

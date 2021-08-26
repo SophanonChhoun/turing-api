@@ -1243,7 +1243,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response (example):",
-          "content": "HTTP/1.1 200 Success Request\n[\n   {\n       \"id\": 1,\n       \"last4\": 4242,\n       \"brand\": \"Visa\",\n       \"country\": \"US\",\n       \"exp_month\": 8,\n       \"exp_year\": 2022\n   },\n   {\n       \"id\": 2,\n       \"last4\": 4242,\n       \"brand\": \"Visa\",\n       \"country\": \"US\",\n       \"exp_month\": 8,\n       \"exp_year\": 2022\n   },\n   {\n       \"id\": 3,\n       \"last4\": 4242,\n       \"brand\": \"Visa\",\n       \"country\": \"US\",\n       \"exp_month\": 8,\n       \"exp_year\": 2022\n   }\n]",
+          "content": "HTTP/1.1 200 Success Request\n{\n   \"id\": 4,\n   \"last4\": \"4242\",\n   \"brand\": \"Visa\",\n   \"country\": \"US\",\n   \"exp_month\": 8,\n   \"exp_year\": 2022\n}",
           "type": "json"
         }
       ]

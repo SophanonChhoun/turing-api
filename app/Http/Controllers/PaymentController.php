@@ -43,8 +43,14 @@ class PaymentController extends Controller
             {
                 return $this->fail("There is something wrong with insert the card.");
             }
-            $data = Payment::where("userId", auth()->user()->id)->get();
-            return $this->success(PaymentResource::collection($data));
+            return $this->success([
+                'id' => $data->id,
+                'last4' => $data->last4,
+                'brand' => $data->brand,
+                'country' => $data->country,
+                'exp_month' => $data->exp_month,
+                'exp_year' => $data->exp_year
+            ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
