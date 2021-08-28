@@ -312,6 +312,11 @@ Route::group(['prefix' => ''], function(){
             Route::put('', [CustomerController::class, 'updateProfile']);
             Route::patch('', [CustomerController::class, 'updatePassword']);
         });
+        Route::group(['prefix' => 'payments'], function(){
+            Route::post('', [PaymentController::class, 'store']);
+            Route::get('', [PaymentController::class, 'index']);
+            Route::delete('/{id}', [PaymentController::class, 'destroy']);
+        });
     });
     Route::get('currency', [CurrencyController::class, 'show']);
 });
