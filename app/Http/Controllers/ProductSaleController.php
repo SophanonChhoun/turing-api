@@ -48,14 +48,23 @@ class ProductSaleController extends Controller
     public function show($id)
     {
         try {
-            $sales = ProductSale::with("user", "cinema", "products")->findOrFail($id);
+            $sales = ProductSale::with("user", "cinema", "products", "promotion.productIds")->findOrFail($id);
             return $this->success([
                 "userName" => $sales->user->name ?? '',
                 "cinema" => $sales->cinema->name ?? '',
                 "total" => $sales->total,
+                "totalDiscount" => $sales->totalDiscount,
                 "currency" => $sales->currency,
                 "products" => ProductSellingResource::collection($sales->products),
-                "createdAt" => $sales->created_at->format('Y-m-d')
+                "createdAt" => $sales->created_at->format('Y-m-d'),
+                "promotion" => [
+                    "coupon" => $sales->promotion->coupon ?? '',
+                    "hasBill" => $sales->promotion ? ($sales->promotion->bill > 0 ? true : false) : "",
+                    "bill" => $sales->promotion->bill ?? '',
+                    "percentage" => $sales->promotion->percentage ?? '',
+                    'allProducts' => $sales->promotion ? ($sales->promotion->productIds->count() > 0 ? false : true) : "",
+                    "products" => $sales->promotion ? $sales->promotion->productIds->pluck('productId') : ""
+                ]
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

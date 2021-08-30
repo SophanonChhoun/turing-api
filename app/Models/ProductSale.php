@@ -13,7 +13,9 @@ class ProductSale extends Model
         'userId',
         'cinemaId',
         'total',
-        'currency'
+        'currency',
+        'promotionId',
+        'totalDiscount',
     ];
 
     public function user()
@@ -29,5 +31,10 @@ class ProductSale extends Model
     public function products()
     {
         return $this->hasMany(ProductSelling::class, 'saleId', 'id');
+    }
+
+    public function promotion()
+    {
+        return $this->belongsTo(Promotion::class, 'promotionId', 'id');
     }
 }

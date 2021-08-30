@@ -17,7 +17,9 @@ class ProductSaleRequest extends DefaultFormRequest
             'userId' => 'required',
             'cinemaId' => 'required',
             'total' => 'required',
-            'products' => 'required|array'
+            'products' => 'required|array',
+            'promotionId' => 'required',
+            'totalDiscount' => 'required'
         ];
     }
 }
