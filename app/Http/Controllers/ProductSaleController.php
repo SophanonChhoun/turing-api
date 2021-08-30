@@ -57,6 +57,7 @@ class ProductSaleController extends Controller
                 "currency" => $sales->currency,
                 "products" => ProductSellingResource::collection($sales->products),
                 "createdAt" => $sales->created_at->format('Y-m-d'),
+                "hasPromotion" => $sales->promotion ? true : false,
                 "promotion" => [
                     "coupon" => $sales->promotion->coupon ?? '',
                     "hasBill" => $sales->promotion ? ($sales->promotion->bill > 0 ? true : false) : "",
