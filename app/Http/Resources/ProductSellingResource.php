@@ -18,7 +18,8 @@ class ProductSellingResource extends JsonResource
             "name" => $this->name,
             "quantity" => $this->quantity,
             "price" => $this->price,
-            "totalEachProduct" => $this->price * $this->quantity
+            "totalEachProduct" => $this->price * $this->quantity,
+            "productId" => $this->productVariantId
         ];
     }
 }
