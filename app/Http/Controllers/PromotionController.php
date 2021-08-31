@@ -220,8 +220,8 @@ class PromotionController extends Controller
                    {
                        return $promotion;
                    }
-                   $screenings = PromotionScreening::where("screeningId", $id)->where("promotionId", $promotion->id)->get()->first();
-                   if ($screenings)
+                   $screenings = PromotionScreening::where("screeningId", $id)->where("promotionId", $promotion->id)->get()->count();
+                   if ($screenings > 0)
                    {
                        return $promotion;
                    }
