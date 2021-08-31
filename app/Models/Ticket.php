@@ -24,7 +24,9 @@ class Ticket extends Model
         'movieName',
         'cinemaName',
         'userId',
-        'checked_by'
+        'checked_by',
+        'promotionId',
+        'discountPrice'
     ];
     protected $casts = [
         'checked_in' => 'boolean'
