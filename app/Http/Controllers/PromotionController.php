@@ -210,6 +210,7 @@ class PromotionController extends Controller
     public function listPromotionScreenings($id)
     {
         try {
+            $screening = Screening::findOrFail($id);
             $promotions = Promotion::where("hasScreenings", true)->where("status", true)->get();
             $promotions = $promotions->filter(function($promotion) use($id) {
                if ($promotion->hasScreenings)
@@ -225,7 +226,7 @@ class PromotionController extends Controller
                        return $screenings;
                    }
                }
-            });
+            })->values();
             return $this->success($promotions);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
