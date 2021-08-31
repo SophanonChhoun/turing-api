@@ -215,12 +215,12 @@ class PromotionController extends Controller
             $promotions = $promotions->filter(function($promotion) use($id) {
                if ($promotion->hasScreenings)
                {
-                   $allScreenings = PromotionScreening::where("promotionId", $promotion->id)->get()->first();
-                   if (!$allScreenings)
+                   $allScreenings = PromotionScreening::where("promotionId", $promotion->id)->get()->count();
+                   if ($allScreenings == 0)
                    {
                        return $promotion;
                    }
-                   $screenings = PromotionScreening::where("screeningId", $id)->get()->first();
+                   $screenings = PromotionScreening::where("screeningId", $id)->where("promotionId", $promotion->id)->get()->first();
                    if ($screenings)
                    {
                        return $promotion;
