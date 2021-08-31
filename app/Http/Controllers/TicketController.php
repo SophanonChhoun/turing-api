@@ -81,10 +81,12 @@ class TicketController extends Controller
             $screening = Screening::find($data->screeningId);
             return $this->success([
                 'id' => $data->id,
-                'price' => $data->price,
+                'price' => $data->price - $data->discountPrice,
                 'movie' => $data->movieName,
                 'seatType' => $data->seatType,
                 'seatName' => $data->seatName,
+                'discountPrice' => $data->discountPrice,
+                'withoutDiscount' => $data->price,
                 'theaterName' => $data->theaterName,
                 'cinemaName'=> $data->cinemaName,
                 'userName' => $data->user->name ?? '',

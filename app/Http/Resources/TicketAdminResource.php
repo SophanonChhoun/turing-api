@@ -17,7 +17,9 @@ class TicketAdminResource extends JsonResource
         return [
             'id' => $this->id,
             'movie' => $this->movieName,
-            'price' => $this->price,
+            'price' => $this->price - $this->discountPrice,
+            'discountPrice' => $this->discountPrice,
+            'withoutDiscount' => $this->price,
             'seat' => $this->seatName,
             'cinema' => $this->cinemaName,
             'customer' => $this->user->name ?? '',
