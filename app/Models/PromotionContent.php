@@ -29,7 +29,6 @@ class PromotionContent extends Model
     public static function store($id, $contents)
     {
         try {
-            self::where("promotionId", $id)->delete();
             foreach ($contents as $key => $content)
             {
                 if (isset($content['image']))
@@ -37,7 +36,12 @@ class PromotionContent extends Model
                     $content['mediaId'] = MediaLib::generateImageBase64($content['image']);
                 }
                 $content['promotionId'] = $id;
-                $data = self::create($content);
+                if (isset($content['id']))
+                {
+                    $data = self::find($content['id']);
+                }else{
+                    $data = self::create($content);
+                }
                 if (!$data)
                 {
                     return false;
