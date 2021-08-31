@@ -172,6 +172,10 @@ class PromotionController extends Controller
             {
                 return $this->fail('This promotion need to have a promotion amount');
             }
+            if (isset($request['deletedContents']))
+            {
+                PromotionContent::whereIn("id", $request['deletedContents'])->delete();
+            }
             Promotion::findOrFail($id)->update($request->all());
             PromotionContent::store($id,$request->contents);
             PromotionScreening::store($id,$request->screenings);
