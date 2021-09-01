@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\ScreeningPromotionResource;
 use Carbon\Carbon;
 use Carbon\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -94,5 +95,80 @@ class Movie extends Model
     public function backdropImage()
     {
         return $this->belongsTo(MediaFile::class, 'backdropId', 'media_id');
+    }
+
+    public static function promotionMovie($movies, $promotionScreeningIds)
+    {
+        return $movies->map(function($movie) use($promotionScreeningIds){
+            $movie->screenings = Screening::with('cinema')
+                ->where("movieId", $movie->id)
+                ->whereIn("id", $promotionScreeningIds)
+                ->orderBy("date")
+                ->orderBy("start_time")
+                ->get();
+            if (count($movie->screenings) > 0)
+            {
+                $movie->screenings = ScreeningPromotionResource::collection($movie->screenings);
+                return $movie;
+            }
+        });
+    }
+
+    public static function getScreening($movies)
+    {
+        return $movies->filter(function($movie){
+            $movie->screenings = Screening::with('cinema')->where("movieId", $movie->id)
+                ->where("date", ">=", Carbon::now()->toDateString())
+                ->where("status", true)
+                ->orderBy("date")
+                ->orderBy("start_time")
+                ->get();
+            if ($movie->screenings->count() > 0)
+            {
+                $movie->screenings = ScreeningPromotionResource::collection($movie->screenings);
+                return $movie;
+            }
+        })->values();
+    }
+
+    public static function getNowShowing($movies, $theaterIds)
+    {
+        return $movies->filter(function ($movie) use ($theaterIds) {
+            $movie->screenings =  Screening::whereIn("theaterId", $theaterIds)
+                ->where("date", ">=", Carbon::now()->toDateString())
+                ->where("movieId", $movie->id)
+                ->where("status", true)
+                ->orderBy("date")
+                ->orderBy("start_time")
+                ->get()
+                ->groupBy("date");
+            if (count($movie->screenings) > 0)
+            {
+                return $movie;
+            }
+        })->values();
+    }
+
+    public static function getNowShowingAdmin($movies, $theaterIds)
+    {
+        return $movies->filter(function ($movie) use($theaterIds){
+            $theaters = Theater::whereIn("id", $theaterIds)->get();
+            $theaters = $theaters->filter(function($theater) use($movie){
+                $screening = Screening::where("movieId", $movie->id)
+                    ->where("theaterId", $theater->id)
+                    ->where("date", ">=", Carbon::now()->toDateString())
+                    ->where("status", true)
+                    ->orderBy("date")->orderBy("start_time")->get()->groupBy("date");
+                if ($screening->count() >= 1) {
+                    $theater->screenings = collect($screening->toArray());
+                    return $theater;
+                }
+            });
+            if ($theaters->count() >= 1)
+            {
+                $movie->theatres = $theaters;
+                return $movie;
+            }
+        });
     }
 }

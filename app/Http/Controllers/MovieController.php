@@ -257,21 +257,7 @@ class MovieController extends Controller
                 "genres")->findOrFail($id);
             $cinemaId = Screening::with('theater')->where("movieId", $id)->get()->pluck('theater.cinemaId');
             $cinemas = Cinema::whereIn("id", $cinemaId)->get();
-            $cinemas = $cinemas->filter(function ($cinema) use($id) {
-                $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
-                $cinema->screenings = collect(Screening::whereIn("theaterId", $theaterIds)
-                    ->where("movieId", $id)
-                    ->where("date", ">=", Carbon::now()->toDateString())
-                    ->where("status", true)
-                    ->orderBy("date")
-                    ->orderBy("start_time")
-                    ->get()
-                    ->groupBy("date")->toArray());
-                if ($cinema->screenings->count() > 0)
-                {
-                    return $cinema;
-                }
-            });
+            $cinemas = Cinema::cinemaScreening($cinemas, $id);
             return $this->success([
                 "id" => $movie->id,
                 "title" => $movie->title,
@@ -296,19 +282,7 @@ class MovieController extends Controller
     {
         try {
             $movies = Movie::where("status", true)->get();
-            $movies = $movies->filter(function($movie){
-                $movie->screenings = Screening::with('cinema')->where("movieId", $movie->id)
-                    ->where("date", ">=", Carbon::now()->toDateString())
-                    ->where("status", true)
-                    ->orderBy("date")
-                    ->orderBy("start_time")
-                    ->get();
-                if ($movie->screenings->count() > 0)
-                {
-                    $movie->screenings = ScreeningPromotionResource::collection($movie->screenings);
-                    return $movie;
-                }
-            })->values();
+            $movies = Movie::getScreening($movies);
             return $this->success(MovieTimeResource::collection($movies));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

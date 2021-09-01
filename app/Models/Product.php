@@ -34,4 +34,17 @@ class Product extends Model
     {
         return $this->hasMany(ProductVariants::class,"productId");
     }
+
+    public static function promotionProduct($products, $promotionProductIds)
+    {
+        return $products = $products->map(function($product) use($promotionProductIds){
+            $product->variants = ProductVariants::with("productAttributeValues")
+                ->where("productId", $product->id)
+                ->whereIn("id", $promotionProductIds)->get();
+            if (count($product->variants) > 0)
+            {
+                return $product;
+            }
+        });
+    }
 }

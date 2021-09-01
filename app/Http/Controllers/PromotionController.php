@@ -89,37 +89,14 @@ class PromotionController extends Controller
     public function show ($id){
         try {
             $promotion = Promotion::with("contents", "products", "screenings","productIds","screeningIds")->findOrFail($id);
-            if (!$promotion) {
-                return $this->fail("ID:$id not found");
-            }
             $promotionProductIds = PromotionProduct::where("promotionId", $id)->get()->pluck("productId");
             $productIds = ProductVariants::whereIn("id", $promotionProductIds)->get()->pluck("productId");
             $products = Product::with('media')->whereIn('id', $productIds)->get();
-            $products = $products->map(function($product) use($promotionProductIds){
-                $product->variants = ProductVariants::with("productAttributeValues")
-                    ->where("productId", $product->id)
-                    ->whereIn("id", $promotionProductIds)->get();
-                if (count($product->variants) > 0)
-                {
-                    return $product;
-                }
-            });
+            $products = Product::promotionProduct($products, $promotionProductIds);
             $promotionScreeningIds = PromotionScreening::where("promotionId", $id)->get()->pluck("screeningId");
             $movieIds = Screening::whereIn("id", $promotionScreeningIds)->get()->pluck("movieId");
             $movies = Movie::whereIn("id", $movieIds)->get();
-            $movies = $movies->map(function($movie) use($promotionScreeningIds){
-                $movie->screenings = Screening::with('cinema')
-                    ->where("movieId", $movie->id)
-                    ->whereIn("id", $promotionScreeningIds)
-                    ->orderBy("date")
-                    ->orderBy("start_time")
-                    ->get();
-                if (count($movie->screenings) > 0)
-                {
-                    $movie->screenings = ScreeningPromotionResource::collection($movie->screenings);
-                    return $movie;
-                }
-            });
+            $movies = Movie::promotionMovie($movies, $promotionScreeningIds);
             return $this->success([
                 'id' => $promotion->id,
                 'title' => $promotion->title,
@@ -212,21 +189,7 @@ class PromotionController extends Controller
         try {
             Screening::findOrFail($id);
             $promotions = Promotion::where("hasScreenings", true)->where("status", true)->get();
-            $promotions = $promotions->filter(function($promotion) use($id) {
-               if ($promotion->hasScreenings)
-               {
-                   $allScreenings = PromotionScreening::where("promotionId", $promotion->id)->get()->count();
-                   if ($allScreenings == 0)
-                   {
-                       return $promotion;
-                   }
-                   $screenings = PromotionScreening::where("screeningId", $id)->where("promotionId", $promotion->id)->get()->count();
-                   if ($screenings > 0)
-                   {
-                       return $promotion;
-                   }
-               }
-            })->values();
+            $promotions = Promotion::promotionScreening($promotions, $id);
             return $this->success($promotions);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

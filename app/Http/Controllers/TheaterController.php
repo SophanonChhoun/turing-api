@@ -63,20 +63,8 @@ class TheaterController extends Controller
             if (!$Theater) {
                 return $this->fail("Theater ID:$id not found");
             }
-            for ($i=0; $i < $Theater->row; $i++) {
-                for ($j=0; $j < $Theater->col; $j++) {
-                    $grid[$i][$j] = null;
-                }
-            }
             $seats = SeatResource::collection(Seat::with("seatType")->where("theaterId", $id)->get());
-            foreach ($seats as $key => $seat) {
-                $grid[$seat->row][$seat->col] = [
-                    "id" => $seat->id,
-                    "name" => $seat->name,
-                    "seatType" => $seat->seatType,
-                    "status" => $seat->status,
-                ];
-            }
+            $grid = Seat::getSeats($Theater->row, $Theater->col, $seats);
             return $this->success([
                 "id" => $Theater->id,
                 "name" => $Theater->name,

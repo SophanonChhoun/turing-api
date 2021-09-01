@@ -51,4 +51,41 @@ class Cinema extends Model
     {
         return $this->hasMany(Ticket::class, 'cinemaName', 'name');
     }
+
+    public static function cinemaScreening($cinemas, $id)
+    {
+        return $cinemas->filter(function ($cinema) use($id) {
+            $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
+            $cinema->screenings = collect(Screening::whereIn("theaterId", $theaterIds)
+                ->where("movieId", $id)
+                ->where("date", ">=", Carbon::now()->toDateString())
+                ->where("status", true)
+                ->orderBy("date")
+                ->orderBy("start_time")
+                ->get()
+                ->groupBy("date")->toArray());
+            if ($cinema->screenings->count() > 0)
+            {
+                return $cinema;
+            }
+        });
+    }
+
+    public static function getCinemaNowShowingScreening($cinemas)
+    {
+        return $cinemas->filter(function ($cinema) {
+            $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
+            $movies = Movie::with("directors",
+                "rating",
+                "casts",
+                "genres")
+                ->where("status", true)
+                ->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
+            $cinema->movies = Movie::getNowShowing($movies, $theaterIds);
+            if (count($cinema->movies) >= 1)
+            {
+                return $cinema;
+            }
+        })->values();
+    }
 }

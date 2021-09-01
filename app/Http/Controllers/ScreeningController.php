@@ -213,28 +213,11 @@ class ScreeningController extends Controller
         try {
             $screening = Screening::with("movie")->findOrFail($id);
             $theater = Theater::with("cinema")->findOrFail($screening->theaterId);
-            for ($i=0; $i < $theater->row; $i++) {
-                for ($j=0; $j < $theater->col; $j++) {
-                    $grid[$i][$j] = null;
-                }
-            }
             $getSeats = Seat::with("seatType")->where("theaterId", $screening->theaterId)->get();
             $seatTypeId = $getSeats->pluck("seatTypeId");
             $seatType = SeatType::whereIn("id", $seatTypeId)->get();
             $seats = SeatResource::collection($getSeats);
-            foreach ($seats as $key => $seat) {
-                $avaliable = Ticket::where("seatId", $seat->id)->where("screeningId", $id)->get()->first();
-                $grid[$seat->row][$seat->col] = [
-                    "id" => $seat->id,
-                    "name" => $seat->name,
-                    "seatType" => $seat->seatType,
-                    "status" => $seat->status,
-                    "booked" => $avaliable ? true : false,
-                    "price" => round((($seat->seatType ? $seat->seatType->priceFactor : 1) * $screening->price), 3),
-                    "col" => $seat->col,
-                    "row" => $seat->row
-                ];
-            }
+            $grid = Seat::getGrid($theater->row, $theater->col, $id, $seats, $screening);
             return $this->success([
                 "screeningId" => $id,
                 "cinemaName" => $theater->cinema->name ?? '',
@@ -258,33 +241,7 @@ class ScreeningController extends Controller
     {
         try {
             $cinemas = Cinema::with('media')->where("status", true)->get();
-            $cinemas = $cinemas->filter(function ($cinema) {
-                $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
-                $movies = Movie::with("directors",
-                    "rating",
-                    "casts",
-                    "genres")
-                    ->where("status", true)
-                    ->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
-                $cinema->movies = $movies->filter(function ($movie) use ($theaterIds) {
-                    $movie->screenings =  Screening::whereIn("theaterId", $theaterIds)
-                        ->where("date", ">=", Carbon::now()->toDateString())
-                        ->where("movieId", $movie->id)
-                        ->where("status", true)
-                        ->orderBy("date")
-                        ->orderBy("start_time")
-                        ->get()
-                        ->groupBy("date");
-                    if (count($movie->screenings) > 0)
-                    {
-                        return $movie;
-                    }
-                })->values();
-                if (count($cinema->movies) >= 1)
-                {
-                    return $cinema;
-                }
-            })->values();
+            $cinemas = Cinema::getCinemaNowShowingScreening($cinemas);
             return $this->success(NowShowingResource::collection($cinemas));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
@@ -306,25 +263,7 @@ class ScreeningController extends Controller
                 $theaterIds = $theaterIds->whereIn('theaterId', $theatersByCinema);
             }
             $theaterIds = $theaterIds->get()->pluck("theaterId");
-            $movies = $movies->filter(function ($movie) use($theaterIds){
-                $theaters = Theater::whereIn("id", $theaterIds)->get();
-                $theaters = $theaters->filter(function($theater) use($movie){
-                    $screening = Screening::where("movieId", $movie->id)
-                        ->where("theaterId", $theater->id)
-                        ->where("date", ">=", Carbon::now()->toDateString())
-                        ->where("status", true)
-                        ->orderBy("date")->orderBy("start_time")->get()->groupBy("date");
-                    if ($screening->count() >= 1) {
-                        $theater->screenings = collect($screening->toArray());
-                        return $theater;
-                    }
-                });
-                if ($theaters->count() >= 1)
-                {
-                    $movie->theatres = $theaters;
-                    return $movie;
-                }
-            });
+            $movies = Movie::getNowShowingAdmin($movies, $theaterIds);
             return $this->success(NowShowingAdminResource::collection($movies));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

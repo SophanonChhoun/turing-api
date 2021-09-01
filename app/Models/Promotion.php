@@ -49,4 +49,23 @@ class Promotion extends Model
     {
         return $this->belongsToMany(Screening::class, PromotionScreening::class, 'promotionId', 'screeningId');
     }
+
+    public static function promotionScreening($promotions, $id)
+    {
+        return $promotions->filter(function($promotion) use($id) {
+            if ($promotion->hasScreenings)
+            {
+                $allScreenings = PromotionScreening::where("promotionId", $promotion->id)->get()->count();
+                if ($allScreenings == 0)
+                {
+                    return $promotion;
+                }
+                $screenings = PromotionScreening::where("screeningId", $id)->where("promotionId", $promotion->id)->get()->count();
+                if ($screenings > 0)
+                {
+                    return $promotion;
+                }
+            }
+        })->values();
+    }
 }

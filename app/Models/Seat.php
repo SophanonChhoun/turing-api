@@ -68,4 +68,45 @@ class Seat extends Model
             return false;
         }
     }
+
+    public static function getGrid($row, $col, $id, $seats, $screening)
+    {
+        for ($i=0; $i < $row; $i++) {
+            for ($j=0; $j < $col; $j++) {
+                $grid[$i][$j] = null;
+            }
+        }
+        foreach ($seats as $key => $seat) {
+            $avaliable = Ticket::where("seatId", $seat->id)->where("screeningId", $id)->get()->first();
+            $grid[$seat->row][$seat->col] = [
+                "id" => $seat->id,
+                "name" => $seat->name,
+                "seatType" => $seat->seatType,
+                "status" => $seat->status,
+                "booked" => $avaliable ? true : false,
+                "price" => round((($seat->seatType ? $seat->seatType->priceFactor : 1) * $screening->price), 3),
+                "col" => $seat->col,
+                "row" => $seat->row
+            ];
+        }
+        return $grid;
+    }
+
+    public static function getSeats($row, $col, $seats)
+    {
+        for ($i=0; $i < $row; $i++) {
+            for ($j=0; $j < $col; $j++) {
+                $grid[$i][$j] = null;
+            }
+        }
+        foreach ($seats as $key => $seat) {
+            $grid[$seat->row][$seat->col] = [
+                "id" => $seat->id,
+                "name" => $seat->name,
+                "seatType" => $seat->seatType,
+                "status" => $seat->status,
+            ];
+        }
+        return $grid;
+    }
 }
