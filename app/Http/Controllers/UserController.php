@@ -13,6 +13,8 @@ use App\Http\Resources\RolePermissionResource;
 use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserResource;
 use App\Models\CinemaHasUser;
+use App\Models\Role;
+use App\Models\RoleHasPermission;
 use App\Models\RoleHasUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -39,12 +41,13 @@ class UserController extends Controller
             {
                 return $this->fail("Your account has been blocked.Please contact our team for more support.");
             }
+            $userRoles = Role::hasRole($user->id);
             $token = $user->createToken('authorization')->plainTextToken;
             $response = [
                 'user' => [
                     "name" => $user->name,
                     "photo" => $user->media->file_url ?? '',
-                    "rolePermissions" => RoleResource::collection($user->roles),
+                    "rolePermissions" => $userRoles,
                     "cinemas" => $user->cinemas
                 ],
                 'token' => 'Bearer ' . $token,
@@ -190,6 +193,7 @@ class UserController extends Controller
     {
         try {
             $user = User::with("roles.rolePermission.permission", "media", "cinemas", "hasCinemas")->find(auth()->user()->id);
+            $userRoles = Role::hasRole($user->id);
             return $this->success([
                "name" => $user->name,
                "email" => $user->email,
@@ -197,7 +201,7 @@ class UserController extends Controller
                "lastName" => $user->lastName,
                "phoneNumber" => $user->phoneNumber,
                "photo" => $user->media->file_url ?? '',
-               "rolePermissions" => RoleResource::collection($user->roles),
+               "rolePermissions" => $userRoles,
                "cinemas" => $user->cinemas
             ]);
         }catch (Exception $exception){
