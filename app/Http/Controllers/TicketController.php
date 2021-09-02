@@ -95,7 +95,7 @@ class TicketController extends Controller
                 'check_by' => $data->checkBy->name ?? '',
                 'start_time' => $screening->start_time ?? '',
                 'date' => $screening->date ?? '',
-                'promotion' => $data->prmotion
+                'promotion' => $data->promotion
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
