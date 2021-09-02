@@ -55,6 +55,7 @@ class TicketController extends Controller
                 $seat['userId'] = $request['userId'];
                 $seat['seatId'] = $seat['id'];
                 $seat['promotionId'] = $request['promotionId'];
+                $seat['discountPrice'] = $request['discountPrice'];
                 $data = Ticket::create($seat);
                 $screening = Screening::findOrFail($request['screeningId']);
                 $data->start_time = $screening->start_time;
