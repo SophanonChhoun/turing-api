@@ -80,4 +80,9 @@ class Ticket extends Model
     {
         return $this->belongsTo(User::class, 'checked_by', 'id');
     }
+
+    public function promotion()
+    {
+        return $this->belongsTo(Promotion::class, 'promotionId', 'id');
+    }
 }
