@@ -14,7 +14,8 @@ class PromotionCodeRequest extends DefaultFormRequest
     public function rules()
     {
         return [
-            "coupon" => "required"
+            "coupon" => "required",
+            "total" => "required",
         ];
     }
 }
