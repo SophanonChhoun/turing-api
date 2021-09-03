@@ -288,6 +288,7 @@ Route::group(['prefix' => ''], function(){
     Route::post('send-mail', [MailController::class, 'sendEmailCustomer']);
     Route::post("verify-code", [MailController::class, "verifyCodeCustomer"]);
     Route::put("reset-password", [MailController::class, "updatePasswordCustomer"]);
+    Route::get('promotions/{id}', [PromotionController::class, 'showPromotionScreening']);
     Route::group(['prefix' => 'movies'], function(){
         Route::get('', [MovieController::class, 'showMovieMobile']);
     });

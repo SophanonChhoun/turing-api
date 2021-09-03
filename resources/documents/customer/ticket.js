@@ -48,6 +48,8 @@
  {
         "id": "3312f5ec-425b-4db3-b9a5-824a88010391",
         "price": 12,
+        "discountPrice": 1,
+        "fullPrice": 13,
         "seat": "A2",
         "customer": "Customer walk in",
         "theatre": "Hall 3",
@@ -96,6 +98,8 @@
  {
         "id": "57250088-3cb5-4fdf-9529-c0103536ccfb",
         "price": 12,
+        "discountPrice": 1,
+        "fullPrice": 13,
         "seat": "A1",
         "customer": "Customer walk in",
         "theatre": "Hall 3",

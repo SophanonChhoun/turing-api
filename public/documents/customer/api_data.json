@@ -1874,6 +1874,96 @@
     }
   },
   {
+    "type": "post",
+    "url": "/api/web/promotions/${id}?coupon=${coupon",
+    "title": "promotion} 1. Get Promotion",
+    "version": "1.0.0",
+    "name": "Get_Promotion",
+    "group": "Promotion",
+    "success": {
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 200 Success Request\n{\n   \"id\": 12,\n   \"title\": \"This is testing\",\n   \"coupon\": \"ssdeds22eese\",\n   \"percentage\": \"9.00\",\n   \"bill\": null,\n   \"conditionTotal\": \"0.00\",\n   \"hasProducts\": true,\n   \"hasScreenings\": true,\n   \"status\": true,\n   \"created_at\": \"2021-08-25T02:36:09.000000Z\",\n   \"updated_at\": \"2021-08-25T02:36:09.000000Z\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./promotion.js",
+    "groupTitle": "Promotion",
+    "sampleRequest": [
+      {
+        "url": "http://165.227.93.1:7000/api/web/promotions/${id}?coupon=${coupon"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Auth",
+            "description": "<p>Access token from user login.</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Accept",
+            "description": "<p><code>application/json</code></p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "4xx": [
+          {
+            "group": "4xx",
+            "type": "404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>resource is not found</p>"
+          },
+          {
+            "group": "4xx",
+            "type": "401",
+            "optional": false,
+            "field": "AuthorizationInvalid",
+            "description": "<p>authorization token is missing, expire, or invalid.</p>"
+          }
+        ],
+        "5xx": [
+          {
+            "group": "5xx",
+            "type": "500",
+            "optional": false,
+            "field": "InternalSeverError",
+            "description": "<p>internal server error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "404 (NotFound):",
+          "content": "HTTP/1.1 404 Not Found\n{\n   \"type\": \"ConstraintViolationError\"\n   \"message\": \"The :attribute is not found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "500 (InternalSeverError):",
+          "content": "HTTP/1.1 500 Error In Server Request\n{\n   \"message\": \"Server Error\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "401 (AuthorizationInvalid):",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n   \"type\": \"ConstraintViolationError\"\n   \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "get",
     "url": "/api/web/screenings/now-showing",
     "title": "1. List Now Showing Screenings",
@@ -2152,7 +2242,7 @@
       "examples": [
         {
           "title": "Response (example):",
-          "content": "HTTP/1.1 200 Success Request\n[\n{\n       \"id\": \"3312f5ec-425b-4db3-b9a5-824a88010391\",\n       \"price\": 12,\n       \"seat\": \"A2\",\n       \"customer\": \"Customer walk in\",\n       \"theatre\": \"Hall 3\",\n       \"checkedIn\": false,\n       \"movie\": {\n           \"id\": 4,\n           \"title\": \"Amarsi un po'...\",\n           \"trailer\": \"VanCRj8eI9o\",\n           \"synopsis\": \"In an accident the young mechanic Marco Coccia meets Cristiana. The two fall in love with one another. Cristiana confesses only later that she is a genuine princess. For Marco it is not a problem, but for Cristiana's parents it is a very big problem. The two must separate. When one evening Cristiana calls Marco and lets him know about her forthcoming wedding, Marco with the car races toward Paris and has an accident...\",\n           \"rating\": \"R\",\n           \"genres\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Romance\"\n               }\n           ],\n           \"directors\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Neath Mony\"\n               }\n           ],\n           \"casts\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Neath Mony\"\n               }\n           ],\n           \"releasedDate\": \"2021-08-11\",\n           \"poster\": \"/2128f05e206c139de322345264de68a1.png\",\n           \"backdrop\": \"/324b32eb18b57269835c435fb9c5242a.png\"\n       },\n       \"screening\": {\n           \"id\": 7,\n           \"theatre\": \"Hall 3\",\n           \"date\": \"2021-08-30\",\n           \"start_time\": \"09:33:00\"\n       },\n       \"cinema\": {\n           \"id\": 1,\n           \"name\": \"Turing CADT\",\n           \"location\": \"CADT\",\n           \"photo\": \"http://127.0.0.1:8000/uploads/images/a2f3f14884bf61d0a9bea8b437d273bf.png\"\n       }\n   },\n{\n       \"id\": \"57250088-3cb5-4fdf-9529-c0103536ccfb\",\n       \"price\": 12,\n       \"seat\": \"A1\",\n       \"customer\": \"Customer walk in\",\n       \"theatre\": \"Hall 3\",\n       \"checkedIn\": false,\n       \"movie\": {\n           \"id\": 4,\n           \"title\": \"Amarsi un po'...\",\n           \"trailer\": \"VanCRj8eI9o\",\n           \"synopsis\": \"In an accident the young mechanic Marco Coccia meets Cristiana. The two fall in love with one another. Cristiana confesses only later that she is a genuine princess. For Marco it is not a problem, but for Cristiana's parents it is a very big problem. The two must separate. When one evening Cristiana calls Marco and lets him know about her forthcoming wedding, Marco with the car races toward Paris and has an accident...\",\n           \"rating\": \"R\",\n           \"genres\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Romance\"\n               }\n           ],\n           \"directors\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Neath Mony\"\n               }\n           ],\n           \"casts\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Neath Mony\"\n               }\n           ],\n           \"releasedDate\": \"2021-08-11\",\n           \"poster\": \"/2128f05e206c139de322345264de68a1.png\",\n           \"backdrop\": \"/324b32eb18b57269835c435fb9c5242a.png\"\n       },\n       \"screening\": {\n           \"id\": 7,\n           \"theatre\": \"Hall 3\",\n           \"date\": \"2021-08-30\",\n           \"start_time\": \"09:33:00\"\n       },\n       \"cinema\": {\n           \"id\": 1,\n           \"name\": \"Turing CADT\",\n           \"location\": \"CADT\",\n           \"photo\": \"http://127.0.0.1:8000/uploads/images/a2f3f14884bf61d0a9bea8b437d273bf.png\"\n       }\n   }\n]",
+          "content": "HTTP/1.1 200 Success Request\n[\n{\n       \"id\": \"3312f5ec-425b-4db3-b9a5-824a88010391\",\n       \"price\": 12,\n       \"discountPrice\": 1,\n       \"fullPrice\": 13,\n       \"seat\": \"A2\",\n       \"customer\": \"Customer walk in\",\n       \"theatre\": \"Hall 3\",\n       \"checkedIn\": false,\n       \"movie\": {\n           \"id\": 4,\n           \"title\": \"Amarsi un po'...\",\n           \"trailer\": \"VanCRj8eI9o\",\n           \"synopsis\": \"In an accident the young mechanic Marco Coccia meets Cristiana. The two fall in love with one another. Cristiana confesses only later that she is a genuine princess. For Marco it is not a problem, but for Cristiana's parents it is a very big problem. The two must separate. When one evening Cristiana calls Marco and lets him know about her forthcoming wedding, Marco with the car races toward Paris and has an accident...\",\n           \"rating\": \"R\",\n           \"genres\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Romance\"\n               }\n           ],\n           \"directors\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Neath Mony\"\n               }\n           ],\n           \"casts\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Neath Mony\"\n               }\n           ],\n           \"releasedDate\": \"2021-08-11\",\n           \"poster\": \"/2128f05e206c139de322345264de68a1.png\",\n           \"backdrop\": \"/324b32eb18b57269835c435fb9c5242a.png\"\n       },\n       \"screening\": {\n           \"id\": 7,\n           \"theatre\": \"Hall 3\",\n           \"date\": \"2021-08-30\",\n           \"start_time\": \"09:33:00\"\n       },\n       \"cinema\": {\n           \"id\": 1,\n           \"name\": \"Turing CADT\",\n           \"location\": \"CADT\",\n           \"photo\": \"http://127.0.0.1:8000/uploads/images/a2f3f14884bf61d0a9bea8b437d273bf.png\"\n       }\n   },\n{\n       \"id\": \"57250088-3cb5-4fdf-9529-c0103536ccfb\",\n       \"price\": 12,\n       \"discountPrice\": 1,\n       \"fullPrice\": 13,\n       \"seat\": \"A1\",\n       \"customer\": \"Customer walk in\",\n       \"theatre\": \"Hall 3\",\n       \"checkedIn\": false,\n       \"movie\": {\n           \"id\": 4,\n           \"title\": \"Amarsi un po'...\",\n           \"trailer\": \"VanCRj8eI9o\",\n           \"synopsis\": \"In an accident the young mechanic Marco Coccia meets Cristiana. The two fall in love with one another. Cristiana confesses only later that she is a genuine princess. For Marco it is not a problem, but for Cristiana's parents it is a very big problem. The two must separate. When one evening Cristiana calls Marco and lets him know about her forthcoming wedding, Marco with the car races toward Paris and has an accident...\",\n           \"rating\": \"R\",\n           \"genres\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Romance\"\n               }\n           ],\n           \"directors\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Neath Mony\"\n               }\n           ],\n           \"casts\": [\n               {\n                   \"id\": 1,\n                   \"name\": \"Neath Mony\"\n               }\n           ],\n           \"releasedDate\": \"2021-08-11\",\n           \"poster\": \"/2128f05e206c139de322345264de68a1.png\",\n           \"backdrop\": \"/324b32eb18b57269835c435fb9c5242a.png\"\n       },\n       \"screening\": {\n           \"id\": 7,\n           \"theatre\": \"Hall 3\",\n           \"date\": \"2021-08-30\",\n           \"start_time\": \"09:33:00\"\n       },\n       \"cinema\": {\n           \"id\": 1,\n           \"name\": \"Turing CADT\",\n           \"location\": \"CADT\",\n           \"photo\": \"http://127.0.0.1:8000/uploads/images/a2f3f14884bf61d0a9bea8b437d273bf.png\"\n       }\n   }\n]",
           "type": "json"
         }
       ]
