@@ -43,7 +43,6 @@ class TicketController extends Controller
             if (isset($request['promotionId']))
             {
                 $promotion = Promotion::findOrFail($request['promotionId']);
-                $total = collect($request['seats'])->pluck("price")->sum();
                 $totalSeats = count($request['seats']);
             }
             foreach ($request['seats'] as $key => $seat)
@@ -68,7 +67,7 @@ class TicketController extends Controller
                 {
                     if ($promotion->bill > 0)
                     {
-                        $seat['discountPrice'] = $total / $totalSeats;
+                        $seat['discountPrice'] = $promotion->bill / $totalSeats;
                     }else{
                         $seat['discountPrice'] = ($seat['price'] * $promotion->percentage) / 100;
                     }
