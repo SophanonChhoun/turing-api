@@ -85,4 +85,15 @@ class Ticket extends Model
     {
         return $this->belongsTo(Promotion::class, 'promotionId', 'id');
     }
+
+    public static function getTotal($screening, $seats)
+    {
+        foreach ($seats as $key => $seatId)
+        {
+            $getSeat = Seat::with('seatType')->findOrFail($seatId);
+            $seat['price'] = $screening->price * $getSeat->seatType->priceFactor;
+            $price[$key] = $seat['price'];
+        }
+        return array_sum($price);
+    }
 }

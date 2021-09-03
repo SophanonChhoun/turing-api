@@ -6,6 +6,7 @@ use App\Http\Requests\UserBuyTicketRequest;
 use App\Http\Resources\MobileTicketResource;
 use App\Http\Resources\TicketAdminResource;
 use App\Models\Payment;
+use App\Models\Promotion;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\Ticket;
@@ -18,6 +19,7 @@ use App\Http\Requests\TicketRequest;
 use App\Http\Resources\TicketResource;
 use Exception;
 use Stripe\Charge;
+use Stripe\Collection;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 
@@ -38,6 +40,12 @@ class TicketController extends Controller
         DB::beginTransaction();
         try {
             $tickets = array();
+            if (isset($request['promotionId']))
+            {
+                $promotion = Promotion::findOrFail($request['promotionId']);
+                $total = collect($request['seats'])->pluck("price")->sum();
+                $totalSeats = count($request['seats']);
+            }
             foreach ($request['seats'] as $key => $seat)
             {
                 $getSeat = Seat::with('seatType')->findOrFail($seat['id']);
@@ -55,7 +63,16 @@ class TicketController extends Controller
                 $seat['userId'] = $request['userId'];
                 $seat['seatId'] = $seat['id'];
                 $seat['promotionId'] = $request['promotionId'];
-                $seat['discountPrice'] = $request['discountPrice'];
+                $seat['discountPrice'] = 0;
+                if (isset($promotion))
+                {
+                    if ($promotion->bill > 0)
+                    {
+                        $seat['discountPrice'] = $total / $totalSeats;
+                    }else{
+                        $seat['discountPrice'] = ($seat['price'] * $promotion->percentage) / 100;
+                    }
+                }
                 $data = Ticket::create($seat);
                 $screening = Screening::findOrFail($request['screeningId']);
                 $data->start_time = $screening->start_time;
@@ -152,6 +169,12 @@ class TicketController extends Controller
             $stripe = new StripeClient(env('STRIPE_SECRET'));
             Stripe::setApiKey(env('STRIPE_SECRET'));
             $screening = Screening::findOrFail($request['screeningId']);
+            if (isset($request['promotionId']))
+            {
+                $promotion = Promotion::findOrFail($request['promotionId']);
+                $total = Ticket::getTotal($screening, $request['seats']);
+                $totalSeats = count($request['seats']);
+            }
             foreach ($request['seats'] as $key => $seatId)
             {
                 $getSeat = Seat::with('seatType')->findOrFail($seatId);
@@ -169,7 +192,17 @@ class TicketController extends Controller
                 $seat['userId'] = auth()->user()->id;
                 $seat['seatId'] = $seatId;
                 $seat['price'] = $screening->price * $getSeat->seatType->priceFactor;
-                $price[$key] = $seat['price'];
+                $seat['discountPrice'] = 0;
+                if (isset($promotion))
+                {
+                    if ($promotion->bill > 0)
+                    {
+                        $seat['discountPrice'] = $total / $totalSeats;
+                    }else{
+                        $seat['discountPrice'] = ($seat['price'] * $promotion->percentage) / 100;
+                    }
+                }
+                $price[$key] = $seat['price'] - $seat['discountPrice'];
                 $data = Ticket::create($seat);
                 if (!$data)
                 {
@@ -186,7 +219,7 @@ class TicketController extends Controller
                 ],
             ]);
             Charge::create ([
-                "amount" => array_sum($price) * 100,
+                "amount" => (number_format(array_sum($price), 2, '.', '') * 100),
                 "currency" => "usd",
                 "source" => $token,
                 "description" => "Payment for movie " . $request['movieName'] . " on " . Carbon::createFromFormat('Y-m-d', $screening->date)->format('d/m/Y')
