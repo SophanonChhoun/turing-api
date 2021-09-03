@@ -197,11 +197,21 @@ class PromotionController extends Controller
         }
     }
 
-    public function showPromotionScreening(PromotionCodeRequest $request)
+    public function showPromotionScreening($id,PromotionCodeRequest $request)
     {
         try {
             $promotion = Promotion::where("coupon", $request->coupon)->where("hasScreenings", true)->get()->first();
             if (!$promotion)
+            {
+                return $this->fail("There is no promotion for this code.");
+            }
+            $hasOtherScreenings = PromotionScreening::where("promotionId", $promotion->id)->get()->first();
+            if (!$hasOtherScreenings)
+            {
+                return $this->success($promotion);
+            }
+            $hasScreening = PromotionScreening::where("promotionId", $promotion->id)->where("screeningId", $id)->get()->first();
+            if (!$hasScreening)
             {
                 return $this->fail("There is no promotion for this code.");
             }
