@@ -164,7 +164,7 @@ class TicketController extends Controller
             $payment = Payment::find($request['paymentId']);
             if (!$payment)
             {
-                return $this->fail("This payment card id is not exist.");
+                return $this->fail("This payment card is not exist.");
             }
             $stripe = new StripeClient(env('STRIPE_SECRET'));
             Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -172,7 +172,6 @@ class TicketController extends Controller
             if (isset($request['promotionId']))
             {
                 $promotion = Promotion::findOrFail($request['promotionId']);
-                $total = Ticket::getTotal($screening, $request['seats']);
                 $totalSeats = count($request['seats']);
             }
             foreach ($request['seats'] as $key => $seatId)
@@ -197,7 +196,7 @@ class TicketController extends Controller
                 {
                     if ($promotion->bill > 0)
                     {
-                        $seat['discountPrice'] = $total / $totalSeats;
+                        $seat['discountPrice'] = $promotion->bill / $totalSeats;
                     }else{
                         $seat['discountPrice'] = ($seat['price'] * $promotion->percentage) / 100;
                     }
