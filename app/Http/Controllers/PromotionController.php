@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PromotionCodeRequest;
 use App\Http\Requests\PromotionRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\MovieTimeResource;
@@ -191,6 +192,20 @@ class PromotionController extends Controller
             $promotions = Promotion::where("hasScreenings", true)->where("status", true)->get();
             $promotions = Promotion::promotionScreening($promotions, $id);
             return $this->success($promotions);
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function showPromotionScreening(PromotionCodeRequest $request)
+    {
+        try {
+            $promotion = Promotion::where("coupon", $request->coupon)->where("hasScreenings", true)->get()->first();
+            if (!$promotion)
+            {
+                return $this->fail("There is no promotion for this code.");
+            }
+            return $this->success($promotion);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

@@ -320,7 +320,6 @@ Route::group(['prefix' => ''], function(){
     });
     Route::get('currency', [CurrencyController::class, 'show']);
 });
-
 Route::group(['prefix' => 'web'], function() {
     Route::post("login", [CustomerController::class, 'login']);
     Route::post("register", [CustomerController::class, 'signUp']);
@@ -328,6 +327,7 @@ Route::group(['prefix' => 'web'], function() {
     Route::post('send-mail', [MailController::class, 'sendEmailCustomer']);
     Route::post("verify-code", [MailController::class, "verifyCodeCustomer"]);
     Route::put("reset-password", [MailController::class, "updatePasswordCustomer"]);
+    Route::get('promotions', [PromotionController::class, 'showPromotionScreening']);
     Route::group(['prefix' => 'movies'], function(){
         Route::get('/upcoming', [MovieController::class, 'upcomingMovie']);
         Route::get('/now-showing', [MovieController::class, 'nowShowingMovie']);
