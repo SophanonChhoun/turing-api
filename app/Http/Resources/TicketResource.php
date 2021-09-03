@@ -17,7 +17,7 @@ class TicketResource extends JsonResource
         return [
             'id' => $this->id,
             'price' => $this->price - $this->discountPrice,
-            'fullPrice' => $this->price,
+            'fullPrice' => $this->price - $this->discountPrice,
             "discountPrice" => $this->discountPrice,
             'seat' => $this->seatName,
             'customer' => $this->user->name ?? '',

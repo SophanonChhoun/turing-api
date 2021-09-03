@@ -17,7 +17,7 @@ class MobileTicketResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'price' => $this->price,
+            'price' => $this->price - $this->discountPrice,
             'seat' => $this->seatName,
             'customer' => $this->user->name ?? '',
             'theatre' => $this->theaterName,
