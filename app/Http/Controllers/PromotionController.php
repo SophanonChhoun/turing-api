@@ -200,7 +200,7 @@ class PromotionController extends Controller
     public function showPromotionScreening($id,PromotionCodeRequest $request)
     {
         try {
-            $promotion = Promotion::where("coupon", $request->coupon)->where("hasScreenings", true)->get()->first();
+            $promotion = Promotion::where("coupon", $request->coupon)->where("status", true)->where("hasScreenings", true)->get()->first();
             if (!$promotion)
             {
                 return $this->fail("There is no promotion for this code.");
