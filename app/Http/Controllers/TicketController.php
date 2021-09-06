@@ -42,7 +42,7 @@ class TicketController extends Controller
             $tickets = array();
             if (isset($request['promotionId']))
             {
-                $promotion = Promotion::findOrFail($request['promotionId']);
+                $promotion = Promotion::find($request['promotionId']);
                 $totalSeats = count($request['seats']);
             }
             foreach ($request['seats'] as $key => $seat)
@@ -63,7 +63,7 @@ class TicketController extends Controller
                 $seat['seatId'] = $seat['id'];
                 $seat['promotionId'] = $request['promotionId'];
                 $seat['discountPrice'] = 0;
-                if (isset($promotion))
+                if (isset($promotion) && $promotion)
                 {
                     if ($promotion->bill > 0)
                     {
