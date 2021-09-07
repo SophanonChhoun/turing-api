@@ -20,7 +20,7 @@ class NowShowingMobileResource extends JsonResource
             "location" => $this->location,
             "photo" => $this->media->file_url ?? '',
             "screeningDates" => $this->screeningDates,
-            "movies" => MovieShowingMobileResource::collection($this->movies)
+            "movies" => MovieShowingResource::collection($this->movies)
         ];
     }
 }
