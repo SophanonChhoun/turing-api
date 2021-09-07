@@ -71,9 +71,9 @@ class Cinema extends Model
         });
     }
 
-    public static function getCinemaNowShowingScreening($cinemas)
+    public static function getCinemaNowShowingScreening($cinemas, $mobile = false)
     {
-        return $cinemas->filter(function ($cinema) {
+        return $cinemas->filter(function ($cinema) use($mobile) {
             $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
             $movies = Movie::with("directors",
                 "rating",
@@ -81,7 +81,12 @@ class Cinema extends Model
                 "genres")
                 ->where("status", true)
                 ->where("releasedDate", "<=", Carbon::now()->toDateString())->get();
-            $cinema->movies = Movie::getNowShowing($movies, $theaterIds);
+            if (!$mobile)
+            {
+                $cinema->movies = Movie::getNowShowing($movies, $theaterIds);
+            } else {
+                $cinema->movies = Movie::getMobileNowShowing($movies, $theaterIds);
+            }
             if (count($cinema->movies) >= 1)
             {
                 $cinema->screeningDates = Screening::getScreeningDate($cinema->movies);

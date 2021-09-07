@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NowShowingResource extends JsonResource
+class NowShowingMobileResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,7 +19,8 @@ class NowShowingResource extends JsonResource
             "name" => $this->name,
             "location" => $this->location,
             "photo" => $this->media->file_url ?? '',
-            "movies" => MovieShowingResource::collection($this->movies)
+            "screeningDates" => $this->screeningDates,
+            "movies" => MovieShowingMobileResource::collection($this->movies)
         ];
     }
 }

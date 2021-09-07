@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ScreeningCreateRequest;
 use App\Http\Resources\NowShowingAdminResource;
+use App\Http\Resources\NowShowingMobileResource;
 use App\Http\Resources\NowShowingResource;
 use App\Http\Resources\SeatResource;
 use App\Models\Cinema;
@@ -253,11 +254,11 @@ class ScreeningController extends Controller
     {
         try {
             $cinemas = Cinema::with('media')->where("status", true)->get();
-            $cinemas = Cinema::getCinemaNowShowingScreening($cinemas);
+            $cinemas = Cinema::getCinemaNowShowingScreening($cinemas, true);
             $screeningTimes = Screening::getDateScreening($cinemas);
             return $this->success([
                 "screeningTimes" => $screeningTimes,
-                "cinemas" => NowShowingResource::collection($cinemas)
+                "cinemas" => NowShowingMobileResource::collection($cinemas)
             ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());

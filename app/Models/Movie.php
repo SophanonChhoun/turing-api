@@ -141,6 +141,23 @@ class Movie extends Model
                 ->where("status", true)
                 ->orderBy("date")
                 ->orderBy("start_time")
+                ->get()->groupBy("date");
+            if (count($movie->screenings) > 0)
+            {
+                return $movie;
+            }
+        })->values();
+    }
+
+    public static function getMobileNowShowing($movies, $theaterIds)
+    {
+        return $movies->filter(function ($movie) use ($theaterIds) {
+            $movie->screenings =  Screening::whereIn("theaterId", $theaterIds)
+                ->where("date", ">=", Carbon::now()->toDateString())
+                ->where("movieId", $movie->id)
+                ->where("status", true)
+                ->orderBy("date")
+                ->orderBy("start_time")
                 ->get();
             $movie->screenings = ScreeningMobileResource::collection($movie->screenings)->collection->groupBy("date");
             if (count($movie->screenings) > 0)
