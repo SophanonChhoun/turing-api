@@ -36,6 +36,11 @@ class Screening extends Model
         return $this->sub->name ?? '';
     }
 
+    public function getDateReadAbleAttribute()
+    {
+        return Carbon::parse($this->date)->format('d-m-Y');
+    }
+
     public function getDubbedAttribute()
     {
         return $this->dub->name ?? '';

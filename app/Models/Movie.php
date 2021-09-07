@@ -159,7 +159,7 @@ class Movie extends Model
                 ->orderBy("date")
                 ->orderBy("start_time")
                 ->get();
-            $movie->screenings = ScreeningMobileResource::collection($movie->screenings)->collection->groupBy("date");
+            $movie->screenings = ScreeningMobileResource::collection($movie->screenings)->collection->groupBy("date_read_able");
             if (count($movie->screenings) > 0)
             {
                 return $movie;
