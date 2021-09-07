@@ -84,6 +84,7 @@ class Cinema extends Model
             $cinema->movies = Movie::getNowShowing($movies, $theaterIds);
             if (count($cinema->movies) >= 1)
             {
+                $cinema->screeningDats = Screening::getScreeningDate($cinema->movies);
                 return $cinema;
             }
         })->values();

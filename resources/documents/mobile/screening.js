@@ -20,6 +20,10 @@
             "name": "Turing CADT",
             "location": "CADT",
             "photo": "http://127.0.0.1:8000/uploads/images/a2f3f14884bf61d0a9bea8b437d273bf.png",
+            "screeningDates": [
+                "2021-09-09",
+                "2021-09-10"
+            ],
             "movies": [
                 {
                     "id": 3,
@@ -105,6 +109,11 @@
             "name": "Turing Niptict",
             "location": "Niptict",
             "photo": "http://127.0.0.1:8000/uploads/images/c983b6c44b15235e2c93aca24af01f8a.png",
+            "screeningDates": [
+                "2021-09-09",
+                "2021-09-10",
+                "2021-09-11"
+            ],
             "movies": [
                 {
                     "id": 1,
@@ -246,7 +255,7 @@
             ]
         }
     ]
-}
+ }
  *
  * @apiUse ServerServerError
  */
