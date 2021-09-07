@@ -88,4 +88,25 @@ class Screening extends Model
             return false;
         }
     }
+
+    public static function getDateScreening($cinemas)
+    {
+        $i=0;
+        $screeningTimes= [];
+        foreach ($cinemas as $cinema)
+        {
+            foreach ($cinema->movies as $movie)
+            {
+                foreach ($movie->screenings as $key => $screening)
+                {
+                    if (!in_array($key, $screeningTimes))
+                    {
+                        $screeningTimes[$i] = $key;
+                        $i++;
+                    };
+                }
+            }
+        }
+        return $screeningTimes;
+    }
 }

@@ -293,7 +293,7 @@ Route::group(['prefix' => ''], function(){
         Route::get('', [MovieController::class, 'showMovieMobile']);
     });
     Route::group(['prefix' => 'screenings'], function(){
-        Route::get('/now-showing', [ScreeningController::class, 'getNowShowing']);
+        Route::get('/now-showing', [ScreeningController::class, 'getNowShowingMobile']);
     });
     Route::group(['prefix' => 'cinemas'], function(){
         Route::get('', [CinemaController::class, 'activeCinema']);

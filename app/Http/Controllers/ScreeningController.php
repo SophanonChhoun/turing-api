@@ -23,6 +23,7 @@ use App\Http\Requests\ScreeningRequest;
 use App\Http\Resources\ScreeningResource;
 use Exception;
 use Ramsey\Collection\Collection;
+use function GuzzleHttp\Psr7\str;
 
 class ScreeningController extends Controller
 {
@@ -243,6 +244,21 @@ class ScreeningController extends Controller
             $cinemas = Cinema::with('media')->where("status", true)->get();
             $cinemas = Cinema::getCinemaNowShowingScreening($cinemas);
             return $this->success(NowShowingResource::collection($cinemas));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function getNowShowingMobile()
+    {
+        try {
+            $cinemas = Cinema::with('media')->where("status", true)->get();
+            $cinemas = Cinema::getCinemaNowShowingScreening($cinemas);
+            $screeningTimes = Screening::getDateScreening($cinemas);
+            return $this->success([
+                "screeningTimes" => $screeningTimes,
+                "cinemas" => NowShowingResource::collection($cinemas)
+            ]);
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
