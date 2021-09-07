@@ -26,6 +26,7 @@ class MovieShowingResource extends JsonResource
             'casts' => ListResource::collection($this->casts),
             'genres' => ListResource::collection($this->genres),
             'directors' => ListResource::collection($this->directors),
+            'screeningDates' => $this->screeningDates,
             'screenings' => $this->screenings
         ];
     }

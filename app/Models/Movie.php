@@ -162,6 +162,7 @@ class Movie extends Model
             $movie->screenings = ScreeningMobileResource::collection($movie->screenings)->collection->groupBy("date_read_able");
             if (count($movie->screenings) > 0)
             {
+                $movie->screeningDates = Screening::getMovieScreeningDate($movie);
                 return $movie;
             }
         })->values();
