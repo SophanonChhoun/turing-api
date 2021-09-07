@@ -102,7 +102,7 @@ class Screening extends Model
                 {
                     if (!in_array($key, $screeningTimes))
                     {
-                        $screeningTimes[$i] = $key;
+                        $screeningTimes[$i] = Carbon::parse($key)->format('d-m-Y');
                         $i++;
                     };
                 }
@@ -121,7 +121,7 @@ class Screening extends Model
             {
                 if (!in_array($key, $screeningTimes))
                 {
-                    $screeningTimes[$i] = $key;
+                    $screeningTimes[$i] = Carbon::parse($key)->format('d-m-Y');
                     $i++;
                 };
             }
