@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\ScreeningMobileResource;
 use App\Http\Resources\ScreeningPromotionResource;
 use Carbon\Carbon;
 use Carbon\Language;
@@ -140,8 +141,8 @@ class Movie extends Model
                 ->where("status", true)
                 ->orderBy("date")
                 ->orderBy("start_time")
-                ->get()
-                ->groupBy("date");
+                ->get();
+            $movie->screenings = ScreeningMobileResource::collection($movie->screenings)->collection->groupBy("date");
             if (count($movie->screenings) > 0)
             {
                 return $movie;

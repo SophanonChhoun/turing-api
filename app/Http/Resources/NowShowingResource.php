@@ -19,7 +19,7 @@ class NowShowingResource extends JsonResource
             "name" => $this->name,
             "location" => $this->location,
             "photo" => $this->media->file_url ?? '',
-            "screeningDates" => $this->screeningDats,
+            "screeningDates" => $this->screeningDates,
             "movies" => MovieShowingResource::collection($this->movies)
         ];
     }
