@@ -96,23 +96,7 @@ class TicketController extends Controller
         try {
             $data = Ticket::with("user", "checkBy", "promotion")->findOrFail($id);
             $screening = Screening::find($data->screeningId);
-            return $this->success([
-                'id' => $data->id,
-                'price' => $data->price - $data->discountPrice,
-                'movie' => $data->movieName,
-                'seatType' => $data->seatType,
-                'seatName' => $data->seatName,
-                'discountPrice' => $data->discountPrice,
-                'withoutDiscount' => $data->price,
-                'theaterName' => $data->theaterName,
-                'cinemaName'=> $data->cinemaName,
-                'userName' => $data->user->name ?? '',
-                'checked_in' => $data->checked_in,
-                'check_by' => $data->checkBy->name ?? '',
-                'start_time' => $screening->start_time ?? '',
-                'date' => $screening->date ?? '',
-                'promotion' => $data->promotion
-            ]);
+            return $this->success(Ticket::showTicket($data, $screening));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

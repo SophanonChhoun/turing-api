@@ -24,4 +24,13 @@ class CastCrew extends Model
     {
         return $this->hasOne(MediaFile::class,"media_id","mediaId");
     }
+
+    public static function showCast($data)
+    {
+        return [
+            "firstName" => $data->firstName,
+            "lastName" => $data->lastName,
+            "photo" => $data->media->file_url ?? '',
+        ];
+    }
 }

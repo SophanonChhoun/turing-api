@@ -58,13 +58,7 @@ class CinemaController extends Controller
     {
         try {
             $cinema = Cinema::with("media")->find($id);
-            return $this->success([
-                "id" => $cinema->id,
-                "name" => $cinema->name,
-                "location" => $cinema->location,
-                "status" => $cinema->status,
-                "photo" => $cinema->media->file_url ?? '',
-            ]);
+            return $this->success(Cinema::showCinema($cinema));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

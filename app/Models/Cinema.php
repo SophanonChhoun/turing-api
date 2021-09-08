@@ -52,6 +52,17 @@ class Cinema extends Model
         return $this->hasMany(Ticket::class, 'cinemaName', 'name');
     }
 
+    public static function showCinema($cinema)
+    {
+        return [
+            "id" => $cinema->id,
+            "name" => $cinema->name,
+            "location" => $cinema->location,
+            "status" => $cinema->status,
+            "photo" => $cinema->media->file_url ?? '',
+        ];
+    }
+
     public static function cinemaScreening($cinemas, $id)
     {
         return $cinemas->filter(function ($cinema) use($id) {

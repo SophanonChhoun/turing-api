@@ -96,4 +96,25 @@ class Ticket extends Model
         }
         return array_sum($price);
     }
+
+    public static function showTicket($data, $screening)
+    {
+        return [
+            'id' => $data->id,
+            'price' => $data->price - $data->discountPrice,
+            'movie' => $data->movieName,
+            'seatType' => $data->seatType,
+            'seatName' => $data->seatName,
+            'discountPrice' => $data->discountPrice,
+            'withoutDiscount' => $data->price,
+            'theaterName' => $data->theaterName,
+            'cinemaName'=> $data->cinemaName,
+            'userName' => $data->user->name ?? '',
+            'checked_in' => $data->checked_in,
+            'check_by' => $data->checkBy->name ?? '',
+            'start_time' => $screening->start_time ?? '',
+            'date' => $screening->date ?? '',
+            'promotion' => $data->promotion
+        ];
+    }
 }

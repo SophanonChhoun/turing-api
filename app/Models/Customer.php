@@ -54,4 +54,24 @@ class Customer extends Authenticatable
         $user = self::with('media')->find($id);
         return $user;
     }
+
+    public static function showLoginCustomer($user, $token)
+    {
+        return [
+            'user' => self::showCustomer($user),
+            'token' => 'Bearer '. $token,
+        ];
+    }
+
+    public static function showCustomer($user)
+    {
+        return [
+            "id" => $user->id,
+            "email" => $user->email,
+            "name" => $user->name,
+            "phoneNumber" => $user->phoneNumber,
+            "photo" => $user->media ? $user->media->file_url : ($user->imageUrl ?? ''),
+            "status" => $user->status,
+        ];
+    }
 }

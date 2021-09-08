@@ -24,4 +24,13 @@ class Advertisement extends Model
     {
         return $this->media->file_name;
     }
+
+    public static function showAdvertisement($data)
+    {
+        return [
+            "id" => $data->id,
+            "description" => $data->description,
+            "photo" => $data->media->file_url ?? ''
+        ];
+    }
 }

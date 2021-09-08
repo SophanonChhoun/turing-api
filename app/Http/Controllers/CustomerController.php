@@ -41,19 +41,7 @@ class CustomerController extends Controller
                 return $this->fail("Your account has been blocked.Please contact our team for more support.");
             }
             $token = $user->createToken('authorization')->plainTextToken;
-
-            $response = [
-                'user' => [
-                    "id" => $user->id,
-                    "email" => $user->email,
-                    "name" => $user->name,
-                    "phoneNumber" => $user->phoneNumber,
-                    "photo" => $user->media->file_url ?? '',
-                ],
-                'token' => 'Bearer '. $token,
-            ];
-
-            return $this->success($response);
+            return $this->success(Customer::showLoginCustomer($user, $token));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
@@ -65,17 +53,7 @@ class CustomerController extends Controller
             $customer = Customer::create($request->all());
             $customer = Customer::with("media")->find($customer->id);
             $token = $customer->createToken('authorization')->plainTextToken;
-
-            return $this->success([
-                'user' => [
-                    "id" => $customer->id,
-                    "name" => $customer->name,
-                    "email" => $customer->email,
-                    "phoneNumber" => $customer->phoneNumber,
-                    "photo" => $customer->media->file_url ?? ''
-                ],
-                'token' => 'Bearer '. $token,
-            ]);
+            return $this->success(Customer::showLoginCustomer($customer, $token));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
@@ -141,16 +119,7 @@ class CustomerController extends Controller
             }
             $token = $customer->createToken('authorization')->plainTextToken;
             DB::commit();
-            return $this->success([
-                'user' => [
-                    "id" => $customer->id,
-                    "name" => $customer->name,
-                    "email" => $customer->email,
-                    "phoneNumber" => $customer->phoneNumber,
-                    "photo" => $customer->media ? $customer->media->file_url : ($customer->imageUrl ?? '')
-                ],
-                'token' => 'Bearer '. $token,
-            ]);
+            return $this->success(Customer::showLoginCustomer($customer, $token));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
@@ -183,14 +152,7 @@ class CustomerController extends Controller
             {
                 return $this->fail("Customer not found.");
             }
-            return $this->success([
-               "id" => $customer->id,
-               "name" => $customer->name,
-               "email" => $customer->email,
-               "status" => $customer->status,
-               "phoneNumber" => $customer->phoneNumber,
-               "photo" => $customer->media ? $customer->media->file_url : ($customer->imageUrl ?? '')
-            ]);
+            return $this->success(Customer::showCustomer($customer));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
@@ -233,11 +195,7 @@ class CustomerController extends Controller
     {
         try {
             $customer = Customer::with("media")->find(auth()->user()->id);
-            return $this->success([
-               "name" => $customer->name,
-               "email" => $customer->email,
-               "photo" => $customer->media ? $customer->media->file_url : ($customer->imageUrl ?? '')
-            ]);
+            return $this->success(Customer::showCustomer($customer));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

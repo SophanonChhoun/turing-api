@@ -94,11 +94,7 @@ class CastCrewController extends Controller
     {
         try {
             $data = CastCrew::with("media")->findOrFail($id);
-            return $this->success([
-                "firstName" => $data->firstName,
-                "lastName" => $data->lastName,
-                "photo" => $data->media->file_url ?? '',
-            ]);
+            return $this->success(CastCrew::showCast($data));
         } catch (Exception $exception) {
             return $this->fail($exception->getMessage());
         }

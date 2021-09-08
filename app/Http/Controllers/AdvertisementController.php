@@ -57,11 +57,7 @@ class AdvertisementController extends Controller
     {
         try {
             $data = Advertisement::with("media")->findOrFail($id);
-            return $this->success([
-                "id" => $data->id,
-                "description" => $data->description,
-                "photo" => $data->media->file_url ?? ''
-            ]);
+            return $this->success(Advertisement::showAdvertisement($data));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }
