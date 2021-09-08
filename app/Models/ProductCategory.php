@@ -25,4 +25,9 @@ class ProductCategory extends Model
     {
         return $this->hasOne(MediaFile::class,"media_id","mediaId");
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'categoryId', 'id');
+    }
 }

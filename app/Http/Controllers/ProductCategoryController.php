@@ -6,6 +6,7 @@ use App\Core\MediaLib;
 use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Requests\StatusRequest;
 use App\Http\Resources\ListResource;
+use App\Http\Resources\MobileCategoryResource;
 use App\Http\Resources\ProductCategoryResource;
 use App\Models\ProductCategory;
 use Carbon\Carbon;
@@ -127,6 +128,16 @@ class ProductCategoryController extends Controller
         try {
             $categories = ProductCategory::where("status", 1)->get();
             return $this->success(ListResource::collection($categories));
+        }catch (Exception $exception){
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function showCategories()
+    {
+        try {
+            $categories = ProductCategory::with('products.media')->where("status", true)->get();
+            return $this->success(MobileCategoryResource::collection($categories));
         }catch (Exception $exception){
             return $this->fail($exception->getMessage());
         }

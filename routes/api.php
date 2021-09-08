@@ -299,7 +299,7 @@ Route::group(['prefix' => ''], function(){
         Route::get('', [CinemaController::class, 'activeCinema']);
     });
     Route::group(['prefix' => 'products'], function(){
-        Route::get('', [ProductController::class, 'productActive']);
+        Route::get('', [ProductCategoryController::class, 'showCategories']);
     });
     Route::get('grid/{id}', [ScreeningController::class, 'getGrid']);
     Route::middleware(['auth:sanctum', 'customer'])->group(function () {
