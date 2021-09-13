@@ -77,9 +77,22 @@ class Cinema extends Model
                 ->groupBy("date")->toArray());
             if ($cinema->screenings->count() > 0)
             {
+                $cinema->screeningDates = self::getDate($cinema->screenings);
                 return $cinema;
             }
         });
+    }
+
+    public static function getDate($screenings)
+    {
+        $i = 0;
+        $dates = [];
+        foreach ($screenings as $date => $screening)
+        {
+            $dates[$i] = $date;
+            $i++;
+        }
+        return $dates;
     }
 
     public static function getCinemaNowShowingScreening($cinemas, $mobile = false)

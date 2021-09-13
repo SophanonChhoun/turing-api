@@ -18,6 +18,7 @@ class ScreeningCinemaResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'location' => $this->location,
+            'screeningDates' => $this->screeningDates,
             'screening' => $this->screenings
         ];
     }
