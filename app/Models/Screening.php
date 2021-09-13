@@ -118,10 +118,18 @@ class Screening extends Model
 
     public static function getScreeningDate($movies)
     {
-
+        $i=0;
+        $screeningTimes= [];
         foreach ($movies as $movie)
         {
-            $screeningTimes = self::getMovieScreeningDate($movie);
+            foreach ($movie->screenings as $key => $screening)
+            {
+                if (!in_array(Carbon::parse($key)->format('d-m-Y'), $screeningTimes))
+                {
+                    $screeningTimes[$i] = Carbon::parse($key)->format('d-m-Y');
+                    $i++;
+                };
+            }
         }
         return $screeningTimes;
     }
