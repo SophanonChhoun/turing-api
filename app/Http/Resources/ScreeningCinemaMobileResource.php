@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ScreeningCinemaResource extends JsonResource
+class ScreeningCinemaMobileResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,6 +18,7 @@ class ScreeningCinemaResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'location' => $this->location,
+            'screeningDates' => $this->screeningDates,
             'screening' => $this->screenings
         ];
     }

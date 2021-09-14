@@ -11,6 +11,7 @@ use App\Http\Resources\MovieCustomerResource;
 use App\Http\Resources\MovieResource;
 use App\Http\Resources\MovieTimeResource;
 use App\Http\Resources\PhotoResource;
+use App\Http\Resources\ScreeningCinemaMobileResource;
 use App\Http\Resources\ScreeningCinemaResource;
 use App\Http\Resources\ScreeningPromotionResource;
 use App\Models\Cinema;
@@ -272,6 +273,36 @@ class MovieController extends Controller
                 "runningTime" => $movie->runningTime,
                 "releasedDate" => $movie->releasedDate,
                 "cinemas" => ScreeningCinemaResource::collection($cinemas),
+            ]);
+        }catch (Exception $exception) {
+            return $this->fail($exception->getMessage());
+        }
+    }
+
+    public function movieDetailMobile($id)
+    {
+        try {
+            $movie = Movie::with("directors",
+                "rating",
+                "casts",
+                "genres")->findOrFail($id);
+            $cinemaId = Screening::with('theater')->where("movieId", $id)->get()->pluck('theater.cinemaId');
+            $cinemas = Cinema::whereIn("id", $cinemaId)->get();
+            $cinemas = Cinema::cinemaScreeningMobile($cinemas, $id);
+            return $this->success([
+                "id" => $movie->id,
+                "title" => $movie->title,
+                "synopsis" => $movie->synopsis,
+                "rating" => $movie->rating->title ?? '',
+                'directors' => ListResource::collection($movie->directors),
+                'casts' => ListResource::collection($movie->casts),
+                'genres' => ListResource::collection($movie->genres),
+                "poster" => $movie->poster,
+                "backdrop" => $movie->backdrop,
+                "trailerUrl" => $movie->trailerUrl,
+                "runningTime" => $movie->runningTime,
+                "releasedDate" => $movie->releasedDate,
+                "cinemas" => ScreeningCinemaMobileResource::collection($cinemas),
             ]);
         }catch (Exception $exception) {
             return $this->fail($exception->getMessage());

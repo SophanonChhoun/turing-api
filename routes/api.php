@@ -291,6 +291,7 @@ Route::group(['prefix' => ''], function(){
     Route::get('promotions/{id}', [PromotionController::class, 'showPromotionScreening']);
     Route::group(['prefix' => 'movies'], function(){
         Route::get('', [MovieController::class, 'showMovieMobile']);
+        Route::get('/{id}', [MovieController::class, 'movieDetailMobile']);
     });
     Route::group(['prefix' => 'screenings'], function(){
         Route::get('/now-showing', [ScreeningController::class, 'getNowShowingMobile']);

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\ScreeningMobileResource;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -75,6 +76,25 @@ class Cinema extends Model
                 ->orderBy("start_time")
                 ->get()
                 ->groupBy("date")->toArray());
+            if ($cinema->screenings->count() > 0)
+            {
+                return $cinema;
+            }
+        });
+    }
+
+    public static function cinemaScreeningMobile($cinemas, $id)
+    {
+        return $cinemas->filter(function ($cinema) use($id) {
+            $theaterIds = Theater::where("cinemaId", $cinema->id)->get()->pluck("id");
+            $cinema->screenings = Screening::whereIn("theaterId", $theaterIds)
+                ->where("movieId", $id)
+                ->where("date", ">=", Carbon::now()->toDateString())
+                ->where("status", true)
+                ->orderBy("date")
+                ->orderBy("start_time")
+                ->get();
+            $cinema->screenings = ScreeningMobileResource::collection($cinema->screenings)->collection->groupBy("date_read_able");
             if ($cinema->screenings->count() > 0)
             {
                 $cinema->screeningDates = self::getDate($cinema->screenings);
