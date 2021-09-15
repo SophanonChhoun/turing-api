@@ -190,7 +190,7 @@ class MovieController extends Controller
     {
         try {
             $upComingMovies = Movie::with("rating", "backdropImage", "genres")->where("status", true)->whereDate('releasedDate', '>',Carbon::now()->toDateString())->get();
-            $nowShowingMovies = Movie::where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->limit(5)->get();
+            $nowShowingMovies = Movie::where("status", true)->whereDate('releasedDate', '<=',Carbon::now()->toDateString())->get();
             $movies = Movie::with(
                 "rating", "backdropImage", "genres"
             )->where("status", true)->latest()->limit(3)->get();
