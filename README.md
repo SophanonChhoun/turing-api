@@ -1,7 +1,7 @@
 <div align="center">
-  <h1>Turing Web 🎞️</h1>
+  <h1>Turing API😀</h1>
 
-  <p>The website of Turing Cinemas</p>
+  <p>The application programming interface of Turing Project</p>
 </div>
 
 ---
