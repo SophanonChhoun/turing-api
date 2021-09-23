@@ -11,8 +11,7 @@
 
 - [About the project](#about-the-project)
   - [About Turing API](#about-turing-api)
-- [Running Turing Web](#running-turing-api)
-- [Setting up environment](#setting-up-environment)
+- [Running Turing API](#running-turing-api)
 
 ## About the project
 
@@ -94,7 +93,6 @@ User password: password
 php artisan serve 
 ```
 
-# Setting up environment
-You need to have sub folder name as uploads in public. Furthermore, you also need to have sub folder name as images in uploads. Folder images contains other folders such as original, w154, w185, w300, and w500.
+- You need to have sub folder name as uploads in public. Furthermore, you also need to have sub folder name as images in uploads. Folder images contains other folders such as original, w154, w185, w300, and w500.
 
 
