@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Turing API😀</h1>
+  <h1>Turing API</h1>
 
   <p>The application programming interface of Turing Project</p>
 </div>
