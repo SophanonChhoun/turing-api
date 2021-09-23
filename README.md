@@ -39,6 +39,7 @@ Turing API is the application programming interface which implemented in Laravel
 ```
 - Set Environment Variables
 ```shell
+cd <project>
 cp .env.example .env
 ```
 Turing Api requires a working telegram token key for sending messages in Telegram, stripe key for verify payment cards and paying fess, and email address for sending email to get verify code for reset password.
