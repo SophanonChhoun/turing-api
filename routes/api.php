@@ -283,6 +283,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 Route::group(['prefix' => ''], function(){
     Route::post("login/google", [CustomerController::class, 'loginSocial']);
+    Route::post("login/google/callback", [CustomerController::class, 'callback']);
     Route::post("login", [CustomerController::class, 'login']);
     Route::post("register", [CustomerController::class, 'signUp']);
     Route::post('send-mail', [MailController::class, 'sendEmailCustomer']);

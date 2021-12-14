@@ -125,6 +125,11 @@ class CustomerController extends Controller
         }
     }
 
+    public function callback()
+    {
+
+    }
+
     public function destroy($id)
     {
         try {
